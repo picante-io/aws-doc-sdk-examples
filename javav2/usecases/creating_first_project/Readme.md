@@ -2,12 +2,12 @@
 
 ## Overview
 
-| Heading      | Description |
-| ----------- | ----------- |
-| Description | Discusses how to develop a dynamic web MVC application by using the AWS SDK for Java (v2).   |
-| Audience   |  Developer (beginner)        |
-| Updated   | 5/5/2022        |
-| Required skills   | Java, Maven  |
+| Heading         | Description                                                                                |
+| --------------- | ------------------------------------------------------------------------------------------ |
+| Description     | Discusses how to develop a dynamic web MVC application by using the AWS SDK for Java (v2). |
+| Audience        | Developer (beginner)                                                                       |
+| Updated         | 5/5/2022                                                                                   |
+| Required skills | Java, Maven                                                                                |
 
 ## Purpose
 
@@ -15,50 +15,50 @@ You can develop a dynamic web application that users can use to submit data to a
 
 The DynamoDB enhanced client maps your Java classes to DynamoDB tables. With the DynamoDB enhanced client, you can do the following:
 
-* Access your tables
-* Perform various create, read, update, and delete (CRUD) operations
-* Execute queries
+-   Access your tables
+-   Perform various create, read, update, and delete (CRUD) operations
+-   Execute queries
 
 **Note:** For more information about the DynamoDB enhanced client, see [Map items in DynamoDB tables](https://docs.aws.amazon.com/sdk-for-java/v2/developer-guide/examples-dynamodb-enhanced.html).
 
 The following AWS services are used in this tutorial:
 
- - Amazon SNS 
- - DynamoDB
- - Elastic Beanstalk
+-   Amazon SNS
+-   DynamoDB
+-   Elastic Beanstalk
 
 This tutorial guides you through creating an AWS application that uses Spring Boot. After you develop the application, you will learn how to deploy it to Elastic Beanstalk.
 
 **Topics**
 
-+ Prerequisites
-+ Understand the web application
-+ Create an IntelliJ project
-+ Add the POM dependencies
-+ Set up the Java package in your project
-+ Create the Java classes
-+ Create the HTML files
-+ Package the application into a .jar file
-+ Deploy the application to Elastic Beanstalk
+-   Prerequisites
+-   Understand the web application
+-   Create an IntelliJ project
+-   Add the POM dependencies
+-   Set up the Java package in your project
+-   Create the Java classes
+-   Create the HTML files
+-   Package the application into a .jar file
+-   Deploy the application to Elastic Beanstalk
 
 ## Prerequisites
 
 To complete the tutorial, you need the following:
 
-+ An AWS account
-+ A Java IDE (this example uses IntelliJ)
-+ Java 1.8 SDK and Maven
+-   An AWS account
+-   A Java IDE (this example uses IntelliJ)
+-   Java 1.8 SDK and Maven
 
 ### Important
 
-+ The AWS services included in this document are included in the [AWS Free Tier](https://aws.amazon.com/free/?all-free-tier.sort-by=item.additionalFields.SortRank&all-free-tier.sort-order=asc).
-+  This code has not been tested in all AWS Regions. Some AWS services are available only in specific Regions. For more information, see [AWS Regional Services](https://aws.amazon.com/about-aws/global-infrastructure/regional-product-services). 
-+ Running this code might result in charges to your AWS account. 
-+ Be sure to delete all of the resources that you create while going through this tutorial so that you won't be charged.
+-   The AWS services included in this document are included in the [AWS Free Tier](https://aws.amazon.com/free/?all-free-tier.sort-by=item.additionalFields.SortRank&all-free-tier.sort-order=asc).
+-   This code has not been tested in all AWS Regions. Some AWS services are available only in specific Regions. For more information, see [AWS Regional Services](https://aws.amazon.com/about-aws/global-infrastructure/regional-product-services).
+-   Running this code might result in charges to your AWS account.
+-   Be sure to delete all of the resources that you create while going through this tutorial so that you won't be charged.
 
 ### Creating the resources
 
-Create a DynamoDB table named **Greeting** that contains a partition key named **id**. For information about creating a DynamoDB table, see [Create a Table](https://docs.aws.amazon.com/amazondynamodb/latest/developerguide/getting-started-step-1.html). 
+Create a DynamoDB table named **Greeting** that contains a partition key named **id**. For information about creating a DynamoDB table, see [Create a Table](https://docs.aws.amazon.com/amazondynamodb/latest/developerguide/getting-started-step-1.html).
 
 In addition, make sure that you have properly set up your development environment. For information, see [Setting up the AWS SDK for Java 2.x](https://docs.aws.amazon.com/sdk-for-java/latest/developer-guide/setup.html).
 
@@ -77,6 +77,7 @@ After the table is updated with a new item, a text message is sent to notify a m
 ![AWS Blog Application](images/phone2.png)
 
 ## Create an IntelliJ project named Greetings
+
 The first step is to create an IntelliJ project.
 
 1. In the IntelliJ IDE, choose **File**, **New**, **Project**.
@@ -179,11 +180,11 @@ In the **main/java** folder, create a Java package named **com.example.handlingf
 
 The following Java files go into this package:
 
-+ **DynamoDBEnhanced** - Stores data in a DynamoDB table by using the DynamoDB enhanced client API.
-+ **PublishTextSMS** - Sends a text message by using Amazon SNS.
-+ **Greeting** - Represents the model.
-+ **GreetingItems** - Uses the **@DynamoDbBean** annotation that's required for the enhanced client.
-+ **GreetingController** - Represents the controller.
+-   **DynamoDBEnhanced** - Stores data in a DynamoDB table by using the DynamoDB enhanced client API.
+-   **PublishTextSMS** - Sends a text message by using Amazon SNS.
+-   **Greeting** - Represents the model.
+-   **GreetingItems** - Uses the **@DynamoDbBean** annotation that's required for the enhanced client.
+-   **GreetingController** - Represents the controller.
 
 **Note:** Place the **GreetingApplication** class into the **com.example** package.
 
@@ -255,7 +256,7 @@ In the **com.example.handlingformsubmission** package, create the **GreetingCont
 
 ### Create the Greeting class
 
-In the **com.example.handlingformsubmission** package, create the **Greeting** class. This class represents the model for the Spring Boot application. The following Java code represents this class.  
+In the **com.example.handlingformsubmission** package, create the **Greeting** class. This class represents the model for the Spring Boot application. The following Java code represents this class.
 
 ```java
 	package com.example.handlingformsubmission;
@@ -299,10 +300,11 @@ In the **com.example.handlingformsubmission** package, create the **Greeting** c
         	this.body = body;
     	}
        }
- ```
+```
+
 ### Create the GreetingItems class
 
-This class represents contains the annotation required for the enhanced client. The data members in this class map to the columns in the DynamoDB **Greeting** table.  
+This class represents contains the annotation required for the enhanced client. The data members in this class map to the columns in the DynamoDB **Greeting** table.
 
 ```java
   package com.example.handlingformsubmission;
@@ -414,14 +416,14 @@ Create a **PutItemEnhancedRequest** object and pass the **GreetingItems** object
    }
 ```
 
-**Note:** The **EnvironmentVariableCredentialsProvider** is used to create a **DynamoDbClient** because this application will be deployed to Elastic Beanstalk. You can set up environment variables on Elastic Beanstalk so that the  **DynamoDbClient** is successfully created. 	
+**Note:** The **EnvironmentVariableCredentialsProvider** is used to create a **DynamoDbClient** because this application will be deployed to Elastic Beanstalk. You can set up environment variables on Elastic Beanstalk so that the **DynamoDbClient** is successfully created.
 
 ### Create the PublishTextSMS class
 
 Create a class named **PublishTextSMS** that sends a text message when a new item is added to the DynamoDB table. The following Java code represents this class.
 
 ```java
-   
+
    package com.example.handlingformsubmission;
 
    import software.amazon.awssdk.auth.credentials.EnvironmentVariableCredentialsProvider;
@@ -441,7 +443,7 @@ Create a class named **PublishTextSMS** that sends a text message when a new ite
                 .region(region)
                 .credentialsProvider(EnvironmentVariableCredentialsProvider.create())
                 .build();
-        
+
 	String message = "A new item with ID value "+ id +" was added to the DynamoDB table";
         String phoneNumber="<Enter a valid mobile number>"; // Replace with a mobile phone number.
 
@@ -468,8 +470,8 @@ Create a class named **PublishTextSMS** that sends a text message when a new ite
 
 Under the resource folder, create a **templates** folder, and then create the following HTML files:
 
-+ **greeting.html**
-+ **result.html**
+-   **greeting.html**
+-   **result.html**
 
 The following image shows these files.
 
@@ -484,39 +486,84 @@ The **result.html** file is used as a view returned by the controller after the 
 The following HTML code represents the **greeting.html** file.
 
 ```html
-   <!DOCTYPE HTML>
-   <html xmlns:th="https://www.thymeleaf.org">
-   <head>
-     <title>Getting started: Spring Boot and the DynamoDB Enhanced Client</title>
-     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
-     <link rel="stylesheet" th:href="|https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css|"/>
-   </head>
-   <body>
-    <div class="container">
-    <h1>Your first AWS MVC web application</h1>
-    <p>You can submit data to an Amazon DynamoDB table by using the DynamoDB Enhanced Client. A mobile notification is sent, alerting a user that a new submission occurred.</p>
-    <form action="#" th:action="@{/greeting}" th:object="${greeting}" method="post">
-     <div class="form-group">
-        <p>Id: <input type="text"  class="form-control" th:field="*{id}" /></p>
-        </div>
+<!DOCTYPE html>
+<html xmlns:th="https://www.thymeleaf.org">
+	<head>
+		<title>
+			Getting started: Spring Boot and the DynamoDB Enhanced Client
+		</title>
+		<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+		<link
+			rel="stylesheet"
+			th:href="|https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css|"
+		/>
+	</head>
+	<body>
+		<div class="container">
+			<h1>Your first AWS MVC web application</h1>
+			<p>
+				You can submit data to an Amazon DynamoDB table by using the
+				DynamoDB Enhanced Client. A mobile notification is sent,
+				alerting a user that a new submission occurred.
+			</p>
+			<form
+				action="#"
+				th:action="@{/greeting}"
+				th:object="${greeting}"
+				method="post"
+			>
+				<div class="form-group">
+					<p>
+						Id:
+						<input
+							type="text"
+							class="form-control"
+							th:field="*{id}"
+						/>
+					</p>
+				</div>
 
-        <div class="form-group">
-            <p>Title: <input type="text" class="form-control" th:field="*{title}" /></p>
-        </div>
+				<div class="form-group">
+					<p>
+						Title:
+						<input
+							type="text"
+							class="form-control"
+							th:field="*{title}"
+						/>
+					</p>
+				</div>
 
-        <div class="form-group">
-            <p>Name: <input type="text" class="form-control" th:field="*{name}" /></p>
-        </div>
+				<div class="form-group">
+					<p>
+						Name:
+						<input
+							type="text"
+							class="form-control"
+							th:field="*{name}"
+						/>
+					</p>
+				</div>
 
-        <div class="form-group">
-            <p>Body: <input type="text" class="form-control" th:field="*{body}"/></p>
-        </div>
+				<div class="form-group">
+					<p>
+						Body:
+						<input
+							type="text"
+							class="form-control"
+							th:field="*{body}"
+						/>
+					</p>
+				</div>
 
-        <p><input type="submit" value="Submit" /> <input type="reset" value="Reset" /></p>
-    </form>
-   </div>
-   </body>
-  </html>
+				<p>
+					<input type="submit" value="Submit" />
+					<input type="reset" value="Reset" />
+				</p>
+			</form>
+		</div>
+	</body>
+</html>
 ```
 
 **Note:** The **th:field** values correspond to the data members in the **Greeting** class.
@@ -526,26 +573,26 @@ The following HTML code represents the **greeting.html** file.
 The following HTML code represents the **result.html** file.
 
 ```html
-	<!DOCTYPE HTML>
-	<html xmlns:th="https://www.thymeleaf.org">
+<!DOCTYPE html>
+<html xmlns:th="https://www.thymeleaf.org">
 	<head>
-    	 <title>Getting started: Handling form submission</title>
-      	  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
-	 </head>
+		<title>Getting started: Handling form submission</title>
+		<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+	</head>
 	<body>
-	<h1>Result</h1>
-	<p th:text="'id: ' + ${greeting.id}" />
-	<p th:text="'content: ' + ${greeting.body}" />
-	<a href="/">Submit another message</a>
+		<h1>Result</h1>
+		<p th:text="'id: ' + ${greeting.id}" />
+		<p th:text="'content: ' + ${greeting.body}" />
+		<a href="/">Submit another message</a>
 	</body>
-	</html>
+</html>
 ```
 
 ## Create a .jar file for the Greetings application
 
 Package up the project into a .jar file that you can deploy to Elastic Beanstalk by using the following Maven command.
 
-	mvn package
+    mvn package
 
 The .jar file is located in the target folder, as shown in the following image.
 
@@ -566,8 +613,8 @@ If this is your first time accessing this service, you see the **Welcome to AWS 
 1. Open the Elastic Beanstalk console at https://console.aws.amazon.com/elasticbeanstalk/home.
 2. Choose **Create New Application**. This opens a wizard that creates your application and launches an appropriate environment.
 3. In the **Create New Application** dialog box, enter the following values.
-   + **Application Name** - Greeting
-   + **Description** - A description for the application
+    - **Application Name** - Greeting
+    - **Description** - A description for the application
 
 ![AWS Tracking Application](images/greet10.png)
 
@@ -579,7 +626,7 @@ If this is your first time accessing this service, you see the **Welcome to AWS 
 
 ![AWS Tracking Application](images/greet11.png)
 
-9. When you're done, the application states that the **Health** is **Ok**.  
+9. When you're done, the application states that the **Health** is **Ok**.
 
 ![AWS Tracking Application](images/greet13_1.png)
 
@@ -598,7 +645,8 @@ To access the application, open your browser and enter the full URL.
 ![AWS Blog Application](images/greet15.png)
 
 ### Next steps
+
 Congratulations! You have created your first web application that interacts with AWS services. As stated at the beginning of this tutorial, be sure to delete all of the resources that you create while going through this tutorial so that you won't continue to be charged for them.
 
 For more AWS multiservice examples, see
-[usecases](https://github.com/awsdocs/aws-doc-sdk-examples/tree/master/javav2/usecases).
+[usecases](https://github.com/picante-io/aws-doc-sdk-examples/tree/master/javav2/usecases).

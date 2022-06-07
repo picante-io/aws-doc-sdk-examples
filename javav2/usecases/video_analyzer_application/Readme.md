@@ -1,6 +1,7 @@
-#  Creating AWS video analyzer applications using the AWS SDK for Java
+# Creating AWS video analyzer applications using the AWS SDK for Java
 
 ## Purpose
+
 You can create a Java web application that analyzes videos for label detection by using the Java SDK for Java version 2. The application created in this AWS tutorial lets you upload a video (MP4 file) to an Amazon Simple Storage Service (Amazon S3) bucket. Then the appliction uses the Amazon Rekognition service to analyze the video. The results are used to populate a data model and then a report is generated and emailed to a specific user by using the Amazon Simple Email Service (SES).
 
 The following illustration shows a report that is generated after the application completes analyzing the video.
@@ -10,45 +11,45 @@ The following illustration shows a report that is generated after the applicatio
 In this tutorial, you create a Spring Boot application that invokes various AWS services. The Spring Boot APIs are used to build a model, different views, and a controller. For more information, see [Spring Boot](https://spring.io/projects/spring-boot).
 
 This application uses the following AWS services:
-*	Amazon Rekognition
-*	Amazon S3
-*	Amazon SES
-*	AWS Elastic Beanstalk
+
+-   Amazon Rekognition
+-   Amazon S3
+-   Amazon SES
+-   AWS Elastic Beanstalk
 
 #### Topics
 
-+ Prerequisites
-+ Understand the AWS Video Analyzer application
-+ Create an IntelliJ project named SpringVideoAnalyzer
-+ Add the POM dependencies to your project
-+ Create the Java classes
-+ Create the HTML files
-+ Create the script files
-+ Package the project into a JAR file
-+ Deploy the application to AWS Elastic Beanstalk
+-   Prerequisites
+-   Understand the AWS Video Analyzer application
+-   Create an IntelliJ project named SpringVideoAnalyzer
+-   Add the POM dependencies to your project
+-   Create the Java classes
+-   Create the HTML files
+-   Create the script files
+-   Package the project into a JAR file
+-   Deploy the application to AWS Elastic Beanstalk
 
 ## Prerequisites
 
 To complete the tutorial, you need the following:
 
-+ An AWS account
-+ A Java IDE (this tutorial uses the IntelliJ IDE)
-+ Java JDK 1.8
-+ Maven 3.6 or later
+-   An AWS account
+-   A Java IDE (this tutorial uses the IntelliJ IDE)
+-   Java JDK 1.8
+-   Maven 3.6 or later
 
 ### Important
 
-+ The AWS services included in this document are included in the [AWS Free Tier](https://aws.amazon.com/free/?all-free-tier.sort-by=item.additionalFields.SortRank&all-free-tier.sort-order=asc).
-+  This code has not been tested in all AWS Regions. Some AWS services are available only in specific regions. For more information, see [AWS Regional Services](https://aws.amazon.com/about-aws/global-infrastructure/regional-product-services). 
-+ Running this code might result in charges to your AWS account. 
-+ Be sure to terminate all of the resources you create while going through this tutorial to ensure that you’re not charged.
+-   The AWS services included in this document are included in the [AWS Free Tier](https://aws.amazon.com/free/?all-free-tier.sort-by=item.additionalFields.SortRank&all-free-tier.sort-order=asc).
+-   This code has not been tested in all AWS Regions. Some AWS services are available only in specific regions. For more information, see [AWS Regional Services](https://aws.amazon.com/about-aws/global-infrastructure/regional-product-services).
+-   Running this code might result in charges to your AWS account.
+-   Be sure to terminate all of the resources you create while going through this tutorial to ensure that you’re not charged.
 
 ### Creating the resources
 
 An Amazon S3 bucket named **video[somevalue]**. Be sure to use this bucket name in your Amazon S3 Java code. For information, see [Creating a bucket](https://docs.aws.amazon.com/AmazonS3/latest/gsg/CreatingABucket.html).
 
-You must create an IAM role and a valid SNS topic. You need to reference these values in the **VideoDetectFaces** class. If you do not set these values, the application that you create does not work. For information, see [Configuring Amazon Rekognition Video](https://docs.aws.amazon.com/rekognition/latest/dg/api-video-roles.html).  
-
+You must create an IAM role and a valid SNS topic. You need to reference these values in the **VideoDetectFaces** class. If you do not set these values, the application that you create does not work. For information, see [Configuring Amazon Rekognition Video](https://docs.aws.amazon.com/rekognition/latest/dg/api-video-roles.html).
 
 ## Understand the AWS Video Analyzer application
 
@@ -56,11 +57,11 @@ The AWS Video Analyzer application supports uploading a video (MP4 file) to an A
 
 ![AWS Video Analyzer](images/pic1.png)
 
-To generate a report, enter an email address and choose **Analyze Video**. A mask is displayed to let the user know the report is being created. 
+To generate a report, enter an email address and choose **Analyze Video**. A mask is displayed to let the user know the report is being created.
 
 ![AWS Video Analyzer](images/pic2.png)
 
-**Note** Depending upon the size of the video, this may take a few minutes. To test this functionality, keep the video under 20 seconds. Also, there can only be one video in the Amazon S3 bucket. 
+**Note** Depending upon the size of the video, this may take a few minutes. To test this functionality, keep the video under 20 seconds. Also, there can only be one video in the Amazon S3 bucket.
 
 ## Create an IntelliJ project named SpringVideoAnalyzer
 
@@ -68,8 +69,8 @@ To generate a report, enter an email address and choose **Analyze Video**. A mas
 2. In the **New Project** dialog box, choose **Maven**, and then choose **Next**.
 3. For **GroupId**, enter **aws-spring**.
 4. For **ArtifactId**, enter **SprinVideoAnalyzer**.
-6. Choose **Next**.
-7. Choose **Finish**.
+5. Choose **Next**.
+6. Choose **Finish**.
 
 ## Add the POM dependencies to your project
 
@@ -92,9 +93,9 @@ Add the following dependencies for the Amazon services (AWS SDK for Java version
       <artifactId>s3</artifactId>
      </dependency>
 
-   **Note:** Ensure that you are using Java 1.8 (as shown in the following **pom.xml** file).
+**Note:** Ensure that you are using Java 1.8 (as shown in the following **pom.xml** file).
 
-   Add the Spring Boot dependencies. The **pom.xml** file looks like the following.
+Add the Spring Boot dependencies. The **pom.xml** file looks like the following.
 
 ```xml
      <?xml version="1.0" encoding="UTF-8"?>
@@ -209,14 +210,14 @@ The Java files go into this package.
 
 Create these Java classes:
 
-+ **BucketItem** - Used as a model that stores Amazon S3 bucket information.   
-+ **FaceItem** - Used as a model that stores details obtained by analyzing the video.
-+ **S3Service** - Uses the Amazon S3 API to perform S3 operations.
-+ **SendMessages** - Uses the Amazon SES API to send an email message with an attachment.
-+ **VideoApplication** - Used as the base class for the Spring Boot application.
-+ **VideoController** - Used as the Spring Boot controller that handles HTTP requests.
-+ **VideoDetectFaces** - Uses the Amazon Rekognition API to analyze the video.
-+ **WriteExcel** – Uses the JXL API (this is not an AWS API) to dynamically generate a report.     
+-   **BucketItem** - Used as a model that stores Amazon S3 bucket information.
+-   **FaceItem** - Used as a model that stores details obtained by analyzing the video.
+-   **S3Service** - Uses the Amazon S3 API to perform S3 operations.
+-   **SendMessages** - Uses the Amazon SES API to send an email message with an attachment.
+-   **VideoApplication** - Used as the base class for the Spring Boot application.
+-   **VideoController** - Used as the Spring Boot controller that handles HTTP requests.
+-   **VideoDetectFaces** - Uses the Amazon Rekognition API to analyze the video.
+-   **WriteExcel** – Uses the JXL API (this is not an AWS API) to dynamically generate a report.
 
 ### BucketItem class
 
@@ -266,8 +267,8 @@ The following Java code represents the **BucketItem** class that stores S3 objec
         return this.key ;
     }
     }
-```    
-    
+```
+
 ### FaceItems class
 
 The following Java code represents the **FaceItems** class that stores data returned by the Amazon Rekognition service.
@@ -547,7 +548,7 @@ The following class uses the Amazon S3 API to perform S3 operations. For example
         return null;
        }
       }
- ```
+```
 
 **Note**: In this example, an **EnvironmentVariableCredentialsProvider** is used for the credentials. This is because this application is deployed to Elastic Beanstalk where environment variables are set (shown later in this tutorial).
 
@@ -700,9 +701,9 @@ The following Java code represents the **SendMessage** class. This class uses th
        }
 ```
 
- ### VideoApplication class
+### VideoApplication class
 
- The following Java code represents the **VideoApplication** class.
+The following Java code represents the **VideoApplication** class.
 
 ```java
      package com.example.video;
@@ -717,7 +718,7 @@ The following Java code represents the **SendMessage** class. This class uses th
         SpringApplication.run(VideoApplication.class, args);
      }
     }
- ```
+```
 
 ### VideoController class
 
@@ -767,7 +768,7 @@ The following Java code represents the **VideoController** class that handles HT
     public String process() {
         return "process";
     }
-    
+
     private String bucketName = "<Enter your bucket name>";
 
     @RequestMapping(value = "/getvideo", method = RequestMethod.GET)
@@ -816,16 +817,17 @@ The following Java code represents the **VideoController** class that handles HT
             e.printStackTrace();
         }
         return "The "+ myKey +" video has been successfully analyzed and the report is sent to "+email;
-      } 
+      }
      }
 ```
 
-**Note**: Change the **bucketName** variable to match your bucket. 
+**Note**: Change the **bucketName** variable to match your bucket.
 
 ### VideoDetectFaces class
+
 The following Java code represents the **VideoDetectFaces** class. This class uses the Amazon Rekognition API to analyze the video obtained from an Amazon S3 bucket. In this example, the video is analyzed by invoking the **RekognitionClient** object’s **startFaceDetection** method. This returns a **StartFaceDetectionResponse** object. You can get the job id number by invoking the **StartFaceDetectionResponse** object’s **jobId** method.
 
-You can get the results of the job by invoking the **GetFaceResults** method. Notice in this code example, a while loop is used to wait until the job is finished. This method returns a list where each element is a **FaceItems** object. 
+You can get the results of the job by invoking the **GetFaceResults** method. Notice in this code example, a while loop is used to wait until the job is finished. This method returns a list where each element is a **FaceItems** object.
 
 ```java
     package com.example.video;
@@ -973,9 +975,9 @@ You can get the results of the job by invoking the **GetFaceResults** method. No
         return null;
        }
       }
- ```
+```
 
-**Note**: Specifiy valid **topicArn** and **roleArn** values. See the **Prerequisites** section at the start of this tutorial. 
+**Note**: Specifiy valid **topicArn** and **roleArn** values. See the **Prerequisites** section at the start of this tutorial.
 
 ### WriteExcel class
 
@@ -1147,16 +1149,16 @@ The following Java code represents the **WriteExcel** class.
         return count;
       }
      }
- ```
+```
 
 ## Create the HTML files
 
 At this point, you have created all of the Java files required for the AWS Video Analyzer application. Now you create the HTML files that are required for the application's graphical user interface (GUI). Under the **resource** folder, create a **templates** folder, and then create the following HTML files:
 
-+ index.html
-+ process.html
-+ upload.html
-+ layout.html
+-   index.html
+-   process.html
+-   upload.html
+-   layout.html
 
 The **index.html** file is the application's home view. The **process.html** file represents the view for creating a report. The **upload.html** file represents the view for uploading a MP4 file to an Amazon S3 bucket. The **layout.html** file represents the menu that's visible in all views.
 
@@ -1165,42 +1167,81 @@ The **index.html** file is the application's home view. The **process.html** fil
 The following HTML represents the **index.html** file.
 
 ```html
-    <!DOCTYPE html>
-    <html xmlns:th="http://www.thymeleaf.org" >
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+	<head>
+		<meta charset="utf-8" />
+		<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+		<meta name="viewport" content="width=device-width, initial-scale=1" />
+		<link
+			rel="stylesheet"
+			th:href="|https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css|"
+		/>
+		<script
+			th:src="|https://code.jquery.com/jquery-1.12.4.min.js|"
+		></script>
+		<script
+			th:src="|https://code.jquery.com/ui/1.11.4/jquery-ui.min.js|"
+		></script>
+		<link
+			rel="stylesheet"
+			href="../public/css/styles.css"
+			th:href="@{/css/styles.css}"
+		/>
+		<link
+			rel="icon"
+			href="../public/images/favicon.ico"
+			th:href="@{/images/favicon.ico}"
+		/>
 
-    <head>
-     <meta charset="utf-8" />
-     <meta http-equiv="X-UA-Compatible" content="IE=edge" />
-     <meta name="viewport" content="width=device-width, initial-scale=1" />
-     <link rel="stylesheet" th:href="|https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css|"/>
-     <script th:src="|https://code.jquery.com/jquery-1.12.4.min.js|"></script>
-     <script th:src="|https://code.jquery.com/ui/1.11.4/jquery-ui.min.js|"></script>
-     <link rel="stylesheet" href="../public/css/styles.css" th:href="@{/css/styles.css}" />
-     <link rel="icon" href="../public/images/favicon.ico" th:href="@{/images/favicon.ico}" />
+		<title>AWS Video Analyzer</title>
+	</head>
+	<body>
+		<header th:replace="layout :: site-header" />
+		<div class="container">
+			<h2>AWS Video Analyzer application</h2>
 
-    <title>AWS Video Analyzer</title>
-    </head>
-    <body>
-     <header th:replace="layout :: site-header"/>
-      <div class="container">
+			<p>
+				The AWS Video Analyzer example application uses the Amazon
+				Rekognition service and other AWS services, and the AWS SDK for
+				Java version 2. Analyzing your videos in real-time has never
+				been easier! Just perform these steps:
+			</p>
+			<p></p>
 
-     <h2>AWS Video Analyzer application</h2>
-
-     <p>The AWS Video Analyzer example application uses the Amazon Rekognition service and other AWS services, and the AWS SDK for Java version 2.
-        Analyzing your videos in real-time has never been easier! Just perform these steps:<p>
-
-     <ol>
-        <li>Upload a video (.MP4) to an Amazon S3 bucket by choosing the <b>Upload Video</b> menu item.</li>
-        <li>Choose <b>Choose Video File</b> and browse to a video located on your desktop.</li>
-        <li>Choose <b>Upload</b> to upload your video to an Amazon S3 bucket.</li>
-        <li>Choose <b>Get Video</b> to view the video located in the S3 bucket. Only 1 video can be in the bucket.</li>
-        <li>Analyze the video and produce a report by choosing the <b>Analyze Video</b> menu item. </li>
-        <li>Enter an email address in the email field and choose <b>Analyze Video</b>.  </li>
-        <li>Amazon SES is used to send an email with an Excel report to the specified email recipient.</li>
-     </ol>
-    </div>
-    </body>
-    </html>
+			<ol>
+				<li>
+					Upload a video (.MP4) to an Amazon S3 bucket by choosing the
+					<b>Upload Video</b> menu item.
+				</li>
+				<li>
+					Choose <b>Choose Video File</b> and browse to a video
+					located on your desktop.
+				</li>
+				<li>
+					Choose <b>Upload</b> to upload your video to an Amazon S3
+					bucket.
+				</li>
+				<li>
+					Choose <b>Get Video</b> to view the video located in the S3
+					bucket. Only 1 video can be in the bucket.
+				</li>
+				<li>
+					Analyze the video and produce a report by choosing the
+					<b>Analyze Video</b> menu item.
+				</li>
+				<li>
+					Enter an email address in the email field and choose
+					<b>Analyze Video</b>.
+				</li>
+				<li>
+					Amazon SES is used to send an email with an Excel report to
+					the specified email recipient.
+				</li>
+			</ol>
+		</div>
+	</body>
+</html>
 ```
 
 ### process.html
@@ -1208,54 +1249,83 @@ The following HTML represents the **index.html** file.
 The following HTML represents the **process.html** file.
 
 ```html
-    <!DOCTYPE html>
-     <html xmlns:th="http://www.thymeleaf.org">
-     <head>
-     <meta charset="utf-8" />
-     <meta http-equiv="X-UA-Compatible" content="IE=edge" />
-     <meta name="viewport" content="width=device-width, initial-scale=1" />
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+	<head>
+		<meta charset="utf-8" />
+		<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+		<meta name="viewport" content="width=device-width, initial-scale=1" />
 
-     <link rel="stylesheet" th:href="|https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css|"/>
-     <script th:src="|https://code.jquery.com/jquery-1.12.4.min.js|"></script>
-     <script th:src="|https://code.jquery.com/ui/1.11.4/jquery-ui.min.js|"></script>
-     <script th:src="|https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js|"></script>
-     <script th:src="|https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js|"></script>
-     <script src="../public/js/message.js" th:src="@{/js/message.js}"></script>
+		<link
+			rel="stylesheet"
+			th:href="|https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css|"
+		/>
+		<script
+			th:src="|https://code.jquery.com/jquery-1.12.4.min.js|"
+		></script>
+		<script
+			th:src="|https://code.jquery.com/ui/1.11.4/jquery-ui.min.js|"
+		></script>
+		<script
+			th:src="|https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js|"
+		></script>
+		<script
+			th:src="|https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js|"
+		></script>
+		<script
+			src="../public/js/message.js"
+			th:src="@{/js/message.js}"
+		></script>
 
-     <link rel="stylesheet" href="../public/css/styles.css" th:href="@{/css/styles.css}" />
-     <link rel="icon" href="../public/images/favicon.ico" th:href="@{/images/favicon.ico}" />
+		<link
+			rel="stylesheet"
+			href="../public/css/styles.css"
+			th:href="@{/css/styles.css}"
+		/>
+		<link
+			rel="icon"
+			href="../public/images/favicon.ico"
+			th:href="@{/images/favicon.ico}"
+		/>
 
-     <title>AWS Photo Analyzer</title>
+		<title>AWS Photo Analyzer</title>
 
-     <script>
-        function myFunction() {
-            alert("The form was submitted");
-        }
-    </script>
-    </head>
-    <body>
-    <header th:replace="layout :: site-header"/>
+		<script>
+			function myFunction() {
+				alert("The form was submitted");
+			}
+		</script>
+	</head>
+	<body>
+		<header th:replace="layout :: site-header" />
 
-    <div class="container">
+		<div class="container">
+			<h2>AWS Video Analyzer Sample Application</h2>
+			<p>
+				You can generate a report that analyzes a video in an Amazon S3
+				bucket. You can send the report to the following email address.
+			</p>
+			<label for="email">Email address:</label><br />
+			<input type="text" id="email" name="email" value="" /><br />
 
-     <h2>AWS Video Analyzer Sample Application</h2>
-     <p>You can generate a report that analyzes a video in an Amazon S3 bucket. You can send the report to the following email address. </p>
-     <label for="email">Email address:</label><br>
-     <input type="text" id="email" name="email" value=""><br>
+			<div>
+				<br />
 
-      <div>
-        <br>
-
-        <p>Click the following button to analyze the video and obtain a report</p>
-        <button id="button" onclick="ProcessImages()">Analyze Video</button>
-       </div>
-       <div id="spinner">
-        <p>Report is being generated:</p>
-        <div class="spinner-border"></div>
-       </div>
-      </div>
-     </body>
-     </html>
+				<p>
+					Click the following button to analyze the video and obtain a
+					report
+				</p>
+				<button id="button" onclick="ProcessImages()">
+					Analyze Video
+				</button>
+			</div>
+			<div id="spinner">
+				<p>Report is being generated:</p>
+				<div class="spinner-border"></div>
+			</div>
+		</div>
+	</body>
+</html>
 ```
 
 ### upload.html
@@ -1362,13 +1432,13 @@ The following HTML represents the **layout.html** file for the application's men
     </body>
     </html>
 ```
-          
+
 ## Create script files
 
 Both the upload and process views use script files to communicate with the Spring controller. You have to ensure that these files are part of your project; otherwise, your application won't work.
 
-+ items.js
-+ message.js
+-   items.js
+-   message.js
 
 Both files contain application logic that sends a request to the Spring controller. In addition, these files handle the response and set the data in the view.
 
@@ -1377,51 +1447,42 @@ Both files contain application logic that sends a request to the Spring controll
 The following JavaScript represents the **items.js** file.
 
 ```javascript
-    $(function() {
+$(function () {
+	$("#myTable").DataTable({
+		scrollY: "500px",
+		scrollX: true,
+		scrollCollapse: true,
+		paging: true,
+		columnDefs: [{ width: 200, targets: 0 }],
+		fixedColumns: true,
+	});
+});
 
-    $('#myTable').DataTable( {
-        scrollY:        "500px",
-        scrollX:        true,
-        scrollCollapse: true,
-        paging:         true,
-        columnDefs: [
-            { width: 200, targets: 0 }
-        ],
-        fixedColumns: true
-     } );
-     } );
+function getVideo() {
+	var xhr = new XMLHttpRequest();
+	xhr.addEventListener("load", handlevideo, false);
+	xhr.open("GET", "../getvideo", true);
+	xhr.setRequestHeader("Content-type", "application/x-www-form-urlencoded"); //necessary
+	xhr.send();
+}
 
+function handlevideo() {
+	var xml = event.target.responseText;
+	var oTable = $("#myTable").dataTable();
+	oTable.fnClearTable(true);
+	$(xml)
+		.find("Item")
+		.each(function () {
+			var $field = $(this);
+			var key = $field.find("Key").text();
+			var name = $field.find("Owner").text();
+			var date = $field.find("Date").text();
+			var size = $field.find("Size").text();
 
-    function getVideo() {
-     var xhr = new XMLHttpRequest();
-     xhr.addEventListener("load", handlevideo, false);
-     xhr.open("GET", "../getvideo", true);
-     xhr.setRequestHeader("Content-type", "application/x-www-form-urlencoded");//necessary
-     xhr.send();
-    }
-
-    function handlevideo() {
-
-     var xml = event.target.responseText;
-     var oTable = $('#myTable').dataTable();
-     oTable.fnClearTable(true);
-     $(xml).find('Item').each(function () {
-
-        var $field = $(this);
-        var key = $field.find('Key').text();
-        var name = $field.find('Owner').text();
-        var date = $field.find('Date').text();
-        var size = $field.find('Size').text();
-
-        //Set the new data
-        oTable.fnAddData( [
-            key,
-            name,
-            date,
-            size,,]
-        );
-        });
-        }
+			//Set the new data
+			oTable.fnAddData([key, name, date, size, ,]);
+		});
+}
 ```
 
 ### message.js
@@ -1429,36 +1490,32 @@ The following JavaScript represents the **items.js** file.
 The following JavaScript represents the **message.js** file. The **ProcessImages** function sends a request to the **/report** handler in the controller that generates a report. Notice that an email address is posted to the **Controller** method.
 
 ```javascript
-   $(function() {
+$(function () {
+	$("#spinner").hide();
+});
 
-    $('#spinner').hide();
+function ProcessImages() {
+	//Post the values to the controller
+	var email = $("#email").val();
+	$("#spinner").show();
+	$("#button").prop("disabled", true);
 
-   } );
+	var xhr = new XMLHttpRequest();
+	xhr.addEventListener("load", handle, false);
+	xhr.open("POST", "../report", true); //buildFormit -- a Spring MVC controller
+	xhr.setRequestHeader("Content-type", "application/x-www-form-urlencoded"); //necessary
+	xhr.send("email=" + email);
+}
 
-    function ProcessImages() {
-
-     //Post the values to the controller
-     var email =  $('#email').val();
-     $('#spinner').show();
-     $('#button').prop("disabled",true);
-
-     var xhr = new XMLHttpRequest();
-     xhr.addEventListener("load", handle, false);
-     xhr.open("POST", "../report", true);   //buildFormit -- a Spring MVC controller
-     xhr.setRequestHeader("Content-type", "application/x-www-form-urlencoded");//necessary
-     xhr.send("email=" + email);
-    }
-
-    function handle(event) {
-
-     var res = event.target.responseText;
-     $('#spinner').hide();
-     $('#button').prop("disabled",false);
-     alert(res) ;
-    }
+function handle(event) {
+	var res = event.target.responseText;
+	$("#spinner").hide();
+	$("#button").prop("disabled", false);
+	alert(res);
+}
 ```
 
-**Note:** There are other CSS files located in the GitHub repository that you must add to your project. Ensure all of the files under the **resources** folder are included in your project.   
+**Note:** There are other CSS files located in the GitHub repository that you must add to your project. Ensure all of the files under the **resources** folder are included in your project.
 
 ## Increase the timeout value for Elastic Beanstalk
 
@@ -1469,7 +1526,7 @@ When a request is made by the application to analyze a video, it may take longer
           option_name: Timeout
           value: 1800
 
-For more information, see  [Advanced environment customization with configuration files](https://docs.aws.amazon.com/elasticbeanstalk/latest/dg/ebextensions.html).
+For more information, see [Advanced environment customization with configuration files](https://docs.aws.amazon.com/elasticbeanstalk/latest/dg/ebextensions.html).
 
 ## Package the project
 
@@ -1477,18 +1534,17 @@ Package up the project into a .jar (JAR) file that you can deploy to AWS Elastic
 
     mvn package
 
-The JAR file is located in the target folder.    
+The JAR file is located in the target folder.
 
 The POM file contains the **spring-boot-maven-plugin** that builds an executable JAR file which includes the dependencies. (Without the dependencies, the application does not run on Elastic Beanstalk.) For more information, see [Spring Boot Maven Plugin](https://www.baeldung.com/executable-jar-with-maven).
 
 ## Deploy to AWS Elastic Beanstalk
 
-Sign in to the AWS Management Console, and then open the AWS Elastic Beanstalk console. An application is the top-level container in AWS Elastic Beanstalk that contains one or more application environments. To learn how to deploy a Spring Boot application, see [Creating your first AWS Java web application](https://github.com/awsdocs/aws-doc-sdk-examples/tree/master/javav2/usecases/creating_first_project).
-
+Sign in to the AWS Management Console, and then open the AWS Elastic Beanstalk console. An application is the top-level container in AWS Elastic Beanstalk that contains one or more application environments. To learn how to deploy a Spring Boot application, see [Creating your first AWS Java web application](https://github.com/picante-io/aws-doc-sdk-examples/tree/master/javav2/usecases/creating_first_project).
 
 ### Next steps
+
 Congratulations! You have created and deployed the AWS Video Analyzer application. As stated at the beginning of this tutorial, be sure to terminate all of the resources you create while going through this tutorial to ensure that you’re no longer charged for them.
 
 For more AWS multiservice examples, see
-[usecases](https://github.com/awsdocs/aws-doc-sdk-examples/tree/master/javav2/usecases).
-
+[usecases](https://github.com/picante-io/aws-doc-sdk-examples/tree/master/javav2/usecases).

@@ -6,23 +6,22 @@ The following examples show how to use the Amazon Translate service to build rea
 
 ## Code examples
 
-- [BatchTranslateExample](BatchTranslateExample/) (`StartTextTranslationJobAsync`)
-- [DescribeTextTranslationExample](DescribeTextTranslationExample/) (`DescribeTextTranslationJobAsync`)
-- [ListTranslationJobsExample](ListTranslationJobsExample/) (`ListTextTranslationJobsAsync`)
-- [StopTextTranslationJobExample](StopTextTranslationJobExample/) (`StopTextTranslationJobAsync`)
-- [TranslateTextExample](TranslateTextExample/) (`TranslateTextAsync`)
-
+-   [BatchTranslateExample](BatchTranslateExample/) (`StartTextTranslationJobAsync`)
+-   [DescribeTextTranslationExample](DescribeTextTranslationExample/) (`DescribeTextTranslationJobAsync`)
+-   [ListTranslationJobsExample](ListTranslationJobsExample/) (`ListTextTranslationJobsAsync`)
+-   [StopTextTranslationJobExample](StopTextTranslationJobExample/) (`StopTextTranslationJobAsync`)
+-   [TranslateTextExample](TranslateTextExample/) (`TranslateTextAsync`)
 
 ## ⚠️ Important
 
-- We recommend that grant your code least privilege, or at most the minimum
-  permissions required to perform the task. For more information, see
-  [Grant Least Privilege](https://docs.aws.amazon.com/IAM/latest/UserGuide/best-practices.html#grant-least-privilege)
-  in the AWS Identity and Access Management User Guide. 
-- This code has not been tested in all AWS Regions. Some AWS services are
-  available only in specific [Regions](https://aws.amazon.com/about-aws/global-infrastructure/regional-product-services/).
-- Running this code might result in charges to your AWS account. 
-- Running the unit tests might result in charges to your AWS account. [optional]
+-   We recommend that grant your code least privilege, or at most the minimum
+    permissions required to perform the task. For more information, see
+    [Grant Least Privilege](https://docs.aws.amazon.com/IAM/latest/UserGuide/best-practices.html#grant-least-privilege)
+    in the AWS Identity and Access Management User Guide.
+-   This code has not been tested in all AWS Regions. Some AWS services are
+    available only in specific [Regions](https://aws.amazon.com/about-aws/global-infrastructure/regional-product-services/).
+-   Running this code might result in charges to your AWS account.
+-   Running the unit tests might result in charges to your AWS account. [optional]
 
 ## Running the Examples
 
@@ -49,9 +48,8 @@ Or you can execute the example from within your IDE.
 ## Contributing
 
 To propose a new code example to the AWS documentation team, see the
-[CONTRIBUTING.md](https://github.com/awsdocs/aws-doc-sdk-examples/blob/main/CONTRIBUTING.md).
+[CONTRIBUTING.md](https://github.com/picante-io/aws-doc-sdk-examples/blob/main/CONTRIBUTING.md).
 The team prefers to create code examples that show broad scenarios rather than
-individual API calls. 
+individual API calls.
 
 Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved. SPDX-License-Identifier: Apache-2.0
-

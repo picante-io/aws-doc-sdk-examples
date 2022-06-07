@@ -43,7 +43,7 @@ from yaml.scanner import ScannerError
 from yaml.parser import ParserError
 
 METADATA_FILENAMES = ['metadata.yaml', '.metadata.yaml']
-GITHUB_URL = 'https://github.com/awsdocs/aws-doc-sdk-examples/tree/main/'
+GITHUB_URL = 'https://github.com/picante-io/aws-doc-sdk-examples/tree/main/'
 
 # A file must have one of these extensions to be counted in file total.
 EXT_LOOKUP = {

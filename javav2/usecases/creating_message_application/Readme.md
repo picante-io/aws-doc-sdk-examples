@@ -10,35 +10,35 @@ In this tutorial, you create a Spring Boot application named AWS Messaging. The 
 
 #### Topics
 
-+ Prerequisites
-+ Understand the AWS Messaging application
-+ Create an IntelliJ project named SpringAWSMessage
-+ Add the POM dependencies to your project
-+ Create the Java classes
-+ Create the HTML files
-+ Create the script files
-+ Package the project into a JAR file
-+ Deploy the application to AWS Elastic Beanstalk
+-   Prerequisites
+-   Understand the AWS Messaging application
+-   Create an IntelliJ project named SpringAWSMessage
+-   Add the POM dependencies to your project
+-   Create the Java classes
+-   Create the HTML files
+-   Create the script files
+-   Package the project into a JAR file
+-   Deploy the application to AWS Elastic Beanstalk
 
 ## Prerequisites
 
 To complete the tutorial, you need the following:
 
-+ An AWS account
-+ A Java IDE (this tutorial uses the IntelliJ IDE)
-+ Java JDK 1.8
-+ Maven 3.6 or later+ 
+-   An AWS account
+-   A Java IDE (this tutorial uses the IntelliJ IDE)
+-   Java JDK 1.8
+-   Maven 3.6 or later+
 
 ## Important
 
-+ The AWS services included in this document are included in the [AWS Free Tier](https://aws.amazon.com/free/?all-free-tier.sort-by=item.additionalFields.SortRank&all-free-tier.sort-order=asc).
-+  This code has not been tested in all AWS Regions. Some AWS services are available only in specific regions. For more information, see [AWS Regional Services](https://aws.amazon.com/about-aws/global-infrastructure/regional-product-services). 
-+ Running this code might result in charges to your AWS account. 
-+ Be sure to terminate all of the resources you create while going through this tutorial to ensure that you’re not charged.
+-   The AWS services included in this document are included in the [AWS Free Tier](https://aws.amazon.com/free/?all-free-tier.sort-by=item.additionalFields.SortRank&all-free-tier.sort-order=asc).
+-   This code has not been tested in all AWS Regions. Some AWS services are available only in specific regions. For more information, see [AWS Regional Services](https://aws.amazon.com/about-aws/global-infrastructure/regional-product-services).
+-   Running this code might result in charges to your AWS account.
+-   Be sure to terminate all of the resources you create while going through this tutorial to ensure that you’re not charged.
 
 ### Creating the resources
 
-Create A FIFO queue named **Message.fifo**. For information, see [Creating an Amazon SQS queue](https://docs.aws.amazon.com/AWSSimpleQueueService/latest/SQSDeveloperGuide/sqs-configure-create-queue.html). 
+Create A FIFO queue named **Message.fifo**. For information, see [Creating an Amazon SQS queue](https://docs.aws.amazon.com/AWSSimpleQueueService/latest/SQSDeveloperGuide/sqs-configure-create-queue.html).
 
 ## Understand the AWS Messaging application
 
@@ -48,10 +48,9 @@ To send a message to a SQS queue, enter the message into the application and cho
 
 After the message is sent, the application displays the message, as shown in this figure.
 
-
 ![AWS Messaging application](images/clientapp1.png)
 
-You can choose **Purge** to purge the messages from the FIFO queue. This results in an empty queue, and no messages are displayed in the application.  
+You can choose **Purge** to purge the messages from the FIFO queue. This results in an empty queue, and no messages are displayed in the application.
 
 The following describes how the application handles a message:
 
@@ -59,7 +58,7 @@ The following describes how the application handles a message:
 2. The Spring controller creates a custom **Message** object that stores the message ID value (a GUID), the message text, and the user.
 3. The Spring controller passes the **Message** object to a message service that uses the **software.amazon.awssdk.services.sqs.SqsClient** client object to store the data into a FIFO queue.
 4. The Spring controller invokes the message service’s **getMessages** method to read all of the messages in the queue. This method returns an XML document that contains all messages.
-5. The XML is passed back to the view, where the messages are parsed and displayed in the view.  
+5. The XML is passed back to the view, where the messages are parsed and displayed in the view.
 
 ## Create an IntelliJ project named SpringAWSMessage
 
@@ -67,8 +66,8 @@ The following describes how the application handles a message:
 2. In the **New Project** dialog box, choose **Maven**, and then choose **Next**.
 3. For **GroupId**, enter **aws-springmessage**.
 4. For **ArtifactId**, enter **SpringAWSMessage**.
-6. Choose **Next**.
-7. Choose **Finish**.
+5. Choose **Next**.
+6. Choose **Finish**.
 
 ## Add the POM dependencies to your project
 
@@ -83,9 +82,9 @@ Add the following dependency for the Amazon SQS API (AWS SDK for Java version 2)
        <artifactId>sqs</artifactId>
     </dependency>
 
-**Note:** Ensure that you are using Java 1.8, as shown in the following **pom.xml** file.    
+**Note:** Ensure that you are using Java 1.8, as shown in the following **pom.xml** file.
 
-  Add the Spring Boot dependencies. The **pom.xml** file looks like the following.
+Add the Spring Boot dependencies. The **pom.xml** file looks like the following.
 
 ```xml
     <?xml version="1.0" encoding="UTF-8"?>
@@ -180,10 +179,10 @@ The Java files must go into this package.
 
 Create the following Java classes:
 
-+ **Message** - Used as the model for this application.
-+ **MessageApplication** - Used as the base class for the Spring Boot application.
-+ **MessageController** - Used as the Spring Boot controller that handles HTTP requests.
-+ **SendReceiveMessages** - Uses the Amazon SQS API to process messages.  
+-   **Message** - Used as the model for this application.
+-   **MessageApplication** - Used as the base class for the Spring Boot application.
+-   **MessageController** - Used as the Spring Boot controller that handles HTTP requests.
+-   **SendReceiveMessages** - Uses the Amazon SQS API to process messages.
 
 ### Message class
 
@@ -246,7 +245,7 @@ The following Java code represents the **MessageApplication** class. This class 
 
 ### MessageController class
 
-The following Java code represents the **MainController** class that handles HTTP requests. For example, when a new message is posted, the **addItems** method handles the request.  
+The following Java code represents the **MainController** class that handles HTTP requests. For example, when a new message is posted, the **addItems** method handles the request.
 
 ```java
      package com.example;
@@ -531,16 +530,15 @@ The following class uses the Amazon SQS API to send and retrieve messages. For e
      }
 ```
 
-
 **Note:** The **EnvironmentVariableCredentialsProvider** is used to create an **SqsClient** because this application will be deployed to Elastic Beanstalk. You can set up environment variables on Elastic Beanstalk so that the **SqsClient** is successfully created.
 
 ## Create the HTML files
 
 At this point, you have created all of the Java files required for the AWS Messaging application. Now you create the HTML files that are required for the application's graphical user interface (GUI). Under the **resource** folder, create a **templates** folder, and then create the following HTML files:
 
-+ index.html
-+ message.html
-+ layout.html
+-   index.html
+-   message.html
+-   layout.html
 
 The **index.html** file is the application's home view. The **message.html** file represents the view for sending messages. The **layout.html** file represents the menu that's visible in all views.
 
@@ -585,95 +583,138 @@ The following HTML represents the **index.html** file.
     </body>
     </html>
 ```
+
 ### message.html
 
 The following is the HTML for the **message.html** file.
 
 ```html
-     <!DOCTYPE HTML>
-     <html xmlns:th="https://www.thymeleaf.org">
-     <head>
-     <meta name="viewport" content="width=device-width, initial-scale=1">
-     <script th:src="|https://code.jquery.com/jquery-1.12.4.min.js|"></script>
-     <script th:src="|https://code.jquery.com/ui/1.11.4/jquery-ui.min.js|"></script>
-     <script src="../public/js/message.js" th:src="@{/js/message.js}"></script>
-     <link rel="stylesheet" th:href="|https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css|"/>
-     <link rel="stylesheet" href="../public/css/styles.css" th:href="@{/css/styles.css}" />
-     <link rel="icon" href="../public/images/favicon.ico" th:href="@{/images/favicon.ico}" />
+<!DOCTYPE html>
+<html xmlns:th="https://www.thymeleaf.org">
+	<head>
+		<meta name="viewport" content="width=device-width, initial-scale=1" />
+		<script
+			th:src="|https://code.jquery.com/jquery-1.12.4.min.js|"
+		></script>
+		<script
+			th:src="|https://code.jquery.com/ui/1.11.4/jquery-ui.min.js|"
+		></script>
+		<script
+			src="../public/js/message.js"
+			th:src="@{/js/message.js}"
+		></script>
+		<link
+			rel="stylesheet"
+			th:href="|https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css|"
+		/>
+		<link
+			rel="stylesheet"
+			href="../public/css/styles.css"
+			th:href="@{/css/styles.css}"
+		/>
+		<link
+			rel="icon"
+			href="../public/images/favicon.ico"
+			th:href="@{/images/favicon.ico}"
+		/>
 
-     <style>
-        .messageelement {
-            margin: auto;
-            border: 2px solid #dedede;
-            background-color: #D7D1D0 ;
-            border-radius: 5px;
-            max-width: 800px;
-            padding: 10px;
-            margin: 10px 0;
-        }
+		<style>
+			.messageelement {
+				margin: auto;
+				border: 2px solid #dedede;
+				background-color: #d7d1d0;
+				border-radius: 5px;
+				max-width: 800px;
+				padding: 10px;
+				margin: 10px 0;
+			}
 
-        .messageelement::after {
-            content: "";
-            clear: both;
-            display: table;
-        }
+			.messageelement::after {
+				content: "";
+				clear: both;
+				display: table;
+			}
 
-        .messageelement img {
-            float: left;
-            max-width: 60px;
-            width: 100%;
-            margin-right: 20px;
-            border-radius: 50%;
-        }
+			.messageelement img {
+				float: left;
+				max-width: 60px;
+				width: 100%;
+				margin-right: 20px;
+				border-radius: 50%;
+			}
 
-        .messageelement img.right {
-            float: right;
-            margin-left: 20px;
-            margin-right:0;
-        }
-     </style>
-     </head>
-     <body>
-     <header th:replace="layout :: site-header"/>
+			.messageelement img.right {
+				float: right;
+				margin-left: 20px;
+				margin-right: 0;
+			}
+		</style>
+	</head>
+	<body>
+		<header th:replace="layout :: site-header" />
 
-    <div class="container">
-     <h2>AWS Messaging application</h2>
-    <div id="messages">
-    </div>
+		<div class="container">
+			<h2>AWS Messaging application</h2>
+			<div id="messages"></div>
 
-    <div class="input-group mb-3">
-    <div class="input-group-prepend">
-        <span class="input-group-text" id="basic-addon1">Sender:</span>
-    </div>
-    <select name="cars" id="username">
-        <option value="Scott">Scott</option>
-        <option value="Lam">Lam</option>
-    </select>
-    </div>
+			<div class="input-group mb-3">
+				<div class="input-group-prepend">
+					<span class="input-group-text" id="basic-addon1"
+						>Sender:</span
+					>
+				</div>
+				<select name="cars" id="username">
+					<option value="Scott">Scott</option>
+					<option value="Lam">Lam</option>
+				</select>
+			</div>
 
-    <div class="input-group">
-     <div class="input-group-prepend">
-        <span class="input-group-text">Message:</span>
-     </div>
-     <textarea class="form-control" id="textarea" aria-label="With textarea"></textarea>
-     <button type="button" onclick="pushMessage()" id="send" class="btn btn-success">Send</button>
-     <button type="button" onclick="purge()" id="refresh" class="btn btn-success">Purge</button>
-     </div>
-    </div>
+			<div class="input-group">
+				<div class="input-group-prepend">
+					<span class="input-group-text">Message:</span>
+				</div>
+				<textarea
+					class="form-control"
+					id="textarea"
+					aria-label="With textarea"
+				></textarea>
+				<button
+					type="button"
+					onclick="pushMessage()"
+					id="send"
+					class="btn btn-success"
+				>
+					Send
+				</button>
+				<button
+					type="button"
+					onclick="purge()"
+					id="refresh"
+					class="btn btn-success"
+				>
+					Purge
+				</button>
+			</div>
+		</div>
 
-    <!-- All of these child items are hidden and only displayed in a FancyBox ------------------------------------------------------>
-    <div id="hide" style="display: none">
-
-    <div id="base" class="messageelement">
-        <img src="../public/images/av2.png" th:src="@{/images/av2.png}" alt="Avatar" class="right" style="width:100%;">
-        <p id="text">Excellent! So, what do you want to do today?</p>
-        <span class="time-right">11:02</span>
-     </div>
-
-    </div>
-    </body>
-    </html>
+		<!-- All of these child items are hidden and only displayed in a FancyBox ------------------------------------------------------>
+		<div id="hide" style="display: none">
+			<div id="base" class="messageelement">
+				<img
+					src="../public/images/av2.png"
+					th:src="@{/images/av2.png}"
+					alt="Avatar"
+					class="right"
+					style="width:100%;"
+				/>
+				<p id="text">Excellent! So, what do you want to do today?</p>
+				<span class="time-right">11:02</span>
+			</div>
+		</div>
+	</body>
+</html>
 ```
+
 ### layout.html
 
 The following is the HTML for the **layout.html** file that represents the application's menu.
@@ -710,113 +751,111 @@ Create a script file named **message.js** that communicates with the Spring cont
 The following code represents this **.js** file.
 
 ```javascript
-    $(function() {
+$(function () {
+	populateChat();
+});
 
-     populateChat()
-   } );
+function populateChat() {
+	$.ajax("/populate", {
+		type: "GET",
+		success: function (data, status, xhr) {
+			var xml = data;
 
-  function populateChat() {
+			$("#messages").children().remove();
 
-    $.ajax('/populate', {
-        type: 'GET',
-        success: function (data, status, xhr) {
-            var xml = data;
+			$(xml)
+				.find("Message")
+				.each(function () {
+					var $field = $(this);
+					var body = $field.find("Data").text();
+					var name = $field.find("User").text();
 
-            $("#messages").children().remove();
+					//Set the view
+					var userText = body + "<br><br><b>" + name;
 
-            $(xml).find('Message').each(function () {
+					var myTextNode = $("#base").clone();
 
-                var $field = $(this);
-                var body = $field.find('Data').text();
-                var name = $field.find('User').text();
+					myTextNode.text(userText);
+					var image_url;
 
-                //Set the view
-                var userText = body +'<br><br><b>' + name  ;
+					var n = name.localeCompare("Scott");
+					if (n == 0) image_url = "../images/av1.png";
+					else image_url = "../images/av2.png";
+					var images_div =
+						'<img src="' +
+						image_url +
+						'" alt="Avatar" class="right" style=""width:100%;"">';
 
-                var myTextNode = $("#base").clone();
+					myTextNode.html(userText);
+					myTextNode.append(images_div);
+					$("#messages").append(myTextNode);
+				});
+		},
+		error: function (jqXhr, textStatus, errorMessage) {
+			$("p").append("Error" + errorMessage);
+		},
+	});
+}
 
-                myTextNode.text(userText) ;
-                var image_url;
+function purge() {
+	$.ajax("/purge", {
+		type: "GET",
+		success: function (data, status, xhr) {
+			alert(data);
+			populateChat();
+			$("#textarea").val("");
+		},
+		error: function (jqXhr, textStatus, errorMessage) {
+			$("p").append("Error" + errorMessage);
+		},
+	});
+}
 
-                var n = name.localeCompare("Scott");
-                if (n == 0)
-                    image_url = "../images/av1.png";
-                else
-                    image_url = "../images/av2.png";
-                var images_div = "<img src=\"" +image_url+ "\" alt=\"Avatar\" class=\"right\" style=\"\"width:100%;\"\">";
+function pushMessage() {
+	var user = $("#username").val();
+	var message = $("#textarea").val();
 
-                myTextNode.html(userText) ;
-                myTextNode.append(images_div);
-                $("#messages").append(myTextNode);
-            });
+	$.ajax("/add", {
+		type: "POST",
+		data: "user=" + user + "&message=" + message,
+		success: function (data, status, xhr) {
+			var xml = event.target.responseText;
+			$("#textarea").val("");
+			$("#messages").children().remove();
 
-        },
-        error: function (jqXhr, textStatus, errorMessage) {
-            $('p').append('Error' + errorMessage);
-        }
-     });
-    }
+			$(xml)
+				.find("Message")
+				.each(function () {
+					var $field = $(this);
+					var body = $field.find("Data").text();
+					var name = $field.find("User").text();
 
-    function purge() {
+					//Set the view
+					var userText = body + "<br><br><b>" + name;
 
-     $.ajax('/purge', {
-        type: 'GET',
-        success: function (data, status, xhr) {
-            alert(data);
-            populateChat();
-            $('#textarea').val("");
-        },
-        error: function (jqXhr, textStatus, errorMessage) {
-            $('p').append('Error' + errorMessage);
-        }
-      });
-     }
+					var myTextNode = $("#base").clone();
 
-   function pushMessage() {
+					myTextNode.text(userText);
+					var image_url;
 
-    var user =  $('#username').val();
-    var message = $('#textarea').val();
+					var n = name.localeCompare("Scott");
+					if (n == 0) image_url = "../images/av1.png";
+					else image_url = "../images/av2.png";
+					var images_div =
+						'<img src="' +
+						image_url +
+						'" alt="Avatar" class="right" style=""width:100%;"">';
 
-    $.ajax('/add', {
-        type: 'POST',
-        data: 'user=' + user + '&message=' + message,
-        success: function (data, status, xhr) {
-            var xml = event.target.responseText;
-            $('#textarea').val("");
-            $("#messages").children().remove();
-
-            $(xml).find('Message').each(function () {
-
-                var $field = $(this);
-                var body = $field.find('Data').text();
-                var name = $field.find('User').text();
-
-                //Set the view
-                var userText = body +'<br><br><b>' + name  ;
-
-                var myTextNode = $("#base").clone();
-
-                myTextNode.text(userText) ;
-                var image_url;
-
-                var n = name.localeCompare("Scott");
-                if (n == 0)
-                    image_url = "../images/av1.png";
-                else
-                    image_url = "../images/av2.png";
-                var images_div = "<img src=\"" +image_url+ "\" alt=\"Avatar\" class=\"right\" style=\"\"width:100%;\"\">";
-
-                myTextNode.html(userText) ;
-                myTextNode.append(images_div);
-                $("#messages").append(myTextNode);
-            });
-          },
-         error: function (jqXhr, textStatus, errorMessage) {
-            $('p').append('Error' + errorMessage);
-         }
-       });
-      }
-
+					myTextNode.html(userText);
+					myTextNode.append(images_div);
+					$("#messages").append(myTextNode);
+				});
+		},
+		error: function (jqXhr, textStatus, errorMessage) {
+			$("p").append("Error" + errorMessage);
+		},
+	});
+}
 ```
 
 **Note:** Be sure to include the CSS and image files located on the GitHub website in your project.
@@ -835,10 +874,11 @@ The POM file contains the **spring-boot-maven-plugin** that builds an executable
 
 ## Deploy to Elastic Beanstalk
 
-The final step is to deploy the Spring application to Elastic Beanstalk. To learn how, see [Creating your first AWS Java web application](https://github.com/awsdocs/aws-doc-sdk-examples/tree/master/javav2/usecases/creating_first_project).
+The final step is to deploy the Spring application to Elastic Beanstalk. To learn how, see [Creating your first AWS Java web application](https://github.com/picante-io/aws-doc-sdk-examples/tree/master/javav2/usecases/creating_first_project).
 
 ### Next steps
+
 Congratulations! You have created and deployed the Spring application named AWS Messaging that uses Amazon SQS. As stated at the beginning of this tutorial, be sure to terminate all of the resources you create while going through this tutorial to ensure that you’re no longer charged for them.
 
 For more AWS multiservice examples, see
-[usecases](https://github.com/awsdocs/aws-doc-sdk-examples/tree/master/javav2/usecases).
+[usecases](https://github.com/picante-io/aws-doc-sdk-examples/tree/master/javav2/usecases).

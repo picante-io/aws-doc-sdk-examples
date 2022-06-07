@@ -2,68 +2,66 @@
 
 ## Purpose
 
-You can create a web application that has subscription and publish functionality by using the Amazon Simple Notification Service (Amazon SNS). The application created in this AWS tutorial is a Spring Boot web application that lets a user subscribe to an Amazon SNS topic by entering a valid email address. A user can enter many emails and all of them are subscribed to the given SNS topic (once the email recipients confirm the subscription). The user can publish a message that results in all subscribed emails receiving the message. 
+You can create a web application that has subscription and publish functionality by using the Amazon Simple Notification Service (Amazon SNS). The application created in this AWS tutorial is a Spring Boot web application that lets a user subscribe to an Amazon SNS topic by entering a valid email address. A user can enter many emails and all of them are subscribed to the given SNS topic (once the email recipients confirm the subscription). The user can publish a message that results in all subscribed emails receiving the message.
 
 **Note**: Amazon SNS is a managed service that provides message delivery from publishers to subscribers (also known as producers and consumers). For more information, see [What is Amazon SNS?](https://docs.aws.amazon.com/sns/latest/dg/welcome.html)
 
 **Note**: This example application uses the Asynchronous client that belongs to the AWS SDK for Java V2 for the Amazon SNS and Amazon Translate services. For more information, see [Asynchronous programming in the AWS SDK for Java 2.x](https://docs.aws.amazon.com/sdk-for-java/latest/developer-guide/asynchronous.html).
 
-
 #### Topics
 
-+ Prerequisites
-+ Understand the Publish/Subscription application
-+ Create an IntelliJ project 
-+ Add the POM dependencies to your project
-+ Create the Java classes
-+ Create the HTML files
-+ Package the application into a JAR file
-+ Deploy the application to Elastic Beanstalk
+-   Prerequisites
+-   Understand the Publish/Subscription application
+-   Create an IntelliJ project
+-   Add the POM dependencies to your project
+-   Create the Java classes
+-   Create the HTML files
+-   Package the application into a JAR file
+-   Deploy the application to Elastic Beanstalk
 
 ## Prerequisites
 
 To complete the tutorial, you need the following:
 
-+ An AWS account
-+ A Java IDE (this tutorial uses the IntelliJ IDE)
-+ Java JDK 1.8
-+ Maven 3.6 or later
+-   An AWS account
+-   A Java IDE (this tutorial uses the IntelliJ IDE)
+-   Java JDK 1.8
+-   Maven 3.6 or later
 
 ## Important
 
-+ The AWS services included in this document are included in the [AWS Free Tier](https://aws.amazon.com/free/?all-free-tier.sort-by=item.additionalFields.SortRank&all-free-tier.sort-order=asc).
-+  This code has not been tested in all AWS Regions. Some AWS services are available only in specific regions. For more information, see [AWS Regional Services](https://aws.amazon.com/about-aws/global-infrastructure/regional-product-services). 
-+ Running this code might result in charges to your AWS account. 
-+ Be sure to terminate all of the resources you create while going through this tutorial to ensure that you’re not charged.
+-   The AWS services included in this document are included in the [AWS Free Tier](https://aws.amazon.com/free/?all-free-tier.sort-by=item.additionalFields.SortRank&all-free-tier.sort-order=asc).
+-   This code has not been tested in all AWS Regions. Some AWS services are available only in specific regions. For more information, see [AWS Regional Services](https://aws.amazon.com/about-aws/global-infrastructure/regional-product-services).
+-   Running this code might result in charges to your AWS account.
+-   Be sure to terminate all of the resources you create while going through this tutorial to ensure that you’re not charged.
 
 ### Creating the resources
 
-Create an Amazon SNS queue that is used in the Java code. For information, see [Creating an Amazon SNS topic](https://docs.aws.amazon.com/sns/latest/dg/sns-create-topic.html). 
+Create an Amazon SNS queue that is used in the Java code. For information, see [Creating an Amazon SNS topic](https://docs.aws.amazon.com/sns/latest/dg/sns-create-topic.html).
 
 ## Understand the Publish/Subscription application
 
-To subscribe to an Amazon SNS topic, the user enters a valid email address into the web application. 
+To subscribe to an Amazon SNS topic, the user enters a valid email address into the web application.
 
 ![AWS Tracking Application](images/pic1.png)
 
-The specified email address recieves an email message that lets the recipient confirm the subscription. 
+The specified email address recieves an email message that lets the recipient confirm the subscription.
 
 ![AWS Tracking Application](images/pic2.png)
 
-Once the email recipient accepts the confirmation, that email is subscribed to the specific SNS topic and recieves published messages. To publish a message, a user enters the message into the web applicaiton and then chooses the **Publish** button. 
+Once the email recipient accepts the confirmation, that email is subscribed to the specific SNS topic and recieves published messages. To publish a message, a user enters the message into the web applicaiton and then chooses the **Publish** button.
 
 ![AWS Tracking Application](images/pic3.png)
 
-This application lets a user specify the language of the message that is sent. For example, the user can select **French** from the dropdown field and then the message appears in that language to all subscribed users. 
+This application lets a user specify the language of the message that is sent. For example, the user can select **French** from the dropdown field and then the message appears in that language to all subscribed users.
 
 ![AWS Tracking Application](images/french.png)
 
-**Note**: The Amazon Translate Service is used to translate the body of the message. The code is shown later in this document. 
+**Note**: The Amazon Translate Service is used to translate the body of the message. The code is shown later in this document.
 
 This example application lets you view all of the subscribed email recipients by choosing the **List Subscriptions** button, as shown in the following illustration.
 
 ![AWS Tracking Application](images/pic4.png)
-
 
 ## Create an IntelliJ project
 
@@ -156,19 +154,19 @@ At this point, you have a new project named **SpringSubscribeApp**. Ensure that 
         </plugins>
       </build>
     </project>
-```  
+```
 
- ## Create the Java classes
- 
- Create a Java package in the main/java folder named **com.spring.sns**. The Java classes go into this package. 
- 
- ![AWS Lex](images/project.png)
- 
- Create these Java classes:
+## Create the Java classes
 
-+ **SubApplication** - Used as the base class for the Spring Boot application.
-+ **SubController** - Used as the Spring Boot controller that handles HTTP requests. 
-+ **SnsService** - Used to invoke Amazon SNS operations by using the Amazon SNS **SnsAsyncClient**.  
+Create a Java package in the main/java folder named **com.spring.sns**. The Java classes go into this package.
+
+![AWS Lex](images/project.png)
+
+Create these Java classes:
+
+-   **SubApplication** - Used as the base class for the Spring Boot application.
+-   **SubController** - Used as the Spring Boot controller that handles HTTP requests.
+-   **SnsService** - Used to invoke Amazon SNS operations by using the Amazon SNS **SnsAsyncClient**.
 
 ### SubApplication class
 
@@ -259,7 +257,7 @@ The following Java code represents the **SubController** class.
 
 The following Java code represents the **SnsService** class. This class uses the Java V2 **SnsAsyncClient** object to interact with Amazon SNS. For example, the **subEmail** method uses the email address to subscribe to the Amazon SNS topic. Likewise, the **unSubEmail** method unsubscibes from the Amazon SNS topic. The **pubTopic** publishes a message.
 
-When working with the **SnsAsyncClient**, you use a **CompletableFuture** object that allows you to access the response when it’s ready. You can access the **resp** object by calling the **futureGet.whenComplete** method. Then you can get service data by invoking the applicable method that belongs to the **resp** object. For example, you can get the subscription Arn value by invoking the **resp.subscriptionArn()** method. 
+When working with the **SnsAsyncClient**, you use a **CompletableFuture** object that allows you to access the response when it’s ready. You can access the **resp** object by calling the **futureGet.whenComplete** method. Then you can get service data by invoking the applicable method that belongs to the **resp** object. For example, you can get the subscription Arn value by invoking the **resp.subscriptionArn()** method.
 
 To return data that you read from the **resp** object (for example, a subscription Arn value), you must use an AtomicReference object. You cannot return data from within the **futureGet.whenComplete** method. If you attempt to perform this task, you get a compile error. You can set the data by using the **AtomicReference** object's **set** method. You can then access the **AtomicReference** object from outside the **futureGet.whenComplete** method to get the data by using the **AtomicReference** object's **get** method. Then you can return the data from a Java method, as shown in the following Java code example.
 
@@ -522,18 +520,19 @@ To return data that you read from the **resp** object (for example, a subscripti
 
 ```
 
-**Note:** Make sure that you assign the SNS topic ARN to the **topicArn** data member. Otherwise, your code does not work. 
+**Note:** Make sure that you assign the SNS topic ARN to the **topicArn** data member. Otherwise, your code does not work.
 
 ## Create the HTML file
 
 At this point, you have created all of the Java files required for this example application. Now create HTML files that are required for the application's view. Under the resource folder, create a **templates** folder, and then create the following HTML files:
 
-+ index.html
-+ layout.html
-+ sub.html
+-   index.html
+-   layout.html
+-   sub.html
 
 ### index.html
-The **index.html** file is the application's home view. 
+
+The **index.html** file is the application's home view.
 
 ```html
     <!DOCTYPE html>
@@ -548,7 +547,7 @@ The **index.html** file is the application's home view.
      <link rel="icon" href="../public/img/favicon.ico" th:href="@{/img/favicon.ico}" />
 
     <title>AWS Job Posting Example</title>
-    </head> 
+    </head>
 
      <body>
      <header th:replace="layout :: site-header"/>
@@ -570,29 +569,38 @@ The **index.html** file is the application's home view.
      </body>
     </html>
 ```
-	   	
 
 ### layout.html
+
 The following code represents the **layout.html** file that represents the application's menu.
 
 ```html
-      <!DOCTYPE html>
-      <html xmlns:th="http://www.thymeleaf.org">
-     <head th:fragment="site-head">
-     <meta charset="UTF-8" />
-     <link rel="icon" href="../public/img/favicon.ico" th:href="@{/img/favicon.ico}" />
-     <script th:src="|https://code.jquery.com/jquery-1.12.4.min.js|"></script>
-     <meta th:include="this :: head" th:remove="tag"/>
-    </head>
-    <header th:fragment="site-header">
-     <a href="#" style="color: white" th:href="@{/}">Home</a>
-     <a href="#" style="color: white" th:href="@{/subscribe}">Manage Subscriptions</a>
-     </header>
-    </html>
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+	<head th:fragment="site-head">
+		<meta charset="UTF-8" />
+		<link
+			rel="icon"
+			href="../public/img/favicon.ico"
+			th:href="@{/img/favicon.ico}"
+		/>
+		<script
+			th:src="|https://code.jquery.com/jquery-1.12.4.min.js|"
+		></script>
+		<meta th:include="this :: head" th:remove="tag" />
+	</head>
+	<header th:fragment="site-header">
+		<a href="#" style="color: white" th:href="@{/}">Home</a>
+		<a href="#" style="color: white" th:href="@{/subscribe}"
+			>Manage Subscriptions</a
+		>
+	</header>
+</html>
 ```
 
 ### add.html
-The **sub.html** file is the application's view that manages Amazon SNS Subscriptions. 
+
+The **sub.html** file is the application's view that manages Amazon SNS Subscriptions.
 
 ```html
      <!DOCTYPE html>
@@ -673,127 +681,126 @@ The **sub.html** file is the application's view that manages Amazon SNS Subscrip
     </div>
     </body>
     </html>
-  ```
+```
+
 ### Create the JS File
 
-This application has a **contact_me.js** file that is used to send requests to the Spring Controller. Place this file in the **resources\public\js** folder. 
+This application has a **contact_me.js** file that is used to send requests to the Spring Controller. Place this file in the **resources\public\js** folder.
 
 ```javascript
-    $(function() {
-    $("#SendButton" ).click(function($e) {
+$(function () {
+	$("#SendButton").click(function ($e) {
+		var body = $("#body").val();
+		var lang = $("#lang option:selected").text();
+		if (body == "") {
+			alert("Please enter text");
+			return;
+		}
 
-        var body = $('#body').val();
-        var lang = $('#lang option:selected').text();
-        if (body == '' ){
-            alert("Please enter text");
-            return;
-        }
+		$.ajax("/addMessage", {
+			type: "POST",
+			data: "lang=" + lang + "&body=" + body,
+			success: function (data, status, xhr) {
+				alert(data);
+				$("#body").val("");
+			},
+			error: function (jqXhr, textStatus, errorMessage) {
+				$("p").append("Error" + errorMessage);
+			},
+		});
+	});
+});
 
-        $.ajax('/addMessage', {
-            type: 'POST',
-            data: 'lang=' + lang+'&body=' + body,
-            success: function (data, status, xhr) {
+function subEmail() {
+	var mail = $("#inputEmail1").val();
+	var result = validate(mail);
+	if (result == false) {
+		alert(mail + " is not valid. Please specify a valid email.");
+		return;
+	}
 
-                alert(data)
-                $('#body').val("");
-            },
-            error: function (jqXhr, textStatus, errorMessage) {
-                $('p').append('Error' + errorMessage);
-            }
-        });
-      } );
-    } );
-    
-    function subEmail(){
-     var mail = $('#inputEmail1').val();
-     var result = validate(mail)
-     if (result == false) {
-        alert (mail + " is not valid. Please specify a valid email.");
-        return;
-     }
+	$.ajax("/addEmail", {
+		type: "POST",
+		data: "email=" + mail,
+		success: function (data, status, xhr) {
+			alert("Subscription validation is " + data);
+		},
+		error: function (jqXhr, textStatus, errorMessage) {
+			$("p").append("Error" + errorMessage);
+		},
+	});
+}
 
-     $.ajax('/addEmail', {
-        type: 'POST',
-        data: 'email=' + mail,
-        success: function (data, status, xhr) {
-            alert("Subscription validation is "+data)
-        },
-        error: function (jqXhr, textStatus, errorMessage) {
-            $('p').append('Error' + errorMessage);
-        }
-      });
-     }
+function getSubs() {
+	$.ajax("/getSubs", {
+		type: "GET",
+		success: function (data, status, xhr) {
+			$(".modal-body").empty();
+			var xml = data;
+			$(xml)
+				.find("Sub")
+				.each(function () {
+					var $field = $(this);
+					var email = $field.find("email").text();
 
-     function getSubs() {
-      $.ajax('/getSubs', {
-        type: 'GET', 
-        success: function (data, status, xhr) {
+					// Append this data to the main list.
+					$(".modal-body").append("<p><b>" + email + "</b></p>");
+				});
+			$("#myModal").modal();
+		},
+		error: function (jqXhr, textStatus, errorMessage) {
+			$("p").append("Error" + errorMessage);
+		},
+	});
+}
 
-            $('.modal-body').empty();
-            var xml = data;
-            $(xml).find('Sub').each(function ()  {
+function delSub(event) {
+	var mail = $("#inputEmail1").val();
+	var result = validate(mail);
 
-                var $field = $(this);
-                var email = $field.find('email').text();
+	if (result == false) {
+		alert(mail + " is not valid. Please specify a valid email");
+		return;
+	}
 
-                // Append this data to the main list.
-                $('.modal-body').append("<p><b>"+email+"</b></p>");
-            });
-            $("#myModal").modal();
-        },
-        error: function (jqXhr, textStatus, errorMessage) {
-            $('p').append('Error' + errorMessage);
-        }
-       });
-      }
+	$.ajax("/delSub", {
+		type: "POST", // http GET method
+		data: "email=" + mail,
+		success: function (data, status, xhr) {
+			alert("Subscription validation is " + data);
+		},
+		error: function (jqXhr, textStatus, errorMessage) {
+			$("p").append("Error" + errorMessage);
+		},
+	});
+}
 
-     function delSub(event) {
-       var mail = $('#inputEmail1').val();
-       var result = validate(mail)
+function validateEmail(email) {
+	const re =
+		/^(([^<>()[\]\\.,;:\s@\"]+(\.[^<>()[\]\\.,;:\s@\"]+)*)|(\".+\"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
+	return re.test(email);
+}
 
-      if (result == false) {
-       alert (mail + " is not valid. Please specify a valid email");
-       return;
-      }
+function validate(email) {
+	const $result = $("#result");
 
-     $.ajax('/delSub', {
-        type: 'POST',  // http GET method
-        data: 'email=' + mail,
-        success: function (data, status, xhr) {
-
-            alert("Subscription validation is "+data);
-        },
-        error: function (jqXhr, textStatus, errorMessage) {
-            $('p').append('Error' + errorMessage);
-        }
-      });
-    }
-
-     function validateEmail(email) {
-       const re = /^(([^<>()[\]\\.,;:\s@\"]+(\.[^<>()[\]\\.,;:\s@\"]+)*)|(\".+\"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
-       return re.test(email);
-      }
-
-     function validate(email) {
-      const $result = $("#result");
-
-     if (validateEmail(email)) {
-        return true ;
-      } else {
-        return false ;
-     }
-    }
- ```
+	if (validateEmail(email)) {
+		return true;
+	} else {
+		return false;
+	}
+}
+```
 
 ## Run the application
 
-Using IntelliJ, you can run your application. After it starts, you will see the HOME page, as shown in this illustration. 
+Using IntelliJ, you can run your application. After it starts, you will see the HOME page, as shown in this illustration.
 
 ![AWS Tracking Application](images/run.png)
 
 ### Next steps
+
 Congratulations! You have created a Spring Boot application that contains subscription and publish functionality. As stated at the beginning of this tutorial, be sure to terminate all of the resources you create while going through this tutorial to ensure that you’re not charged.
 
 For more AWS multiservice examples, see
-[usecases](https://github.com/awsdocs/aws-doc-sdk-examples/tree/master/javav2/usecases).
-
+[usecases](https://github.com/picante-io/aws-doc-sdk-examples/tree/master/javav2/usecases).

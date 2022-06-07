@@ -1,18 +1,19 @@
-#  Using AWS Step Functions and the AWS SDK for Java to build workflows that send notifications over multiple channels
+# Using AWS Step Functions and the AWS SDK for Java to build workflows that send notifications over multiple channels
 
 ## Overview
 
-| Heading      | Description |
-| ----------- | ----------- |
-| Description | Discusses how to develop a workflow with AWS Step Functions to send notifications over multiple channels. Also discusses how to use the Amazon Relational Database Service (Amazon RDS) within an AWS Lambda function.     |
-| Audience   |  Developer (beginner / intermediate)        |
-| Updated   | 5/13/2022        |
-| Required skills   | Java, Maven  |
+| Heading         | Description                                                                                                                                                                                                            |
+| --------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| Description     | Discusses how to develop a workflow with AWS Step Functions to send notifications over multiple channels. Also discusses how to use the Amazon Relational Database Service (Amazon RDS) within an AWS Lambda function. |
+| Audience        | Developer (beginner / intermediate)                                                                                                                                                                                    |
+| Updated         | 5/13/2022                                                                                                                                                                                                              |
+| Required skills | Java, Maven                                                                                                                                                                                                            |
 
 ## Purpose
-You can use Amazon Web Services to create a workflow that sends notifications over multiple channels. There are many practical business needs for this type of functionality. For example, a weather agency might need to warn many people about a storm, or a school might want to send parents alerts when kids are missing. 
 
-The use case for this AWS tutorial assumes that you work at a school and you need to alert parents when a student skips school. Do you send an email message, do you phone the parents, or do you send a text message to a mobile device? The AWS workflow created in this tutorial sends messages over multiple channels, including email, as shown in the following illustration. 
+You can use Amazon Web Services to create a workflow that sends notifications over multiple channels. There are many practical business needs for this type of functionality. For example, a weather agency might need to warn many people about a storm, or a school might want to send parents alerts when kids are missing.
+
+The use case for this AWS tutorial assumes that you work at a school and you need to alert parents when a student skips school. Do you send an email message, do you phone the parents, or do you send a text message to a mobile device? The AWS workflow created in this tutorial sends messages over multiple channels, including email, as shown in the following illustration.
 
 ![AWS Tracking Application](images/message.png)
 
@@ -21,63 +22,65 @@ In this AWS tutorial, you create a serverless workflow by using the AWS SDK for 
 
 To send notifications over multiple channels, you can use the following AWS services:
 
-+ Amazon Pinpoint
-+ Amazon Simple Notification Service (Amazon SNS)
-+ Amazon Simple Email Service (Amazon SES)
+-   Amazon Pinpoint
+-   Amazon Simple Notification Service (Amazon SNS)
+-   Amazon Simple Email Service (Amazon SES)
 
 #### Topics
 
-+ Prerequisites
-+ Understand the workflow
-+ Create an AWS Identity and Access Management (IAM) role that is used to run Lambda functions
-+ Create a workflow by using Step Functions
-+ Create an IntelliJ project 
-+ Add the POM dependencies to your project
-+ Create Lambda functions by using the Lambda Java API
-+ Package the project that contains Lambda functions
-+ Deploy Lambda functions
-+ Create the Amazon RDS database 
-+ Add Lambda functions to workflows
-+ Invoke the workflow from the AWS Management Console
+-   Prerequisites
+-   Understand the workflow
+-   Create an AWS Identity and Access Management (IAM) role that is used to run Lambda functions
+-   Create a workflow by using Step Functions
+-   Create an IntelliJ project
+-   Add the POM dependencies to your project
+-   Create Lambda functions by using the Lambda Java API
+-   Package the project that contains Lambda functions
+-   Deploy Lambda functions
+-   Create the Amazon RDS database
+-   Add Lambda functions to workflows
+-   Invoke the workflow from the AWS Management Console
 
 ## Prerequisites
+
 To use this tutorial, you need the following:
 
-+ An AWS account.
-+ A Java IDE. (The IntelliJ IDE is used for this tutorial.)
-+ Java 1.8 JDK.
-+ Maven 3.6 or later.
+-   An AWS account.
+-   A Java IDE. (The IntelliJ IDE is used for this tutorial.)
+-   Java 1.8 JDK.
+-   Maven 3.6 or later.
 
 ### Important
 
-+ The AWS services included in this document are included in the [AWS Free Tier](https://aws.amazon.com/free/?all-free-tier.sort-by=item.additionalFields.SortRank&all-free-tier.sort-order=asc).
-+  This code has not been tested in all AWS Regions. Some AWS services are available only in specific Regions. For more information, see [AWS Regional Services](https://aws.amazon.com/about-aws/global-infrastructure/regional-product-services). 
-+ Running this code might result in charges to your AWS account. 
-+ Be sure to delete all of the resources that you create during this tutorial so that you won't be charged.
+-   The AWS services included in this document are included in the [AWS Free Tier](https://aws.amazon.com/free/?all-free-tier.sort-by=item.additionalFields.SortRank&all-free-tier.sort-order=asc).
+-   This code has not been tested in all AWS Regions. Some AWS services are available only in specific Regions. For more information, see [AWS Regional Services](https://aws.amazon.com/about-aws/global-infrastructure/regional-product-services).
+-   Running this code might result in charges to your AWS account.
+-   Be sure to delete all of the resources that you create during this tutorial so that you won't be charged.
 
 ## Understand the workflow
 
-The following figure shows the workflow you'll create with this tutorial, which is able to send out multiple messages over multiple channels. 
+The following figure shows the workflow you'll create with this tutorial, which is able to send out multiple messages over multiple channels.
 
 ![AWS Tracking Application](images/workflowmodelA.png)
 
 The following describes each step in the workflow:
-+ **Start** - Initiates the workflow and passes in a date value.
-+ **Determine the missing students** – Determines the students that are absent for the given day. For this AWS tutorial, a MySQL database is queried to track the students that are absent. This workflow step dynamically creates XML that contains the students queried from the database and passes the XML to the next step. This example shows how a Lambda function can query data from an Amazon RDS table.
-+ **Send all notifications** – Parses the XML that contains all absent students. For each student, this step invokes Amazon SNS to send a mobile text message, Amazon Pinpoint to send a voice message, and Amazon SES to send an email message.  
-+ **End** - Stops the workflow.
+
+-   **Start** - Initiates the workflow and passes in a date value.
+-   **Determine the missing students** – Determines the students that are absent for the given day. For this AWS tutorial, a MySQL database is queried to track the students that are absent. This workflow step dynamically creates XML that contains the students queried from the database and passes the XML to the next step. This example shows how a Lambda function can query data from an Amazon RDS table.
+-   **Send all notifications** – Parses the XML that contains all absent students. For each student, this step invokes Amazon SNS to send a mobile text message, Amazon Pinpoint to send a voice message, and Amazon SES to send an email message.
+-   **End** - Stops the workflow.
 
 In this AWS tutorial, an Amazon RDS MySQL database is used to track the students who are absent. The MySQL table is named **students** and contains the following fields:
 
-+ **idstudents** - An int value that represents the PK.
-+ **date** - A date value that specifies the date when the student was absent.
-+ **first** - A VARCHAR(45) value that specifies the student's first name.
-+ **last** - A VARCHAR(45) value that specifies the student's last name.
-+ **mobile** - A VARCHAR(45) value that specifies the mobile number.
-+ **phone** - A VARCHAR(45) value that specifies the home phone number.
-+ **email** - A VARCHAR(45) value that specifies the email address.
+-   **idstudents** - An int value that represents the PK.
+-   **date** - A date value that specifies the date when the student was absent.
+-   **first** - A VARCHAR(45) value that specifies the student's first name.
+-   **last** - A VARCHAR(45) value that specifies the student's last name.
+-   **mobile** - A VARCHAR(45) value that specifies the mobile number.
+-   **phone** - A VARCHAR(45) value that specifies the home phone number.
+-   **email** - A VARCHAR(45) value that specifies the email address.
 
-The workflow queries the **students** table to get all absent students, and dynamically creates XML that contains the absent students.  
+The workflow queries the **students** table to get all absent students, and dynamically creates XML that contains the absent students.
 
 ```xml
        <?xml version="1.0" encoding="UTF-8"?>
@@ -97,14 +100,14 @@ The workflow queries the **students** table to get all absent students, and dyna
        </Students>
 ```
 
-The second workflow step parses the XML, and for each student, it invokes multiple AWS services to send messages over different channels.   
+The second workflow step parses the XML, and for each student, it invokes multiple AWS services to send messages over different channels.
 
 ## Create an IAM role that's used to run Lambda functions
 
 Create the following two IAM roles:
 
-+ **lambda-support** - Used to invoke Lamdba functions.
-+ **workflow-support** - Used to enable Step Functions to invoke the workflow.
+-   **lambda-support** - Used to invoke Lamdba functions.
+-   **workflow-support** - Used to enable Step Functions to invoke the workflow.
 
 This tutorial uses Amazon SNS, Amazon SES, and Amazon Pinpoint to send messages. The **lambda-support** role has to have policies that enable it to invoke these AWS services from a Lambda function.
 
@@ -142,7 +145,7 @@ This tutorial uses Amazon SNS, Amazon SES, and Amazon Pinpoint to send messages.
 
 ![AWS Tracking Application](images/Policies2.png)
 
-**Note**: Repeat this process to create **workflow-support**. For step three, instead of choosing **Lambda**, choose **Step Functions**. You don't need to perform steps 11-13.  
+**Note**: Repeat this process to create **workflow-support**. For step three, instead of choosing **Lambda**, choose **Step Functions**. You don't need to perform steps 11-13.
 
 ### Create a custom policy for Pinpoint voice
 
@@ -160,7 +163,7 @@ Because the Lambda function invokes the Pinpoint **sendVoiceMessage** API operat
             "Resource": "*"
         }
      ]
-    } 
+    }
 
 **Note**: To create a custom policy, see [Policies and permissions in IAM ](https://docs.aws.amazon.com/IAM/latest/UserGuide/access_policies.html).
 
@@ -170,9 +173,9 @@ To define a workflow that sends notifications over multiple channels by using AW
 
 ![AWS Tracking Application](images/workflowmodelA.png)
 
-Workflows can pass data between steps. For example, the **Determine the missing students** step queries the **students** table, dynamically creates XML, and passes XML to the **Send All Notifications** step. 
+Workflows can pass data between steps. For example, the **Determine the missing students** step queries the **students** table, dynamically creates XML, and passes XML to the **Send All Notifications** step.
 
-**Note**: Later in this tutorial, you'll create application logic in the Lambda function to read data from the Amazon RDS table.  
+**Note**: Later in this tutorial, you'll create application logic in the Lambda function to read data from the Amazon RDS table.
 
 #### To create a workflow
 
@@ -184,7 +187,7 @@ Workflows can pass data between steps. For example, the **Determine the missing 
 
 ![AWS Tracking Application](images/statemachine2.png)
 
-4. Specify the Amazon States Language document by entering the following code.
+4.  Specify the Amazon States Language document by entering the following code.
 
         {
         "Comment": "A simple Step Functions state machine that sends mass notifications over multiple channels.",
@@ -201,7 +204,8 @@ Workflows can pass data between steps. For example, the **Determine the missing 
          "End": true
          }
         }
-       }
+
+    }
 
 **Note:** Don't worry about the errors related to the Lambda resource values. You update these values later in this tutorial.
 
@@ -209,7 +213,7 @@ Workflows can pass data between steps. For example, the **Determine the missing 
 
 6. In the name field, enter **NotificationsStateMachine**.
 
-7. In the **Permission** section, select **Choose an existing role**.  
+7. In the **Permission** section, select **Choose an existing role**.
 
 8. Choose **workflow-support** (the IAM role that you created).
 
@@ -219,7 +223,7 @@ Workflows can pass data between steps. For example, the **Determine the missing 
 
 ## Create an IntelliJ project named LambdaNotifications
 
-Create a Java project to develop Lambda functions by using the Lambda Java runtime API. 
+Create a Java project to develop Lambda functions by using the Lambda Java runtime API.
 
 1. In the IntelliJ IDE, choose **File**, **New**, **Project**.
 
@@ -235,7 +239,7 @@ Create a Java project to develop Lambda functions by using the Lambda Java runti
 
 ## Add the POM dependencies to your project
 
-At this point, you have a new project named **LambdaNotifications**. Add the following code to your project's pom.xml file. 
+At this point, you have a new project named **LambdaNotifications**. Add the following code to your project's pom.xml file.
 
 ```xml
         <?xml version="1.0" encoding="UTF-8"?>
@@ -380,12 +384,13 @@ Use the Lambda runtime API to create the Java classes that define the Lamdba fun
 To create a Lambda function by using the Lambda runtime API, implement **com.amazonaws.services.lambda.runtime.RequestHandler**. The application logic that's executed when the workflow step is invoked is located in the **handleRequest** method. The return value of this method is passed to the next step in a workflow.
 
 Create these Java classes, which are described in the following sections:
-+ **ConnectionHelper** - Used to connect to the Amazon RDS instance.  
-+ **ListMissingStudentsHandler** - Used as the first step in the workflow. This class queries data from the Amazon RDS instance. 
-+ **HandlerVoiceNot** - Used as the second step in the workflow. Sends out messages over multiple channels.
-+ **RDSGetStudents** - Queries data from the student table using the Java Database Connectivity (JDBC) API. 
-+ **SendNotifications** - Uses the AWS SDK for Java (v2) to invoke the Amazon SNS, Amazon Pinpoint, and Amazon SES services.
-+ **Student** - A Java class that defines data members to store student data. 
+
+-   **ConnectionHelper** - Used to connect to the Amazon RDS instance.
+-   **ListMissingStudentsHandler** - Used as the first step in the workflow. This class queries data from the Amazon RDS instance.
+-   **HandlerVoiceNot** - Used as the second step in the workflow. Sends out messages over multiple channels.
+-   **RDSGetStudents** - Queries data from the student table using the Java Database Connectivity (JDBC) API.
+-   **SendNotifications** - Uses the AWS SDK for Java (v2) to invoke the Amazon SNS, Amazon Pinpoint, and Amazon SES services.
+-   **Student** - A Java class that defines data members to store student data.
 
 ### ConnectionHelper class
 
@@ -419,13 +424,13 @@ The following Java code represents the **ConnectionHelper** class.
         return null;
       }
     }
- ```
+```
 
 **Note**: The URL value is **localhost:3306**. This value is modified after the Amazon RDS instance is created. The Lambda function uses this URL to communicate with the database. You must also be sure to specify the user name and password for your Amazon RDS instance.
 
 ### ListMissingStudentsHandler class
 
-This Java code represents the **ListMissingStudentsHandler** class. The class creates a Lamdba function that reads the passed in date value and queries the **student** table using this value.  The **handleRequest** method returns XML that specifies all of the absent students. The XML is passed to the second step in the workflow.
+This Java code represents the **ListMissingStudentsHandler** class. The class creates a Lamdba function that reads the passed in date value and queries the **student** table using this value. The **handleRequest** method returns XML that specifies all of the absent students. The XML is passed to the second step in the workflow.
 
 ```java
      package com.example.messages;
@@ -434,12 +439,12 @@ This Java code represents the **ListMissingStudentsHandler** class. The class cr
      import com.amazonaws.services.lambda.runtime.RequestHandler;
      import com.amazonaws.services.lambda.runtime.LambdaLogger;
      import java.util.Map;
-    
+
      public class ListMissingStudentsHandler implements RequestHandler<Map<String,String>, String> {
 
       @Override
       public String handleRequest(Map<String,String> event, Context context) {
-        
+
 	LambdaLogger logger = context.getLogger();
         String date = event.get("date");
         logger.log("DATE: " + date);
@@ -456,17 +461,17 @@ This Java code represents the **ListMissingStudentsHandler** class. The class cr
         return xml;
       }
      }
- ```
+```
 
 ### HandlerVoiceNot class
 
-The **HandlerVoiceNot** class is the second step in the workflow. It creates a **SendNotifications** object and passes the XML to the following methods: 
+The **HandlerVoiceNot** class is the second step in the workflow. It creates a **SendNotifications** object and passes the XML to the following methods:
 
-+ **handleTextMessage** 
-+ **handleVoiceMessage**
-+ **handleEmailMessage**
+-   **handleTextMessage**
+-   **handleVoiceMessage**
+-   **handleEmailMessage**
 
-The following code represents the **HandlerVoiceNot** method. In this example, the XML that is passed to the Lambda function is stored in the **xml** variable. 
+The following code represents the **HandlerVoiceNot** method. In this example, the XML that is passed to the Lambda function is stored in the **xml** variable.
 
 ```java
      package com.example.messages;
@@ -501,11 +506,11 @@ public class HandlerVoiceNot implements RequestHandler<String, String> {
     }
 }
 
- ```
+```
 
 ### RDSGetStudents class
 
-The **RDSGetStudents** class uses the JDBC API to query data from the Amazon RDS instance. The result set is stored in XML which is passed to the second step in the worlkflow. 
+The **RDSGetStudents** class uses the JDBC API to query data from the Amazon RDS instance. The result set is stored in XML which is passed to the second step in the worlkflow.
 
 ```java
        package com.example.messages;
@@ -634,13 +639,13 @@ The **RDSGetStudents** class uses the JDBC API to query data from the Amazon RDS
             e.printStackTrace();
         }
         return null;
-        }  
+        }
        }
 ```
 
 ### SendNotifications class
 
-The **SendNotifications** class uses the Amazon SES API, the Amazon SNS API, and the Amazon Pinpoint API to send messages. Each student in the XML is sent a message. 
+The **SendNotifications** class uses the Amazon SES API, the Amazon SNS API, and the Amazon Pinpoint API to send messages. Each student in the XML is sent a message.
 
 ```java
        package com.example.messages;
@@ -856,11 +861,11 @@ public class SendNotifications {
 
 ```
 
-**NOTE** You need to specify a valid email for the sender that has been validated. For information, see [Verifying an email address](https://docs.aws.amazon.com/ses/latest/DeveloperGuide//verify-email-addresses-procedure.html). In addition, you need to assign the **originationNumber** variable a valid origination number that's associated with your AWS account. 
+**NOTE** You need to specify a valid email for the sender that has been validated. For information, see [Verifying an email address](https://docs.aws.amazon.com/ses/latest/DeveloperGuide//verify-email-addresses-procedure.html). In addition, you need to assign the **originationNumber** variable a valid origination number that's associated with your AWS account.
 
 ### Student class
 
-The following Java class represents the **Student** class. 
+The following Java class represents the **Student** class.
 
 ```java
      package com.example.messages;
@@ -928,29 +933,29 @@ In this step, you create an Amazon RDS MySQL instance that is used by the Lambda
 
 7. In the **Settings** section, set the following values:
 
-+ **DB instance identifier** – awstracker
-+ **Master username** – root
-+ **Auto generate a password** – Turn off this option.
-+ **Master password** – root1234
-+ **Confirm password** – root1234
-	
+-   **DB instance identifier** – awstracker
+-   **Master username** – root
+-   **Auto generate a password** – Turn off this option.
+-   **Master password** – root1234
+-   **Confirm password** – root1234
+
 ![AWS Tracking Application](images/RDSSettings.png)
 
 8. In the **DB instance size** section, set the following values:
 
-+ **DB instance performance type** – Burstable
-+ **DB instance class** – db.t2.micro
+-   **DB instance performance type** – Burstable
+-   **DB instance class** – db.t2.micro
 
 9. In the **Storage** section, use the default values.
 
 10. In the **Connectivity** section, open **Additional connectivity configuration** and set the following values:
 
-+ **Virtual Private Cloud (VPC)** – Choose the default.
-+ **Subnet group** – Choose the default.
-+ **Publicly accessible** – Yes
-+ **VPC security groups** – Choose an existing VPC security group that is configured for access.
-+ **Availability Zone** – No Preference
-+ **Database port** – 3306
+-   **Virtual Private Cloud (VPC)** – Choose the default.
+-   **Subnet group** – Choose the default.
+-   **Publicly accessible** – Yes
+-   **VPC security groups** – Choose an existing VPC security group that is configured for access.
+-   **Availability Zone** – No Preference
+-   **Database port** – 3306
 
 11. Open the **Additional configuration** section, and enter **awstracker** for the initial database name. Keep the default settings for the other options.
 
@@ -990,8 +995,9 @@ You can use [MySQL Workbench](https://www.mysql.com/products/workbench/) to conn
 Create a schema named **awstracker** by using the following SQL command.
 
      CREATE SCHEMA awstracker;
-     
-In the **awstracker** schema, create a table named **student** by using the following SQL command:     
+
+
+In the **awstracker** schema, create a table named **student** by using the following SQL command:
 
      CREATE TABLE `mydb`.`student` (
       `idstudent` INT NOT NULL AUTO_INCREMENT,
@@ -1002,12 +1008,13 @@ In the **awstracker** schema, create a table named **student** by using the foll
        `phone` VARCHAR(45) NULL,
        `email` VARCHAR(45) NULL,
        PRIMARY KEY (`idstudent`));
-       
+
+
 After you're done, you see a new table in your database.
 
 ![AWS Tracking Application](images/database.png)
 
-Using MySQL Workbench, enter some records that you will use to test your Lambda functions. Enter the date value for some records as 2021-02-01. 
+Using MySQL Workbench, enter some records that you will use to test your Lambda functions. Enter the date value for some records as 2021-02-01.
 
 ## Package the project that contains the Lambda functions
 
@@ -1037,7 +1044,7 @@ The JAR file is located in the **target** folder (which is a child folder of the
 
 8. For **Code entry type**, choose **Upload a .zip or .jar file**.
 
-9. Choose **Upload**, and then browse to the JAR file that you created.  
+9. Choose **Upload**, and then browse to the JAR file that you created.
 
 10. For **Handler**, enter the fully qualified name of the function, for example, **com.example.messages.ListMissingStudentsHandler::handleRequest** (**com.example.messages.Handler** specifies the package and class followed by :: and method name).
 
@@ -1045,13 +1052,13 @@ The JAR file is located in the **target** folder (which is a child folder of the
 
 11. Choose **Save.**
 
-12. Test your Lambda function. Pass in the JSON data that contains the date to query ("date": "2021-02-01"). When successful, you see XML that contains the data queried from the database.  
+12. Test your Lambda function. Pass in the JSON data that contains the date to query ("date": "2021-02-01"). When successful, you see XML that contains the data queried from the database.
 
 ![AWS Tracking Application](images/testfunction3.png)
 
-**Note** Repeat this procedure for the **HandlerVoiceNot** class. Name the corresponding Lambda functions **HandlerVoice**. When you finish, you will have two Lambda functions that you can reference in the Amazon States Language document.  
+**Note** Repeat this procedure for the **HandlerVoiceNot** class. Name the corresponding Lambda functions **HandlerVoice**. When you finish, you will have two Lambda functions that you can reference in the Amazon States Language document.
 
-**IMPORTANT**: To connect to the Amazon RDS instance from a Lambda function, you must set the inbound rules using the same security group as the Amazon RDS instance. For details, see [How do I configure a Lambda function to connect to an RDS instance](https://aws.amazon.com/premiumsupport/knowledge-center/connect-lambda-to-an-rds-instance/). 
+**IMPORTANT**: To connect to the Amazon RDS instance from a Lambda function, you must set the inbound rules using the same security group as the Amazon RDS instance. For details, see [How do I configure a Lambda function to connect to an RDS instance](https://aws.amazon.com/premiumsupport/knowledge-center/connect-lambda-to-an-rds-instance/).
 
 ## Add the Lambda functions to workflows
 
@@ -1065,13 +1072,13 @@ Copy the Lambda ARN value. Then, open the Step Functions console. In the **Deter
 
 ## Execute your workflow by using the Step Functions console
 
-You can invoke the workflow on the Step Functions console. An execution receives JSON input. For this example, you can pass the following JSON data to the workflow.  
+You can invoke the workflow on the Step Functions console. An execution receives JSON input. For this example, you can pass the following JSON data to the workflow.
 
      {
      "date": "2021-02-01"
      }
 
-**Note**: Change the date value to match the date values in the **students** table. Otherwise, you will receive an empty result set. 
+**Note**: Change the date value to match the date values in the **students** table. Otherwise, you will receive an empty result set.
 
 #### To execute your workflow
 
@@ -1081,16 +1088,13 @@ You can invoke the workflow on the Step Functions console. An execution receives
 
 ![AWS Tracking Application](images/workflowGreen.png)
 
-
 If the step turns red, an error occurred. You can choose the step and view the logs that are accessible from the right side.
 
 ![AWS Tracking Application](images/workflowLogs2.png)
 
-
 ### Next steps
+
 Congratulations, you have created an AWS serverless workflow that sends messages over multiple channels. As stated at the beginning of this tutorial, be sure to delete all of the resources you created during this tutorial so that you won't be charged.
 
 For more AWS multiservice examples, see
-[usecases](https://github.com/awsdocs/aws-doc-sdk-examples/tree/master/javav2/usecases).
-
-
+[usecases](https://github.com/picante-io/aws-doc-sdk-examples/tree/master/javav2/usecases).

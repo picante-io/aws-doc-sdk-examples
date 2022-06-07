@@ -40,7 +40,7 @@ import yaml
 from yaml.scanner import ScannerError
 
 METADATA_FILENAME = 'metadata.yaml'
-GITHUB_URL = 'https://github.com/awsdocs/aws-doc-sdk-examples/tree/main/'
+GITHUB_URL = 'https://github.com/picante-io/aws-doc-sdk-examples/tree/main/'
 
 EXT_LOOKUP = {
     'c': 'C',

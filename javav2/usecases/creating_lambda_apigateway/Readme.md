@@ -1,14 +1,16 @@
-#  Using Amazon API Gateway to invoke  Lambda functions
+# Using Amazon API Gateway to invoke Lambda functions
 
 ## Overview
-| Heading      | Description |
-| ----------- | ----------- |
-| Description | Dicusses how to develop an AWS Lambda function using the Java run-time API and then how to invoke it by using Amazon API Gateway.  |
-| Audience   |  Developer (beginner / intermediate)        |
-| Updated   | 1/14/2022        |
-| Required Skills   | Java, Maven  |
+
+| Heading         | Description                                                                                                                       |
+| --------------- | --------------------------------------------------------------------------------------------------------------------------------- |
+| Description     | Dicusses how to develop an AWS Lambda function using the Java run-time API and then how to invoke it by using Amazon API Gateway. |
+| Audience        | Developer (beginner / intermediate)                                                                                               |
+| Updated         | 1/14/2022                                                                                                                         |
+| Required Skills | Java, Maven                                                                                                                       |
 
 ## Purpose
+
 You can invoke an AWS Lambda function by using Amazon API Gateway, which is an AWS service for creating, publishing, maintaining, monitoring, and securing REST, HTTP, and WebSocket APIs at scale. API developers can create APIs that access AWS or other web services, as well as data stored in the AWS Cloud. As an API Gateway developer, you can create APIs for use in your own client applications. For more information, see [What is Amazon API Gateway](https://docs.aws.amazon.com/apigateway/latest/developerguide/welcome.html).
 
 Lambda is a compute service that enables you to run code without provisioning or managing servers. You can create Lambda functions in various programming languages. For more information about AWS Lambda, see
@@ -18,44 +20,47 @@ In this tutorial, you create a Lambda function by using the AWS Lambda Java runt
 
 ![AWS Tracking Application](images/picPhone.png)
 
-This tutorial shows you how to use Java logic to create a solution that performs this use case.  For example, you'll learn how to read a database to determine which employees have reached the one year anniversary date, how to process the data, and send out a text message all by using a Lambda function. Then you’ll learn how to use Amazon API Gateway to invoke this Lambda function by using a Rest endpoint. For example, you can invoke the Lambda function by using this curl command:  
-  
-      curl -XGET "https://xxxxqjko1o3.execute-api.us-east-1.amazonaws.com/cronstage/employee" 
+This tutorial shows you how to use Java logic to create a solution that performs this use case. For example, you'll learn how to read a database to determine which employees have reached the one year anniversary date, how to process the data, and send out a text message all by using a Lambda function. Then you’ll learn how to use Amazon API Gateway to invoke this Lambda function by using a Rest endpoint. For example, you can invoke the Lambda function by using this curl command:
 
-This AWS tutorial uses an Amazon DynamoDB table named **Employee** that contains these fields. 
+      curl -XGET "https://xxxxqjko1o3.execute-api.us-east-1.amazonaws.com/cronstage/employee"
 
--	**Id** – the key for the table.
--	**first** – the employee’s first name.
--	**phone** – the employee’s phone number.
--	**startDate** – the employee’s start date.
+This AWS tutorial uses an Amazon DynamoDB table named **Employee** that contains these fields.
+
+-   **Id** – the key for the table.
+-   **first** – the employee’s first name.
+-   **phone** – the employee’s phone number.
+-   **startDate** – the employee’s start date.
 
 ![AWS Tracking Application](images/employeetable2.png)
 
-**Note**: To learn how to invoke an AWS Lambda function using scheduled events, see [Creating scheduled events to invoke Lambda functions](https://github.com/awsdocs/aws-doc-sdk-examples/tree/master/javav2/usecases/creating_scheduled_events).
+**Note**: To learn how to invoke an AWS Lambda function using scheduled events, see [Creating scheduled events to invoke Lambda functions](https://github.com/picante-io/aws-doc-sdk-examples/tree/master/javav2/usecases/creating_scheduled_events).
 
 #### Topics
-+	Prerequisites
-+	Create an AWS Identity and Access Management (IAM) role that is used to execute Lambda functions
-+	Create an IntelliJ project named **LambdaCronFunctions**
-+	Add the POM dependencies to your project
-+	Create an AWS Lambda function by using the AWS Lambda runtime API
-+	Package the project that contains the AWS Lambda function
-+	Deploy the AWS Lambda function
-+	Configure Amazon API Gateway to invoke the Lambda function
+
+-   Prerequisites
+-   Create an AWS Identity and Access Management (IAM) role that is used to execute Lambda functions
+-   Create an IntelliJ project named **LambdaCronFunctions**
+-   Add the POM dependencies to your project
+-   Create an AWS Lambda function by using the AWS Lambda runtime API
+-   Package the project that contains the AWS Lambda function
+-   Deploy the AWS Lambda function
+-   Configure Amazon API Gateway to invoke the Lambda function
 
 ## Prerequisites
+
 To follow along with this tutorial, you need the following:
-+ An AWS Account with proper credentials.
-+ A Java IDE (for this tutorial, the IntelliJ IDE is used).
-+ Java 1.8 JDK.
-+ Maven 3.6 or higher.
+
+-   An AWS Account with proper credentials.
+-   A Java IDE (for this tutorial, the IntelliJ IDE is used).
+-   Java 1.8 JDK.
+-   Maven 3.6 or higher.
 
 ### Important
 
-+ The AWS services included in this document are included in the [AWS Free Tier](https://aws.amazon.com/free/?all-free-tier.sort-by=item.additionalFields.SortRank&all-free-tier.sort-order=asc).
-+  This code has not been tested in all AWS Regions. Some AWS services are available only in specific regions. For more information, see [AWS Regional Services](https://aws.amazon.com/about-aws/global-infrastructure/regional-product-services). 
-+ Running this code might result in charges to your AWS account. 
-+ Be sure to terminate all of the resources you create while going through this tutorial to ensure that you’re not charged.
+-   The AWS services included in this document are included in the [AWS Free Tier](https://aws.amazon.com/free/?all-free-tier.sort-by=item.additionalFields.SortRank&all-free-tier.sort-order=asc).
+-   This code has not been tested in all AWS Regions. Some AWS services are available only in specific regions. For more information, see [AWS Regional Services](https://aws.amazon.com/about-aws/global-infrastructure/regional-product-services).
+-   Running this code might result in charges to your AWS account.
+-   Be sure to terminate all of the resources you create while going through this tutorial to ensure that you’re not charged.
 
 ### Creating the resources
 
@@ -65,9 +70,9 @@ An Amazon DynamoDB table named **Employee** with a key named **Id** and the fiel
 
 Create the following IAM role:
 
-+ **lambda-support** - Used to invoke Lamdba functions.
+-   **lambda-support** - Used to invoke Lamdba functions.
 
-This tutorial uses the DynamoDB and Amazon SNS services. The **lambda-support** role has to have policies that enable it to invoke these services from a Lambda function.  
+This tutorial uses the DynamoDB and Amazon SNS services. The **lambda-support** role has to have policies that enable it to invoke these services from a Lambda function.
 
 #### To create an IAM role
 
@@ -238,19 +243,19 @@ The pom.xml file looks like the following.
     </plugins>
     </build>
    </project>
-```    
+```
 
 ## Create a Lambda function by using the AWS Lambda runtime Java API
 
-Use the AWS Lambda runtime Java API to create the Java class that defines the Lamdba function. In this example, there is one Java class for the Lambda function and two extra classes required for this use case. The following figure shows the Java classes in the project. Notice that all Java classes are located in a package named **com.aws.example**. 
+Use the AWS Lambda runtime Java API to create the Java class that defines the Lamdba function. In this example, there is one Java class for the Lambda function and two extra classes required for this use case. The following figure shows the Java classes in the project. Notice that all Java classes are located in a package named **com.aws.example**.
 
 ![AWS Tracking Application](images/lampro1.png)
 
 Create these Java classes:
 
-+ **Handler** - used as the Lambda function that performs the use case described in this AWS tutorial. The application logic that's executed is located in the **handleRequest** method. 
-+ **ScanEmployees** - uses the Amazon DynamoDB Java V2 API to scan the **Employee** table using an **Expression** object. This class also uses the Amazon Simple Notification Service (Amazon SNS) Java V2 API to send a message to an employee.
-+ **Employee** - a Java class that is used with the DynamoDB Enhanced client. The fields in this class match the columns in the **Employee** table. 
+-   **Handler** - used as the Lambda function that performs the use case described in this AWS tutorial. The application logic that's executed is located in the **handleRequest** method.
+-   **ScanEmployees** - uses the Amazon DynamoDB Java V2 API to scan the **Employee** table using an **Expression** object. This class also uses the Amazon Simple Notification Service (Amazon SNS) Java V2 API to send a message to an employee.
+-   **Employee** - a Java class that is used with the DynamoDB Enhanced client. The fields in this class match the columns in the **Employee** table.
 
 ### Handler class
 
@@ -280,7 +285,8 @@ This Java code represents the **Handler** class. The class creates a **ScanEmplo
 ```
 
 ### ScanEmployees class
-The **ScanEmployees** class uses both Amazon DynamoDB Java V2 API and the Amazon SNS Java V2 API. In the following code example, notice the use of an **Expression** object. This object is used to return employees that have a start date one year ago. For each employee returned, a text message is sent using the **SnsClient** object's **publish** method.  
+
+The **ScanEmployees** class uses both Amazon DynamoDB Java V2 API and the Amazon SNS Java V2 API. In the following code example, notice the use of an **Expression** object. This object is used to return employees that have a start date one year ago. For each employee returned, a text message is sent using the **SnsClient** object's **publish** method.
 
 ```java
      package com.aws.example;
@@ -449,15 +455,15 @@ The **Employee** class is used with the DynamoDB enhanced client and maps the **
      public void setPhone(String phone) {
         this.phone = phone;
      }
-    
+
     public String getPhone() {
         return this.phone;
      }
-   
+
      public void setFirst(String first) {
         this.first = first;
      }
-    
+
      public String getFirst() {
         return this.first;
      }
@@ -474,7 +480,7 @@ The JAR file is located in the **target** folder (which is a child folder of the
 
 ![AWS Tracking Application](images/lamdeploy.png)
 
-**Note**: Notice the use of the **maven-shade-plugin** in the project’s POM file. This plugin is responsible for creating a JAR that contains the required dependencies. If you attempt to package up the project without this plugin, the required dependences are not included in the JAR file and you will encounter a **ClassNotFoundException**. 
+**Note**: Notice the use of the **maven-shade-plugin** in the project’s POM file. This plugin is responsible for creating a JAR that contains the required dependencies. If you attempt to package up the project without this plugin, the required dependences are not included in the JAR file and you will encounter a **ClassNotFoundException**.
 
 ## Deploy the Lambda function
 
@@ -496,12 +502,11 @@ The JAR file is located in the **target** folder (which is a child folder of the
 
 8. For **Code entry type**, choose **Upload a .zip or .jar file**.
 
-9. Choose **Upload**, and then browse to the JAR file that you created.  
+9. Choose **Upload**, and then browse to the JAR file that you created.
 
 10. For **Handler**, enter the fully qualified name of the function, for example, **com.aws.example.Handler::handleRequest** (**com.aws.example.Handler** specifies the package and class followed by :: and method name).
 
 11. Choose **Save.**
-
 
 ## Configure Amazon API Gateway to invoke the Lambda function
 
@@ -521,21 +526,21 @@ You can use the Amazon Gateway API console to create a Rest endpoint for the Lam
 
 ![AWS Tracking Application](images/picEmployeeAPI.png)
 
-5. Choose **Create API**. 
+5. Choose **Create API**.
 
-6. Choose **Resources** under the **Employee** section. 
+6. Choose **Resources** under the **Employee** section.
 
 ![AWS Tracking Application](images/picResources.png)
 
-7. From the **Actions** dropdown, choose **Create Resources**. 
+7. From the **Actions** dropdown, choose **Create Resources**.
 
-8. In the name field, specify **employees**. 
+8. In the name field, specify **employees**.
 
-9. Choose **Create Resources**. 
+9. Choose **Create Resources**.
 
 ![AWS Tracking Application](images/picCreateResources.png)
 
-10. Choose **/employees** and then select GET from the drop down. Choose the checkmark icon. 
+10. Choose **/employees** and then select GET from the drop down. Choose the checkmark icon.
 
 ![AWS Tracking Application](images/picGet.png)
 
@@ -547,17 +552,17 @@ You can use the Amazon Gateway API console to create a Rest endpoint for the Lam
 
 ### Test the Amazon API Gateway method
 
-At this point in the tutorial, you can test the Amazon API Gateway method that invokes the **cron** Lambda function. To test the method, choose **Test**, as shown in the following illustration. 
+At this point in the tutorial, you can test the Amazon API Gateway method that invokes the **cron** Lambda function. To test the method, choose **Test**, as shown in the following illustration.
 
 ![AWS Tracking Application](images/picTest.png)
 
-Once the Lambda function is invoked, you can view the log file to see a successful message. 
+Once the Lambda function is invoked, you can view the log file to see a successful message.
 
 ![AWS Tracking Application](images/picLogs.png)
 
 ### Deploying the API
 
-After the test is successful, you can deploy the method from the AWS Management Console. 
+After the test is successful, you can deploy the method from the AWS Management Console.
 
 1. Choose **Get**.
 
@@ -573,16 +578,15 @@ After the test is successful, you can deploy the method from the AWS Management 
 
 ![AWS Tracking Application](images/picURL.png)
 
-5.	Choose **Save Changes**.
+5. Choose **Save Changes**.
 
 6. Choose **Get** again and notice that the URL changes. This is the invocation URL that you can use to invoke the Lambda function.
 
 ![AWS Tracking Application](images/picURL2.png)
 
 ### Next steps
+
 Congratulations, you have created an AWS Lambda function that is invoked by using an Amazon Gateway API method. As stated at the beginning of this tutorial, be sure to terminate all of the resources you created while going through this tutorial to ensure that you’re not charged.
 
 For more AWS multiservice examples, see
-[usecases](https://github.com/awsdocs/aws-doc-sdk-examples/tree/master/javav2/usecases).
-
-
+[usecases](https://github.com/picante-io/aws-doc-sdk-examples/tree/master/javav2/usecases).

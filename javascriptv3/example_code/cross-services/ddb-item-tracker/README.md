@@ -217,7 +217,7 @@ To verify an email address:
 
 ## Run the app
 
-1. Clone the [AWS Code Examples Repository](https://github.com/awsdocs/aws-doc-sdk-examples) to your local environment.
+1. Clone the [AWS Code Examples Repository](https://github.com/picante-io/aws-doc-sdk-examples) to your local environment.
    See [the Github documentation](https://docs.github.com/en/github/creating-cloning-and-archiving-repositories/cloning-a-repository) for
    instructions.
 
@@ -745,4 +745,4 @@ However, if you created your resources using AWS CloudFormation, you can delete 
 ### Next steps
 Congratulations! You have created and deployed the Amazon DynamoDB Tracker example web app.
 For more AWS cross-service examples, see
-[cross-services](https://github.com/awsdocs/aws-doc-sdk-examples/tree/main/javascriptv3/example_code/cross-services).
+[cross-services](https://github.com/picante-io/aws-doc-sdk-examples/tree/main/javascriptv3/example_code/cross-services).

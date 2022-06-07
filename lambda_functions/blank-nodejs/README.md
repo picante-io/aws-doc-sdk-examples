@@ -28,7 +28,7 @@ Use the following instructions to deploy the sample application. For an in-depth
 # Setup
 Download or clone this repository.
 
-    $ git clone https://github.com/awsdocs/aws-doc-sdk-examples.git
+    $ git clone https://github.com/picante-io/aws-doc-sdk-examples.git
     $ cd aws-doc-sdk-examples/lambda_functions/blank-nodejs
 
 To create a new bucket for deployment artifacts, run `1-create-bucket.sh`.

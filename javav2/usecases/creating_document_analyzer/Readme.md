@@ -1,13 +1,13 @@
-#  Creating an AWS document analyzer application using the AWS SDK for Java
+# Creating an AWS document analyzer application using the AWS SDK for Java
 
 ## Purpose
 
 You can create an AWS application that analyzes PDF document images located in an Amazon Simple Storage Service (Amazon S3) bucket by using the Amazon Textract service. The following information can be returned in Block objects.
 
-- The lines and words of detected text
-- The relationships between the lines and words of detected text
-- The page that the detected text appears on
-- The location of the lines and words of text on the document page
+-   The lines and words of detected text
+-   The relationships between the lines and words of detected text
+-   The page that the detected text appears on
+-   The location of the lines and words of text on the document page
 
 For example, the following image shows a PDF document that represents a health form.
 
@@ -15,47 +15,48 @@ For example, the following image shows a PDF document that represents a health f
 
 After the application analyzes this document, it creates this data:
 
-* The block type is PAGE
-* The block type is LINE
-* The block type is LINE
-* The block type is LINE
-* The block type is WORD
-* The block type is WORD
-* The block type is WORD
+-   The block type is PAGE
+-   The block type is LINE
+-   The block type is LINE
+-   The block type is LINE
+-   The block type is WORD
+-   The block type is WORD
+-   The block type is WORD
 
 In this tutorial, you create a Spring Boot application named **AWS Document Analyzer**. The Spring Boot APIs are used to build a model, different views, and a controller. For more information, see [Spring Boot](https://www.tutorialspoint.com/spring_boot/index.htm).
 
 This application uses the following AWS services:
-*	Amazon Textract
-*	Amazon S3
+
+-   Amazon Textract
+-   Amazon S3
 
 #### Topics
 
-+ Prerequisites
-+ Understand the AWS document analyzer application
-+ Create an IntelliJ project named SpringPhotoAnalyzer
-+ Add the POM dependencies to your project
-+ Create the Java classes
-+ Create the HTML files
-+ Create the script files
-+ Package the project into a JAR file
-+ Deploy the application to AWS Elastic Beanstalk
+-   Prerequisites
+-   Understand the AWS document analyzer application
+-   Create an IntelliJ project named SpringPhotoAnalyzer
+-   Add the POM dependencies to your project
+-   Create the Java classes
+-   Create the HTML files
+-   Create the script files
+-   Package the project into a JAR file
+-   Deploy the application to AWS Elastic Beanstalk
 
 ## Prerequisites
 
 To complete the tutorial, you need the following:
 
-+ An AWS account
-+ A Java IDE (this tutorial uses the IntelliJ IDE)
-+ Java JDK 1.8
-+ Maven 3.6 or later
+-   An AWS account
+-   A Java IDE (this tutorial uses the IntelliJ IDE)
+-   Java JDK 1.8
+-   Maven 3.6 or later
 
 ### Important
 
-+ The AWS services included in this document are included in the [AWS Free Tier](https://aws.amazon.com/free/?all-free-tier.sort-by=item.additionalFields.SortRank&all-free-tier.sort-order=asc).
-+  This code has not been tested in all AWS Regions. Some AWS services are available only in specific regions. For more information, see [AWS Regional Services](https://aws.amazon.com/about-aws/global-infrastructure/regional-product-services). 
-+ Running this code might result in charges to your AWS account. 
-+ Be sure to terminate all of the resources you create while going through this tutorial to ensure that you’re not charged.
+-   The AWS services included in this document are included in the [AWS Free Tier](https://aws.amazon.com/free/?all-free-tier.sort-by=item.additionalFields.SortRank&all-free-tier.sort-order=asc).
+-   This code has not been tested in all AWS Regions. Some AWS services are available only in specific regions. For more information, see [AWS Regional Services](https://aws.amazon.com/about-aws/global-infrastructure/regional-product-services).
+-   Running this code might result in charges to your AWS account.
+-   Be sure to terminate all of the resources you create while going through this tutorial to ensure that you’re not charged.
 
 ### Creating the resources
 
@@ -63,15 +64,15 @@ Create an Amazon S3 bucket named **doc[somevalue]**. Be sure to use this bucket 
 
 ## Understand the AWS document analyzer application
 
-The following illustration shows the Home page of the application. 
+The following illustration shows the Home page of the application.
 
 ![AWS Photo Analyzer](images/home.png)
 
-The AWS document analyzer application supports uploading PDF images to an Amazon S3 bucket. 
+The AWS document analyzer application supports uploading PDF images to an Amazon S3 bucket.
 
 ![AWS Photo Analyzer](images/upload1.png)
 
-After the PDF image is uploaded, you can select the image from a drop down field. Then choose the **Analyze Document** button and the results are displayed in the web application. 
+After the PDF image is uploaded, you can select the image from a drop down field. Then choose the **Analyze Document** button and the results are displayed in the web application.
 
 ![AWS Photo Analyzer](images/results1.png)
 
@@ -85,8 +86,8 @@ The first step is to create an Maven project.
 2. In the **New Project** dialog box, choose **Maven**, and then choose **Next**.
 3. For **GroupId**, enter **aws-spring**.
 4. For **ArtifactId**, enter **SpringDocumentAnalyzer**.
-6. Choose **Next**.
-7. Choose **Finish**.
+5. Choose **Next**.
+6. Choose **Finish**.
 
 ## Add the POM dependencies to your project
 
@@ -94,7 +95,7 @@ At this point, you have a new project named **SpringDocumentAnalyzer**.
 
 ![AWS Photo Analyzer](images/project.png)
 
-  **Note:** Ensure that you are using Java 1.8 (as shown in the following **pom.xml** file).
+**Note:** Ensure that you are using Java 1.8 (as shown in the following **pom.xml** file).
 
 Add the Spring Boot dependencies. The **pom.xml** file looks like the following.
 
@@ -204,11 +205,10 @@ Create a Java package in the **main/java** folder named **com.aws.example**. The
 
 Create these Java classes:
 
-+ **DocumentApplication** - Used as the base class for the Spring Boot application.
-+ **DocumentController** - Used as the Spring Boot controller that handles HTTP requests..   
-+ **S3Service** - Uses the Amazon S3 API to perform S3 operations.
-+ **TextractService** -Uses the Amazon Textract API to perform document operations.
-
+-   **DocumentApplication** - Used as the base class for the Spring Boot application.
+-   **DocumentController** - Used as the Spring Boot controller that handles HTTP requests..
+-   **S3Service** - Uses the Amazon S3 API to perform S3 operations.
+-   **TextractService** -Uses the Amazon Textract API to perform document operations.
 
 ### DocumentApplication class
 
@@ -308,6 +308,7 @@ The following Java code represents the **DocumentController** class.
       }
     }
 ```
+
 ### S3Service class
 
 The following class uses the Amazon S3 API to perform S3 operations. For example, the **getObjectBytes** method returns a byte array that represents the image. Be sure to replace the bucket name in this code example with your bucket name.
@@ -484,7 +485,7 @@ The following class uses the Amazon S3 API to perform S3 operations. For example
 
 ### TextractService class
 
-The following Java code represents the **TextractService** class. 
+The following Java code represents the **TextractService** class.
 
 ```java
     package com.aws.example;
@@ -553,7 +554,7 @@ The following Java code represents the **TextractService** class.
             }
 
             return convertToString(toXml(myList));
-     
+
          } catch (TextractException  e) {
 
             System.err.println(e.getMessage());
@@ -619,9 +620,9 @@ The following Java code represents the **TextractService** class.
 
 At this point, you have created all of the Java files required for the AWS Document Analyzer application. Now you create the HTML files that are required for the application's graphical user interface (GUI). Under the **resource** folder, create a **templates** folder, and then create the following HTML files:
 
-+ index.html
-+ process.html
-+ layout.html
+-   index.html
+-   process.html
+-   layout.html
 
 The **index.html** file is the application's home view. The **process.html** file represents the view for viewing the data. The **layout.html** file represents the menu that's visible in all views.
 
@@ -630,40 +631,78 @@ The **index.html** file is the application's home view. The **process.html** fil
 The following HTML represents the **index.html** file.
 
 ```html
-    <!DOCTYPE html>
-    <html xmlns:th="http://www.thymeleaf.org">
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+	<head>
+		<meta charset="utf-8" />
+		<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+		<meta name="viewport" content="width=device-width, initial-scale=1" />
 
-    <head>
-     <meta charset="utf-8" />
-     <meta http-equiv="X-UA-Compatible" content="IE=edge" />
-     <meta name="viewport" content="width=device-width, initial-scale=1" />
+		<link
+			rel="stylesheet"
+			th:href="|https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css|"
+		/>
+		<script
+			th:src="|https://code.jquery.com/jquery-1.12.4.min.js|"
+		></script>
+		<script
+			th:src="|https://code.jquery.com/ui/1.11.4/jquery-ui.min.js|"
+		></script>
+		<link
+			rel="stylesheet"
+			href="../public/css/styles.css"
+			th:href="@{/css/styles.css}"
+		/>
+		<link
+			rel="icon"
+			href="../public/images/favicon.ico"
+			th:href="@{/images/favicon.ico}"
+		/>
+	</head>
+	<body>
+		<header th:replace="layout :: site-header" />
+		<div class="container">
+			<h2>AWS Document Analyzer Application</h2>
 
-     <link rel="stylesheet" th:href="|https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css|"/>
-     <script th:src="|https://code.jquery.com/jquery-1.12.4.min.js|"></script>
-     <script th:src="|https://code.jquery.com/ui/1.11.4/jquery-ui.min.js|"></script>
-     <link rel="stylesheet" href="../public/css/styles.css" th:href="@{/css/styles.css}" />
-     <link rel="icon" href="../public/images/favicon.ico" th:href="@{/images/favicon.ico}" />
-      </head>
-    <body>
-    <header th:replace="layout :: site-header"/>
-    <div class="container">
+			<p>
+				The AWS Document Analyzer application is a sample application
+				that uses the Amazon Textract Service as well as other AWS
+				Services and the Java V2 SDK. Analyzing PDF documents has never
+				been easier! Simply perform these steps:
+			</p>
+			<p></p>
 
-     <h2>AWS Document Analyzer Application</h2>
-
-     <p>The AWS Document Analyzer application is a sample application that uses the Amazon Textract Service as well as other AWS Services and the Java V2 SDK.
-        Analyzing PDF documents has never been easier! Simply perform these steps:<p>
-
-     <ol>
-        <li>You can upload a PDF document to an Amazon S3 bucket by choosing the <i>Upload Documents</i> menu item.</li>
-        <li>Choose <i>Choose File</i> and browse to a PDF document located on your local desktop.</li>
-        <li>Choose <i>Upload</i> to upload the PDF document to an Amazon S3 bucket.</li>
-        <li>You can choose <i>Get Documents</i> to view the PDF documents located in the Amazon S3 bucket. All documents in the Amazon S3 bucket are displayed in the drop-down field. </li>
-        <li>You can analyze a given PDF document by choosing the <i>Analyze Documents</i> menu item. </li>
-        <li>Select a PDF document from the drop-down field and choose <i>Analyze Document</i>. The results are displaced in the application.  </li>
-     </ol>
-     </div>
-    </body>
-    </html>
+			<ol>
+				<li>
+					You can upload a PDF document to an Amazon S3 bucket by
+					choosing the <i>Upload Documents</i> menu item.
+				</li>
+				<li>
+					Choose <i>Choose File</i> and browse to a PDF document
+					located on your local desktop.
+				</li>
+				<li>
+					Choose <i>Upload</i> to upload the PDF document to an Amazon
+					S3 bucket.
+				</li>
+				<li>
+					You can choose <i>Get Documents</i> to view the PDF
+					documents located in the Amazon S3 bucket. All documents in
+					the Amazon S3 bucket are displayed in the drop-down field.
+				</li>
+				<li>
+					You can analyze a given PDF document by choosing the
+					<i>Analyze Documents</i> menu item.
+				</li>
+				<li>
+					Select a PDF document from the drop-down field and choose
+					<i>Analyze Document</i>. The results are displaced in the
+					application.
+				</li>
+			</ol>
+		</div>
+	</body>
+</html>
 ```
 
 ### process.html
@@ -671,51 +710,75 @@ The following HTML represents the **index.html** file.
 The following HTML represents the **process.html** file.
 
 ```html
-     <html xmlns:th="http://www.thymeleaf.org">
-     <head>
-     <meta charset="utf-8" />
-     <script th:src="|https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js|"></script>
-     <script th:src="|https://code.jquery.com/jquery-1.12.4.min.js|"></script>
-     <script th:src="|https://code.jquery.com/ui/1.11.4/jquery-ui.min.js|"></script>
-     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js"></script>
-     <link href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css" rel="stylesheet"/>
-     <script src="../public/js/message.js" th:src="@{/js/items.js}"></script>
-     <link rel="stylesheet" href="../public/css/styles.css" th:href="@{/css/styles.css}" />
-     <link rel="icon" href="../public/images/favicon.ico" th:href="@{/images/favicon.ico}" />
-    </head>
+<html xmlns:th="http://www.thymeleaf.org">
+	<head>
+		<meta charset="utf-8" />
+		<script
+			th:src="|https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js|"
+		></script>
+		<script
+			th:src="|https://code.jquery.com/jquery-1.12.4.min.js|"
+		></script>
+		<script
+			th:src="|https://code.jquery.com/ui/1.11.4/jquery-ui.min.js|"
+		></script>
+		<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js"></script>
+		<link
+			href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css"
+			rel="stylesheet"
+		/>
+		<script src="../public/js/message.js" th:src="@{/js/items.js}"></script>
+		<link
+			rel="stylesheet"
+			href="../public/css/styles.css"
+			th:href="@{/css/styles.css}"
+		/>
+		<link
+			rel="icon"
+			href="../public/images/favicon.ico"
+			th:href="@{/images/favicon.ico}"
+		/>
+	</head>
 
-    <body>
-     <header th:replace="layout :: site-header"/>
+	<body>
+		<header th:replace="layout :: site-header" />
 
-    <div class="container">
-     <h2>AWS Document Analyzer Application</h2>
-     <div>
-        <p>Upload a PDF document to an Amazon S3 Bucket</p>
+		<div class="container">
+			<h2>AWS Document Analyzer Application</h2>
+			<div>
+				<p>Upload a PDF document to an Amazon S3 Bucket</p>
 
-        <form method="POST" onsubmit="myFunction()" action="/upload" enctype="multipart/form-data">
-            <input type="file" name="file"/>
-            <input type="submit" value="Submit" />
-        </form>
-     </div>
-     <div>
-     <h3>Select the Document to analyze</h3>
-        <div class="dropdown">
-            <select name="docs" id="docs">
-
-            </select>
-    </div>
-        <button onclick="analyeDoc()">Analyze Document </button>
-    </div>
-     <div>
-        <br>
-       <div class="form-group">
-            <label for="textarea1">Amazon Textract results</label>
-            <textarea class="form-control" id="textarea1" rows="3"></textarea>
-        </div>
-    </div>
-    </div>
-    </body>
-    </html>
+				<form
+					method="POST"
+					onsubmit="myFunction()"
+					action="/upload"
+					enctype="multipart/form-data"
+				>
+					<input type="file" name="file" />
+					<input type="submit" value="Submit" />
+				</form>
+			</div>
+			<div>
+				<h3>Select the Document to analyze</h3>
+				<div class="dropdown">
+					<select name="docs" id="docs"></select>
+				</div>
+				<button onclick="analyeDoc()">Analyze Document</button>
+			</div>
+			<div>
+				<br />
+				<div class="form-group">
+					<label for="textarea1">Amazon Textract results</label>
+					<textarea
+						class="form-control"
+						id="textarea1"
+						rows="3"
+					></textarea>
+				</div>
+			</div>
+		</div>
+	</body>
+</html>
 ```
 
 ### layout.html
@@ -723,20 +786,26 @@ The following HTML represents the **process.html** file.
 The following HTML represents the **layout.html** file for the application's menu.
 
 ```html
-     <!DOCTYPE html>
-      <html xmlns:th="http://www.thymeleaf.org">
-     <head th:fragment="site-head">
-      <meta charset="UTF-8" />
-      <script th:src="|https://code.jquery.com/jquery-1.12.4.min.js|"></script>
-      <meta th:include="this :: head" th:remove="tag"/>
-      </head>
-     <body>
-    <header th:fragment="site-header">
-     <a href="#" style="color: white" th:href="@{/}">Home</a>
-     <a href="#"  style="color: white" th:href="@{/process}">Analyze Documents</a>
-    </header>
-
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+	<head th:fragment="site-head">
+		<meta charset="UTF-8" />
+		<script
+			th:src="|https://code.jquery.com/jquery-1.12.4.min.js|"
+		></script>
+		<meta th:include="this :: head" th:remove="tag" />
+	</head>
+	<body>
+		<header th:fragment="site-header">
+			<a href="#" style="color: white" th:href="@{/}">Home</a>
+			<a href="#" style="color: white" th:href="@{/process}"
+				>Analyze Documents</a
+			>
+		</header>
+	</body>
+</html>
 ```
+
 ## Create script files
 
 The process view use a script file to communicate with the Spring controller. You have to ensure that this file is part of your project; otherwise, your application won't work.
@@ -746,83 +815,84 @@ The process view use a script file to communicate with the Spring controller. Yo
 The following JavaScript represents the **items.js** file.
 
 ```javascript
-    $(function() {
+$(function () {
+	getDocNames();
+});
 
-    getDocNames() ;
-    } );
+function myFunction() {
+	alert("The PDF document was submitted");
+}
 
+function analyeDoc() {
+	// Get the doc
+	var name = $("#docs").val();
 
-    function myFunction() {
-      alert("The PDF document was submitted");
-    }
+	$.ajax("/analyzeDoc", {
+		type: "POST", // http method
+		data: "name=" + name, // data to submit
+		success: function (data, status, xhr) {
+			var xml = data;
+			$(xml)
+				.find("Item")
+				.each(function () {
+					var $field = $(this);
+					var doc = $field.find("Doc").text();
 
-    function analyeDoc() {
+					var oldValue = $("#textarea1").val();
 
-     // Get the doc
-     var name = $("#docs").val();
+					if (oldValue === "") {
+						$("#textarea1").val(doc);
+					} else {
+						$("#textarea1").val(oldValue + "\n" + doc);
+					}
+				});
+		},
+		error: function (jqXhr, textStatus, errorMessage) {
+			$("p").append("Error" + errorMessage);
+		},
+	});
+}
 
-     $.ajax('/analyzeDoc', {
-        type: 'POST',  // http method
-        data: 'name=' + name ,  // data to submit
-        success: function (data, status, xhr) {
-            var xml = data
-            $(xml).find('Item').each(function () {
+function getDocNames() {
+	// Clear the current drop down.
+	$("#docs").empty();
 
-                var $field = $(this);
-                var doc = $field.find('Doc').text();
+	$.ajax("/getdocs", {
+		type: "GET", // http method
+		success: function (data, status, xhr) {
+			var xml = data;
+			$(xml)
+				.find("Doc")
+				.each(function () {
+					var $field = $(this);
+					var name = $field.find("Key").text();
 
-                var oldValue = $("#textarea1").val();
-
-                if (oldValue === "") {
-                    $("#textarea1").val(doc);
-                } else {
-                    $("#textarea1").val(oldValue + "\n" + doc);
-                }
-           });
-        },
-        error: function (jqXhr, textStatus, errorMessage) {
-            $('p').append('Error' + errorMessage);
-        }
-      });
-      }
-
-     function getDocNames() {
-
-     // Clear the current drop down.
-     $("#docs").empty()
-
-       $.ajax('/getdocs', {
-         type: 'GET',  // http method
-         success: function (data, status, xhr) {
-
-            var xml = data;
-            $(xml).find('Doc').each(function () {
-               var $field = $(this);
-               var name = $field.find('Key').text();
-
-              $('#docs').append($('<option/>', {
-                    value: name,
-                    text : name
-                }));
-            });
-           },
-        error: function (jqXhr, textStatus, errorMessage) {
-            $('p').append('Error' + errorMessage);
-        }
-      });
-     }
+					$("#docs").append(
+						$("<option/>", {
+							value: name,
+							text: name,
+						})
+					);
+				});
+		},
+		error: function (jqXhr, textStatus, errorMessage) {
+			$("p").append("Error" + errorMessage);
+		},
+	});
+}
 ```
 
-**Note:** There are other CSS files located in the GitHub repository that you must add to your project. Ensure all of the files under the **resources** folder are included in your project.   
+**Note:** There are other CSS files located in the GitHub repository that you must add to your project. Ensure all of the files under the **resources** folder are included in your project.
 
 ## Run the application
 
-Using the IntelliJ IDE, you can run your application. The first time you run the Spring Boot application, you can run the application by clicking the run icon in the Spring Boot main class, as shown in this illustration. 
+Using the IntelliJ IDE, you can run your application. The first time you run the Spring Boot application, you can run the application by clicking the run icon in the Spring Boot main class, as shown in this illustration.
 
 ![AWS Tracking Application](images/run.png)
 
 ### Next steps
+
 Congratulations! You have created and deployed the AWS Document Analyzer application. As stated at the beginning of this tutorial, be sure to terminate all of the resources you create while going through this tutorial to ensure that you’re no longer charged for them.
 
 For more AWS multiservice examples, see
-[usecases](https://github.com/awsdocs/aws-doc-sdk-examples/tree/master/javav2/usecases).
+[usecases](https://github.com/picante-io/aws-doc-sdk-examples/tree/master/javav2/usecases).

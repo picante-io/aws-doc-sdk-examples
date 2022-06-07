@@ -2,14 +2,15 @@
 
 ## Overview
 
-| Heading      | Description |
-| ----------- | ----------- |
-| Description | Discusses how to develop a dynamic web application that stores and queries data by using the Amazon Redshift service.     |
-| Audience   |  Developer (beginner / intermediate)        |
-| Updated   | 3/15/2022        |
-| Required skills   | Java, Maven  |
+| Heading         | Description                                                                                                           |
+| --------------- | --------------------------------------------------------------------------------------------------------------------- |
+| Description     | Discusses how to develop a dynamic web application that stores and queries data by using the Amazon Redshift service. |
+| Audience        | Developer (beginner / intermediate)                                                                                   |
+| Updated         | 3/15/2022                                                                                                             |
+| Required skills | Java, Maven                                                                                                           |
 
 ## Purpose
+
 You can create a dynamic web application that stores and queries data by using the Amazon Redshift service and the Amazon Redshift Java API V2. To interact with an Amazon Redshift table, use [software.amazon.awssdk.services.redshiftdata.RedshiftDataClient](https://sdk.amazonaws.com/java/api/latest/software/amazon/awssdk/services/redshiftdata/RedshiftDataClient.html). The application created in this AWS tutorial is a job posting web application that lets an employer, an administrator, or human resources staff alert employees or the public about a job opening within a company.
 
 **Note**: Amazon Redshift is a fully managed, petabyte-scale data warehouse service in the cloud. You can start with just a few hundred gigabytes of data and scale to a petabyte or more. This enables you to use your data to acquire new insights for your business and customers. For more information, see [What is Amazon Redshift?](https://docs.aws.amazon.com/redshift/latest/mgmt/welcome.html).
@@ -18,53 +19,52 @@ You can create a dynamic web application that stores and queries data by using t
 
 1. Prerequisites
 2. Understand the Job Posting application
-3. Create an IntelliJ project 
+3. Create an IntelliJ project
 4. Add the POM dependencies to your project
 5. Set up the Java packages in your project
 6. Create the Java classes
 7. Create the HTML files
 8. Run the application
 
-
 ## Prerequisites
 
 To complete the tutorial, you need the following:
 
-+ An AWS account
-+ A Java IDE (this tutorial uses the IntelliJ IDE)
-+ Java JDK 1.8
-+ Maven 3.6 or later
+-   An AWS account
+-   A Java IDE (this tutorial uses the IntelliJ IDE)
+-   Java JDK 1.8
+-   Maven 3.6 or later
 
 ### Important
 
-+ The AWS services included in this document are included in the [AWS Free Tier](https://aws.amazon.com/free/?all-free-tier.sort-by=item.additionalFields.SortRank&all-free-tier.sort-order=asc).
-+  This code has not been tested in all AWS Regions. Some AWS services are available only in specific regions. For more information, see [AWS Regional Services](https://aws.amazon.com/about-aws/global-infrastructure/regional-product-services). 
-+ Running this code might result in charges to your AWS account. 
-+ Be sure to terminate all of the resources you create while going through this tutorial to ensure that you’re not charged.
+-   The AWS services included in this document are included in the [AWS Free Tier](https://aws.amazon.com/free/?all-free-tier.sort-by=item.additionalFields.SortRank&all-free-tier.sort-order=asc).
+-   This code has not been tested in all AWS Regions. Some AWS services are available only in specific regions. For more information, see [AWS Regional Services](https://aws.amazon.com/about-aws/global-infrastructure/regional-product-services).
+-   Running this code might result in charges to your AWS account.
+-   Be sure to terminate all of the resources you create while going through this tutorial to ensure that you’re not charged.
 
 ### Creating the resources
 
 Create an Amazon Redshift table named **blog** that contains the fields described in this tutorial. For information about creating an Amazon Redshift table, see [Getting started using databases](https://docs.aws.amazon.com/redshift/latest/dg/c_intro_to_admin.html).
 
-In addition, make sure that you set up your Java developer environment before following along with this tutorial. For more information, see [Get started with the AWS SDK for Java 2.x](https://docs.aws.amazon.com/sdk-for-java/latest/developer-guide/get-started.html). 
+In addition, make sure that you set up your Java developer environment before following along with this tutorial. For more information, see [Get started with the AWS SDK for Java 2.x](https://docs.aws.amazon.com/sdk-for-java/latest/developer-guide/get-started.html).
 
 ## Understand the Job Posting application
 
-The data is stored in a Redshift table named **blog**, as shown in this illustration. 
+The data is stored in a Redshift table named **blog**, as shown in this illustration.
 
 ![AWS Tracking Application](images/Redshift.png)
 
-The **blog** table contains these fields: 
+The **blog** table contains these fields:
 
-- **idblog**- a varchar field that stores a GUID value and represents the PK.
-- **date**- a date field that represents the date when the record was added. 
-- **title**- a varchar field that represents the title. 
-- **body**- a varchar field that represents the body. 
-- **author**-a varchar field that represents the author. 
+-   **idblog**- a varchar field that stores a GUID value and represents the PK.
+-   **date**- a date field that represents the date when the record was added.
+-   **title**- a varchar field that represents the title.
+-   **body**- a varchar field that represents the body.
+-   **author**-a varchar field that represents the author.
 
-**Note**: For more information about supported field data types, see [Data types](https://docs.aws.amazon.com/redshift/latest/dg/c_Supported_data_types.html). 
+**Note**: For more information about supported field data types, see [Data types](https://docs.aws.amazon.com/redshift/latest/dg/c_Supported_data_types.html).
 
-The application you create uses Spring Boot APIs to build a model, different views, and a controller. This web application lets a user submit a new job posting that is then stored in the **blog** table, as shown in this illustration. 
+The application you create uses Spring Boot APIs to build a model, different views, and a controller. This web application lets a user submit a new job posting that is then stored in the **blog** table, as shown in this illustration.
 
 ![AWS Tracking Application](images/NewRecorda.png)
 
@@ -72,7 +72,7 @@ This application lets a user view the posts by choosing the **Get Posts** menu i
 
 ![AWS Tracking Application](images/posts.png)
 
-This application also supports viewing the result set in different languages. For example, if a user wants to view the result set in Spanish, they can choose Spanish from the dropdown field and the data is translated to the given language by using Amazon Translate, as shown in this illustration. 
+This application also supports viewing the result set in different languages. For example, if a user wants to view the result set in Spanish, they can choose Spanish from the dropdown field and the data is translated to the given language by using Amazon Translate, as shown in this illustration.
 
 ![AWS Tracking Application](images/posts2.png)
 
@@ -217,19 +217,19 @@ At this point, you have a new project named **Blog**. Ensure that the pom.xml fi
 </project>
 ```
 
- ## Create the Java classes
- 
- Create a Java package in the main/java folder named **com.aws.blog**. The Java classes go into this package. 
- 
- ![AWS Lex](images/projectclasses.png)
- 
- Create these Java classes:
+## Create the Java classes
 
-+ **BlogApp** - The base class for the Spring Boot application.
-+ **BlogController** - The Spring Boot controller that handles HTTP requests. 
-+ **Post** - The application's model that stores data.
-+ **RedshiftService** - The Spring Service that uses the Amazon Redshift Java API V2 and Amazon Translate Java API V2. 
-+ **WebSecurityConfig** - Sets up an in-memory user store that contains a single user (the user name is **user** and the password is **password**).
+Create a Java package in the main/java folder named **com.aws.blog**. The Java classes go into this package.
+
+![AWS Lex](images/projectclasses.png)
+
+Create these Java classes:
+
+-   **BlogApp** - The base class for the Spring Boot application.
+-   **BlogController** - The Spring Boot controller that handles HTTP requests.
+-   **Post** - The application's model that stores data.
+-   **RedshiftService** - The Spring Service that uses the Amazon Redshift Java API V2 and Amazon Translate Java API V2.
+-   **WebSecurityConfig** - Sets up an in-memory user store that contains a single user (the user name is **user** and the password is **password**).
 
 ### BlogApp class
 
@@ -386,7 +386,7 @@ The following Java code represents the **Post** class.
 
 ### RedshiftService class
 
-The following Java code represents the **RedshiftService** class. This class uses the Amazon Redshift Java API (V2) to interact with data located the **blog** table.  For example, the **getPosts** method returns a result set that is queried from the **blog** table and displayed in the view. Likewise, the **addRecord** method adds a new record to the **blog** table. This class also uses the Amazon Translate Java V2 API to translate the result set if requested by the user. 
+The following Java code represents the **RedshiftService** class. This class uses the Amazon Redshift Java API (V2) to interact with data located the **blog** table. For example, the **getPosts** method returns a result set that is queried from the **blog** table and displayed in the view. Likewise, the **addRecord** method adds a new record to the **blog** table. This class also uses the Amazon Translate Java V2 API to translate the result set if requested by the user.
 
 ```java
      package com.aws.blog;
@@ -414,7 +414,7 @@ The following Java code represents the **RedshiftService** class. This class use
      import java.text.SimpleDateFormat;
      import java.time.LocalDateTime;
      import java.time.format.DateTimeFormatter;
-     import java.util.ArrayList;  
+     import java.util.ArrayList;
      import java.util.Date;
      import java.util.List;
      import java.util.UUID;
@@ -758,6 +758,7 @@ The following Java code represents the **RedshiftService** class. This class use
 ### WebSecurityConfig class
 
 The following Java code represents the **WebSecurityConfig** class. The role of this class is to ensure only authenticated users can view the application.
+
 ```java
 
      package com.aws.blog;
@@ -775,7 +776,7 @@ The following Java code represents the **WebSecurityConfig** class. The role of 
      @Configuration
      @EnableWebSecurity
      public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
-    
+
     @Override
     protected void configure(HttpSecurity http) throws Exception {
         http
@@ -818,21 +819,21 @@ The following Java code represents the **WebSecurityConfig** class. The role of 
      }
 ```
 
-**Note**: In this example, the user credentials to log into the application are **user** and **password**.    
+**Note**: In this example, the user credentials to log into the application are **user** and **password**.
 
 ## Create the HTML file
 
 At this point, you have created all of the Java files required for this example application. Now create HTML files that are required for the application's view. Under the resource folder, create a **templates** folder, and then create the following HTML files:
 
-+ index.html
-+ layout.html
-+ post.html
-+ add.html
-+ login.html
+-   index.html
+-   layout.html
+-   post.html
+-   add.html
+-   login.html
 
 ### index.html
 
-The **index.html** file is the application's home view. 
+The **index.html** file is the application's home view.
 
 ```html
     <!DOCTYPE html>
@@ -866,8 +867,8 @@ The **index.html** file is the application's home view.
      <div>
      </body>
     </html>
-```  
-	   
+```
+
 ### layout.html
 
 The following code represents the **layout.html** file that represents the application's menu.
@@ -894,59 +895,111 @@ The following code represents the **layout.html** file that represents the appli
     </div>
    </header>
   </html>
-```	     
+```
 
 ### add.html
 
-The **add.html** file is the application's view that lets users post new items. 
+The **add.html** file is the application's view that lets users post new items.
 
-```html	     
-    <!DOCTYPE html>
-     <html xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity3">
+```html
+<!DOCTYPE html>
+<html
+	xmlns:th="http://www.thymeleaf.org"
+	xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity3"
+>
+	<head>
+		<meta charset="UTF-8" />
+		<title>Blog</title>
+		<script
+			th:src="|https://code.jquery.com/jquery-1.12.4.min.js|"
+		></script>
+		<script
+			th:src="|https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js|"
+		></script>
+		<script
+			th:src="|https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js|"
+		></script>
+		<link
+			rel="stylesheet"
+			th:href="|https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css|"
+		/>
+		<script
+			src="../public/js/contact_me.js"
+			th:src="@{/js/contact_me.js}"
+		></script>
+		<link
+			rel="stylesheet"
+			href="../public/css/styles.css"
+			th:href="@{/css/styles.css}"
+		/>
+		<link
+			rel="icon"
+			href="../public/img/favicon.ico"
+			th:href="@{/img/favicon.ico}"
+		/>
+	</head>
 
-     <head>
-     <meta charset="UTF-8" />
-     <title>Blog</title>
-     <script th:src="|https://code.jquery.com/jquery-1.12.4.min.js|"></script>
-     <script th:src="|https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js|"></script>
-     <script th:src="|https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js|"></script>
-     <link rel="stylesheet" th:href="|https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css|"/>
-     <script src="../public/js/contact_me.js" th:src="@{/js/contact_me.js}"></script>
-     <link rel="stylesheet" href="../public/css/styles.css" th:href="@{/css/styles.css}" />
-     <link rel="icon" href="../public/img/favicon.ico" th:href="@{/img/favicon.ico}" />
-    </head>
+	<body>
+		<header th:replace="layout :: site-header" />
+		<div class="container">
+			<h3>
+				Welcome
+				<span sec:authentication="principal.username">User</span> to the
+				Amazon Redshift Job Posting example app
+			</h3>
+			<p>Now is: <b th:text="${execInfo.now.time}"></b></p>
+			<p>
+				Add a new job posting by filling in this table and clicking
+				<i>Create Item</i>
+			</p>
 
-    <body>
-    <header th:replace="layout :: site-header"/>
-    <div class="container">
-    <h3>Welcome <span sec:authentication="principal.username">User</span> to the Amazon Redshift Job Posting example app</h3>
-    <p>Now is: <b th:text="${execInfo.now.time}"></b></p>
-    <p>Add a new job posting by filling in this table and clicking <i>Create Item</i></p>
-
-
-                <div class="control-group">
-                    <div class="form-group floating-label-form-group controls mb-0 pb-2">
-                        <label>Title</label>
-                        <input class="form-control" id="title" placeholder="Title" required="required" data-validation-required-message="Please enter the AWS Guide.">
-                        <p class="help-block text-danger"></p>
-                    </div>
-                </div>
-                <div class="control-group">
-                    <div class="form-group floating-label-form-group controls mb-0 pb-2">
-                        <label>Body</label>
-                        <textarea class="form-control" id="body" rows="5" placeholder="Body" required="required" data-validation-required-message="Please enter a description."></textarea>
-                        <p class="help-block text-danger"></p>
-                    </div>
-                </div>
-                <br>
-                <button type="submit" class="btn btn-primary btn-xl" id="SendButton">Create Item</button>
-            </div>
-      </body>
-     </html>
+			<div class="control-group">
+				<div
+					class="form-group floating-label-form-group controls mb-0 pb-2"
+				>
+					<label>Title</label>
+					<input
+						class="form-control"
+						id="title"
+						placeholder="Title"
+						required="required"
+						data-validation-required-message="Please enter the AWS Guide."
+					/>
+					<p class="help-block text-danger"></p>
+				</div>
+			</div>
+			<div class="control-group">
+				<div
+					class="form-group floating-label-form-group controls mb-0 pb-2"
+				>
+					<label>Body</label>
+					<textarea
+						class="form-control"
+						id="body"
+						rows="5"
+						placeholder="Body"
+						required="required"
+						data-validation-required-message="Please enter a description."
+					></textarea>
+					<p class="help-block text-danger"></p>
+				</div>
+			</div>
+			<br />
+			<button
+				type="submit"
+				class="btn btn-primary btn-xl"
+				id="SendButton"
+			>
+				Create Item
+			</button>
+		</div>
+	</body>
+</html>
 ```
 
 ### post.html
-The **post.html** file is the application's view that displays the job items in the specific language. 
+
+The **post.html** file is the application's view that displays the job items in the specific language.
 
 ```html
    <!DOCTYPE html>
@@ -1000,184 +1053,203 @@ The **post.html** file is the application's view that displays the job items in 
 ```
 
 ### login.html
-The **login.html** file is the application's login page. 
+
+The **login.html** file is the application's login page.
 
 ```html
-     <!DOCTYPE html>
-     <html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="https://www.thymeleaf.org">
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="https://www.thymeleaf.org">
+	<head>
+		<title>AWS Blog Example</title>
+		<style>
+			body {
+				font-family: Arial, Helvetica, sans-serif;
+			}
+			form {
+				border: 3px solid #f1f1f1;
+			}
 
-    <head>
-     <title>AWS Blog Example</title>
-     <style>
-        body {font-family: Arial, Helvetica, sans-serif;}
-        form {border: 3px solid #f1f1f1;}
+			input[type="text"],
+			input[type="password"] {
+				width: 100%;
+				padding: 12px 20px;
+				margin: 8px 0;
+				display: inline-block;
+				border: 1px solid #ccc;
+				box-sizing: border-box;
+			}
 
-        input[type=text], input[type=password] {
-            width: 100%;
-            padding: 12px 20px;
-            margin: 8px 0;
-            display: inline-block;
-            border: 1px solid #ccc;
-            box-sizing: border-box;
-        }
+			button {
+				background-color: #4caf50;
+				color: white;
+				padding: 14px 20px;
+				margin: 8px 0;
+				border: none;
+				cursor: pointer;
+				width: 100%;
+			}
 
-        button {
-            background-color: #4CAF50;
-            color: white;
-            padding: 14px 20px;
-            margin: 8px 0;
-            border: none;
-            cursor: pointer;
-            width: 100%;
-        }
+			button:hover {
+				opacity: 0.8;
+			}
 
-        button:hover {
-            opacity: 0.8;
-        }
+			.cancelbtn {
+				width: auto;
+				padding: 10px 18px;
+				background-color: #f44336;
+			}
 
-        .cancelbtn {
-            width: auto;
-            padding: 10px 18px;
-            background-color: #f44336;
-        }
+			.imgcontainer {
+				text-align: center;
+				margin: 24px 0 12px 0;
+			}
 
-        .imgcontainer {
-            text-align: center;
-            margin: 24px 0 12px 0;
-        }
+			img.avatar {
+				width: 40%;
+				border-radius: 50%;
+			}
 
-        img.avatar {
-            width: 40%;
-            border-radius: 50%;
-        }
+			.container {
+				padding: 16px;
+			}
 
-        .container {
-            padding: 16px;
-        }
+			span.psw {
+				float: right;
+				padding-top: 16px;
+			}
 
-        span.psw {
-            float: right;
-            padding-top: 16px;
-        }
+			/* Change styles for span and cancel button on extra small screens */
+			@media screen and (max-width: 300px) {
+				span.psw {
+					display: block;
+					float: none;
+				}
+				.cancelbtn {
+					width: 100%;
+				}
+			}
+		</style>
+	</head>
+	<body>
+		<div th:if="${param.error}">Invalid username and password.</div>
+		<div th:if="${param.logout}">You have been logged out.</div>
+		<form th:action="@{/login}" method="post">
+			<div class="container">
+				<label for="username"><b>Username</b></label>
+				<input
+					type="text"
+					placeholder="Enter Username"
+					id="username"
+					name="username"
+					value="user"
+					required
+				/>
 
-        /* Change styles for span and cancel button on extra small screens */
-        @media screen and (max-width: 300px) {
-            span.psw {
-                display: block;
-                float: none;
-            }
-            .cancelbtn {
-                width: 100%;
-            }
-        }
-    </style>
-    </head>
-    <body>
-    <div th:if="${param.error}">
-     Invalid username and password.
-    </div>
-    <div th:if="${param.logout}">
-     You have been logged out.
-    </div>
-    <form th:action="@{/login}" method="post">
-     <div class="container">
-        <label for="username"><b>Username</b></label>
-        <input type="text" placeholder="Enter Username" id="username" name="username" value ="user" required>
+				<label for="password"><b>Password</b></label>
+				<input
+					type="password"
+					placeholder="Enter Password"
+					id="password"
+					name="password"
+					value="password"
+					required
+				/>
 
-        <label for="password"><b>Password</b></label>
-        <input type="password" placeholder="Enter Password" id ="password" name="password" value ="password" required>
+				<button type="submit">Login</button>
+			</div>
 
-        <button type="submit">Login</button>
-
-     </div>
-
-     <div class="container" style="background-color:#f1f1f1">
-        <button type="button" class="cancelbtn">Cancel</button>
-        <span class="psw">Forgot <a href="#">password?</a></span>
-      </div>
-    </form>
-    </body>
-    </html>
+			<div class="container" style="background-color:#f1f1f1">
+				<button type="button" class="cancelbtn">Cancel</button>
+				<span class="psw">Forgot <a href="#">password?</a></span>
+			</div>
+		</form>
+	</body>
+</html>
 ```
 
 ### Create the JS File
 
-This application has a **contact_me.js** file that is used to send requests to the Spring Controller. Place this file in the **resources\public\js** folder. 
+This application has a **contact_me.js** file that is used to send requests to the Spring Controller. Place this file in the **resources\public\js** folder.
 
-```javascript	
-      $(function() {
+```javascript
+$(function () {
+	$("#progress").hide();
+	$("#SendButton").click(function ($e) {
+		var title = $("#title").val();
+		var body = $("#body").val();
 
-       $('#progress').hide();
-       $("#SendButton" ).click(function($e) {
+		$.ajax("/addPost", {
+			type: "POST", // http method
+			data: "title=" + title + "&body=" + body, // data to submit
+			success: function (data, status, xhr) {
+				alert("You have successfully added an item");
 
-         var title = $('#title').val();
-         var body = $('#body').val();
+				$("#title").val("");
+				$("#body").val("");
+			},
+		});
+	}); // END of the Send button click
+});
 
-        $.ajax('/addPost', {
-            type: 'POST',  // http method
-            data: 'title=' + title + '&body=' + body ,  // data to submit
-            success: function (data, status, xhr) {
+function getPosts(num) {
+	$(".xsearch-items").empty();
+	$("#progress").show();
+	var lang = $("#lang option:selected").text();
 
-                alert("You have successfully added an item")
+	$.ajax("/getPosts", {
+		type: "POST", // http method
+		data: "lang=" + lang + "&number=" + num, // data to submit
+		success: function (data, status, xhr) {
+			var xml = data;
+			$("#progress").hide();
+			$(xml)
+				.find("Item")
+				.each(function () {
+					var $field = $(this);
+					var id = $field.find("Id").text();
+					var date = $field.find("Date").text();
+					var title = $field.find("Title").text();
+					var body = $field.find("Content").text();
+					var author = $field.find("Author").text();
 
-                $('#title').val("");
-                $('#body').val("");
-
-            }
-        });
-
-      } );// END of the Send button click
-     } );
-
-     function getPosts(num){
-
-     $('.xsearch-items').empty()
-     $('#progress').show();
-     var lang = $('#lang option:selected').text();
-
-     $.ajax('/getPosts', {
-        type: 'POST',  // http method
-        data: 'lang=' + lang+"&number=" + num ,  // data to submit
-        success: function (data, status, xhr) {
-
-            var xml = data;
-            $('#progress').hide();
-            $(xml).find('Item').each(function () {
-
-                var $field = $(this);
-                var id = $field.find('Id').text();
-                var date = $field.find('Date').text();
-                var title = $field.find('Title').text();
-                var body = $field.find('Content').text();
-                var author = $field.find('Author').text();
-
-                // Append this data to the main list.
-                $('.xsearch-items').append("<className='search-item'>");
-                $('.xsearch-items').append("<div class='search-item-content'>");
-                $('.xsearch-items').append("<h3 class='search-item-caption'><a href='#'>" + title + "</a></h3>");
-                $('.xsearch-items').append("<className='search-item-meta mb-15'>");
-                $('.xsearch-items').append("<className='list-inline'>");
-                $('.xsearch-items').append("<p><b>" + date + "</b></p>");
-                $('.xsearch-items').append("<p><b>'Posted by " + author + "</b></p>");
-                $('.xsearch-items').append("<div>");
-                $('.xsearch-items').append("<h6>" + body + "</h6>");
-                $('.xsearch-items').append("</div>");
-            });
-         }
-        });
-      }
+					// Append this data to the main list.
+					$(".xsearch-items").append("<className='search-item'>");
+					$(".xsearch-items").append(
+						"<div class='search-item-content'>"
+					);
+					$(".xsearch-items").append(
+						"<h3 class='search-item-caption'><a href='#'>" +
+							title +
+							"</a></h3>"
+					);
+					$(".xsearch-items").append(
+						"<className='search-item-meta mb-15'>"
+					);
+					$(".xsearch-items").append("<className='list-inline'>");
+					$(".xsearch-items").append("<p><b>" + date + "</b></p>");
+					$(".xsearch-items").append(
+						"<p><b>'Posted by " + author + "</b></p>"
+					);
+					$(".xsearch-items").append("<div>");
+					$(".xsearch-items").append("<h6>" + body + "</h6>");
+					$(".xsearch-items").append("</div>");
+				});
+		},
+	});
+}
 ```
-	
+
 ## Run the application
 
-Using the IntelliJ IDE, you can run your application. The first time you run the Spring Boot application, click the run icon in the Spring Boot main class, as shown in this illustration. 
+Using the IntelliJ IDE, you can run your application. The first time you run the Spring Boot application, click the run icon in the Spring Boot main class, as shown in this illustration.
 
 ![AWS Tracking Application](images/runapp.png)
 
-**Note**: You can deploy this Spring Boot application by using AWS Elastic Beanstalk. For information about deploying a web application, see [Creating your first AWS Java web application](https://github.com/awsdocs/aws-doc-sdk-examples/tree/main/javav2/usecases/creating_first_project).
+**Note**: You can deploy this Spring Boot application by using AWS Elastic Beanstalk. For information about deploying a web application, see [Creating your first AWS Java web application](https://github.com/picante-io/aws-doc-sdk-examples/tree/main/javav2/usecases/creating_first_project).
 
 ### Next steps
+
 Congratulations! You have created a Spring Boot application that uses the Amazon Redshift data client to create an example job posting application. As stated earlier, be sure to delete all of the resources that you created during this tutorial so that you won't continue to be charged.
 
 For more AWS cross service examples, see
-[usecases](https://github.com/awsdocs/aws-doc-sdk-examples/tree/master/javav2/usecases).
+[usecases](https://github.com/picante-io/aws-doc-sdk-examples/tree/master/javav2/usecases).

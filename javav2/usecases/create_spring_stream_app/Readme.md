@@ -1,41 +1,40 @@
 # Building a Spring Boot web application that Streams Amazon S3 content over HTTP
 
 ## Purpose
-You can create a dynamic web application that streams Amazon Simple Storage Service (Amazon S3) video content over HTTP. The video is displayed in the application along with a menu that displays the videos that you can view. 
+
+You can create a dynamic web application that streams Amazon Simple Storage Service (Amazon S3) video content over HTTP. The video is displayed in the application along with a menu that displays the videos that you can view.
 
 ![AWS Video Analyzer](images/pic1.png)
 
-In this AWS tutorial, you create a Spring Boot web application. After the application is created, this tutorial shows you how to deploy the application to AWS Elastic Beanstalk. 
-
+In this AWS tutorial, you create a Spring Boot web application. After the application is created, this tutorial shows you how to deploy the application to AWS Elastic Beanstalk.
 
 #### Topics
 
-+ Prerequisites
-+ Understand the application
-+ Create an IntelliJ project 
-+ Add the POM dependencies to your project
-+ Set up the Java package in your project
-+ Create the Java classes
-+ Create the HTML files
-+ Package the application into a JAR file
-+ Deploy the application to Elastic Beanstalk
-
+-   Prerequisites
+-   Understand the application
+-   Create an IntelliJ project
+-   Add the POM dependencies to your project
+-   Set up the Java package in your project
+-   Create the Java classes
+-   Create the HTML files
+-   Package the application into a JAR file
+-   Deploy the application to Elastic Beanstalk
 
 ## Prerequisites
 
 To complete the tutorial, you need the following:
 
-+ An AWS account
-+ A Java IDE (this tutorial uses the IntelliJ IDE)
-+ Java JDK 1.8
-+ Maven 3.6 or later
+-   An AWS account
+-   A Java IDE (this tutorial uses the IntelliJ IDE)
+-   Java JDK 1.8
+-   Maven 3.6 or later
 
 ### Important
 
-+ The AWS services included in this document are included in the [AWS Free Tier](https://aws.amazon.com/free/?all-free-tier.sort-by=item.additionalFields.SortRank&all-free-tier.sort-order=asc).
-+  This code has not been tested in all AWS Regions. Some AWS services are available only in specific regions. For more information, see [AWS Regional Services](https://aws.amazon.com/about-aws/global-infrastructure/regional-product-services). 
-+ Running this code might result in charges to your AWS account. 
-+ Be sure to terminate all of the resources you create while going through this tutorial to ensure that you’re not charged.
+-   The AWS services included in this document are included in the [AWS Free Tier](https://aws.amazon.com/free/?all-free-tier.sort-by=item.additionalFields.SortRank&all-free-tier.sort-order=asc).
+-   This code has not been tested in all AWS Regions. Some AWS services are available only in specific regions. For more information, see [AWS Regional Services](https://aws.amazon.com/about-aws/global-infrastructure/regional-product-services).
+-   Running this code might result in charges to your AWS account.
+-   Be sure to terminate all of the resources you create while going through this tutorial to ensure that you’re not charged.
 
 ### Creating the resources
 
@@ -49,13 +48,13 @@ Tag each MP4 file with these two tags.
 
 The application you create uses Spring Boot APIs to build a model, different views, and a controller. For more information about Spring Boot APIs, see [Spring Boot](https://www.tutorialspoint.com/spring_boot/index.htm).
 
-In the previous illustration, notice the video menu that displays video titles and descriptions and used to let users know which videos are available. This web application reads the object tags to dynamically build the video menu. To read the object tags, you use the Amazon S3 Java API (V2). To view a specific video, the user can click the video title. A GET Request is made to a Spring Controller, the application reads the specific video in an Amazon S3 bucket, encodes the byte array, and then steams the data where the video is displayed in an HTML5 **Video** tag. 
+In the previous illustration, notice the video menu that displays video titles and descriptions and used to let users know which videos are available. This web application reads the object tags to dynamically build the video menu. To read the object tags, you use the Amazon S3 Java API (V2). To view a specific video, the user can click the video title. A GET Request is made to a Spring Controller, the application reads the specific video in an Amazon S3 bucket, encodes the byte array, and then steams the data where the video is displayed in an HTML5 **Video** tag.
 
-This web application also supports uploading MP4 videos to an Amazon S3 bucket. For example, the following illustration shows a video named **Rabbit.mp4** along with a description. 
+This web application also supports uploading MP4 videos to an Amazon S3 bucket. For example, the following illustration shows a video named **Rabbit.mp4** along with a description.
 
 ![AWS Video Analyzer](images/pic3.png)
 
-Once a video is uploaded into the Amazon S3 bucket, it is displayed in the video menu. 
+Once a video is uploaded into the Amazon S3 bucket, it is displayed in the video menu.
 
 ![AWS Video Analyzer](images/pic4.png)
 
@@ -158,19 +157,19 @@ At this point, you have a new project named **SpringVideoApp**. Ensure that the 
     </build>
 </project>
 ```
-     
- ## Create the Java classes
- 
- Create a Java package in the main/java folder named **com.example**. This Java classes go into this package. 
- 
- ![AWS Lex](images/project.png)
- 
- Create these Java classes:
 
-+ **Application** - Used as the base class for the Spring Boot application.
-+ **Tags** - Used to store tag information. 
-+ **VideoStreamController** - Used as the Spring Boot controller that handles HTTP requests.
-+ **VideoStreamService** - Used as the Spring Service that uses the Amazon S3 Java API. 
+## Create the Java classes
+
+Create a Java package in the main/java folder named **com.example**. This Java classes go into this package.
+
+![AWS Lex](images/project.png)
+
+Create these Java classes:
+
+-   **Application** - Used as the base class for the Spring Boot application.
+-   **Tags** - Used to store tag information.
+-   **VideoStreamController** - Used as the Spring Boot controller that handles HTTP requests.
+-   **VideoStreamService** - Used as the Spring Service that uses the Amazon S3 Java API.
 
 ### Application class
 
@@ -307,11 +306,11 @@ The following Java code represents the **VideoStreamController** class.
    }
 ```
 
-**Note**: Make sure that you assign an Amazon S3 bucket name to the **bucket** variable. Otherwise, your code does not work.   
+**Note**: Make sure that you assign an Amazon S3 bucket name to the **bucket** variable. Otherwise, your code does not work.
 
 ### VideoStreamService class
 
-The following Java code represents the **VideoStreamService** class. This class uses the Amazon S3 Java API (V2) to interact with content located in an Amazon S3 bucket. For example, the **getTags** method returns a collection of tags that are used to create the video menu. Likewise, the **getObjectBytes** reads bytes from a MP4 video. The byte array is used to create a **ResponseEntity** object. This object sets HTTP header information and the HTTP status code required to stream the video. 
+The following Java code represents the **VideoStreamService** class. This class uses the Amazon S3 Java API (V2) to interact with content located in an Amazon S3 bucket. For example, the **getTags** method returns a collection of tags that are used to create the video menu. Likewise, the **getObjectBytes** reads bytes from a MP4 video. The byte array is used to create a **ResponseEntity** object. This object sets HTTP header information and the HTTP status code required to stream the video.
 
 ```java
      package com.example;
@@ -547,15 +546,16 @@ The following Java code represents the **VideoStreamService** class. This class 
 
 At this point, you have created all of the Java files required for this example Spring Boot application. Now you create HTML files that are required for the application's view. Under the resource folder, create a **templates** folder, and then create the following HTML files:
 
-+ index.html
-+ layout.html
-+ upload.html
-+ video.html
+-   index.html
+-   layout.html
+-   upload.html
+-   video.html
 
-**Note**: The CSS file for this application is located in this Github repository. 
+**Note**: The CSS file for this application is located in this Github repository.
 
 ### index.html
-The **index.html** file is the application's home view. The following HTML represents the **index.html** file. 
+
+The **index.html** file is the application's home view. The following HTML represents the **index.html** file.
 
 ```html
      <!DOCTYPE HTML>
@@ -593,141 +593,208 @@ The **index.html** file is the application's home view. The following HTML repre
 ```
 
 ### layout.html
+
 The following code represents the **layout.html** file that represents the application's menu.
 
 ```html
-     <!DOCTYPE html>
-     <html xmlns:th="http://www.thymeleaf.org">
-     <head th:fragment="site-head">
-     <meta charset="UTF-8" />
-     <link rel="icon" href="../public/images/favicon.ico" th:href="@{/images/favicon.ico}" />
-     <script th:src="|https://code.jquery.com/jquery-1.12.4.min.js|"></script>
-     <meta th:include="this :: head" th:remove="tag"/>
-     </head>
-     <body>
-     <!-- th:hef calls a controller method - which returns the view -->
-    <header th:fragment="site-header">
-    <a href="#" style="color: white" th:href="@{/}">Home</a>
-    <a href="#" style="color: white" th:href="@{/upload}">Upload Videos</a>
-    <a href="#"  style="color: white" th:href="@{/watch}">Watch Videos</a>
-    </header>
-    <h1>Welcome</h1>
-    </body>
-    </html>
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+	<head th:fragment="site-head">
+		<meta charset="UTF-8" />
+		<link
+			rel="icon"
+			href="../public/images/favicon.ico"
+			th:href="@{/images/favicon.ico}"
+		/>
+		<script
+			th:src="|https://code.jquery.com/jquery-1.12.4.min.js|"
+		></script>
+		<meta th:include="this :: head" th:remove="tag" />
+	</head>
+	<body>
+		<!-- th:hef calls a controller method - which returns the view -->
+		<header th:fragment="site-header">
+			<a href="#" style="color: white" th:href="@{/}">Home</a>
+			<a href="#" style="color: white" th:href="@{/upload}"
+				>Upload Videos</a
+			>
+			<a href="#" style="color: white" th:href="@{/watch}"
+				>Watch Videos</a
+			>
+		</header>
+		<h1>Welcome</h1>
+	</body>
+</html>
 ```
 
 ### upload.html
-The **upload.html** file is the application's view that lets users upload a MP4 file. 
+
+The **upload.html** file is the application's view that lets users upload a MP4 file.
 
 ```html
-     <!DOCTYPE html>
-     <html xmlns:th="http://www.thymeleaf.org">
-     <head lang="en">
-    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
-    <script th:src="|https://code.jquery.com/jquery-1.12.4.min.js|"></script>
-    <link rel="stylesheet" href="../public/css/styles.css" th:href="@{/css/styles.css}" />
-    <link rel="icon" href="../public/images/favicon.ico" th:href="@{/images/favicon.ico}" />
-    <title>Spring Framework</title>
-    </head>
-    <body>
-    <header th:replace="layout :: site-header"></header>
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+	<head lang="en">
+		<link
+			rel="stylesheet"
+			href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css"
+			integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm"
+			crossorigin="anonymous"
+		/>
+		<script
+			th:src="|https://code.jquery.com/jquery-1.12.4.min.js|"
+		></script>
+		<link
+			rel="stylesheet"
+			href="../public/css/styles.css"
+			th:href="@{/css/styles.css}"
+		/>
+		<link
+			rel="icon"
+			href="../public/images/favicon.ico"
+			th:href="@{/images/favicon.ico}"
+		/>
+		<title>Spring Framework</title>
+	</head>
+	<body>
+		<header th:replace="layout :: site-header"></header>
 
-  
-    <div class="container">
-        <h2>Video Stream over HTTP App</h2>
-        <p>Upload a MP4 video to an Amazon S3 bucket</p>
+		<div class="container">
+			<h2>Video Stream over HTTP App</h2>
+			<p>Upload a MP4 video to an Amazon S3 bucket</p>
 
-        <form method="POST" onsubmit="myFunction()" action="/fileupload" enctype="multipart/form-data">
-            Video Description:<input type="text" name="description" required><br>
-            <input type="file" name="file" /><br/><br/>
-            <input type="submit" value="Submit" />
-        </form>
-    </div>
-    </body>
-    </html>
+			<form
+				method="POST"
+				onsubmit="myFunction()"
+				action="/fileupload"
+				enctype="multipart/form-data"
+			>
+				Video Description:<input
+					type="text"
+					name="description"
+					required
+				/><br />
+				<input type="file" name="file" /><br /><br />
+				<input type="submit" value="Submit" />
+			</form>
+		</div>
+	</body>
+</html>
 ```
 
 ### video.html
-The **video.html** file is the application's view that displays both the video menu and the video content. 
+
+The **video.html** file is the application's view that displays both the video menu and the video content.
 
 ```html
-     <!DOCTYPE html>
-     <html xmlns:th="http://www.thymeleaf.org">
-     <head lang="en">
-     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
-    <script th:src="|https://code.jquery.com/jquery-1.12.4.min.js|"></script>
-    <link rel="stylesheet" href="../public/css/styles.css" th:href="@{/css/styles.css}" />
-    <link rel="icon" href="../public/images/favicon.ico" th:href="@{/images/favicon.ico}" />
-    <title>Spring Framework</title>
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+	<head lang="en">
+		<link
+			rel="stylesheet"
+			href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css"
+			integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm"
+			crossorigin="anonymous"
+		/>
+		<script
+			th:src="|https://code.jquery.com/jquery-1.12.4.min.js|"
+		></script>
+		<link
+			rel="stylesheet"
+			href="../public/css/styles.css"
+			th:href="@{/css/styles.css}"
+		/>
+		<link
+			rel="icon"
+			href="../public/images/favicon.ico"
+			th:href="@{/images/favicon.ico}"
+		/>
+		<title>Spring Framework</title>
 
-    <script>
-        $(function() {
-            getItems();
-        } );
+		<script>
+			$(function () {
+				getItems();
+			});
 
-        // Gets the MP4 tags to set in the scroll list.
-        function getItems() {
+			// Gets the MP4 tags to set in the scroll list.
+			function getItems() {
+				var xhr = new XMLHttpRequest();
+				xhr.addEventListener("load", loadTags, false);
+				xhr.open("GET", "../items", true);
+				xhr.setRequestHeader(
+					"Content-type",
+					"application/x-www-form-urlencoded"
+				); //necessary
+				xhr.send();
+			}
 
-            var xhr = new XMLHttpRequest();
-            xhr.addEventListener("load", loadTags, false);
-            xhr.open("GET", "../items", true);
-            xhr.setRequestHeader("Content-type", "application/x-www-form-urlencoded");//necessary
-            xhr.send();
-        }
+			function loadTags(event) {
+				var xml = event.target.responseText;
+				$(xml)
+					.find("Tag")
+					.each(function () {
+						var $field = $(this);
+						var name = $field.find("Name").text();
+						var description = $field.find("Description").text();
+						var vv = "Prime video";
 
-        function loadTags(event) {
+						// Append this data to the main list.
+						$(".list-group").append(
+							"<className='list-group-item list-group-item-action flex-column align-items-start'>"
+						);
+						$(".list-group").append(
+							"<h5 onMouseOver=\"this.style.cursor='pointer'\" onclick=\"addVideo('" +
+								name +
+								"')\" class='mb-1'>" +
+								name +
+								"</li>"
+						);
+						$(".list-group").append(
+							"<p class='mb-1'>" + description + "</p>"
+						);
+						$(".list-group").append(
+							"<small class='text-muted'>" + vv + "</small>"
+						);
+						$(".list-group").append("<br class='row'>");
+					});
+			}
 
-            var xml = event.target.responseText;
-            $(xml).find('Tag').each(function () {
+			function addVideo(myVid) {
+				var myVideo = document.getElementById("video1");
+				myVideo.src = "/" + myVid + "/stream";
+			}
+		</script>
+	</head>
+	<body>
+		<header th:replace="layout :: site-header"></header>
+		<div class="container">
+			<h3>Video Stream over HTTP App</h3>
+			<p>
+				This example reads a MP4 video located in an Amazon S3 bucket
+				and streams over HTTP
+			</p>
+			<div class="row">
+				<div class="col">
+					<video id="video1" width="750" height="440" controls>
+						<source type="video/mp4" />
 
-                var $field = $(this);
-                var name = $field.find('Name').text();
-                var description = $field.find('Description').text();
-                var vv = "Prime video"
-
-                // Append this data to the main list.
-                $('.list-group').append("<className='list-group-item list-group-item-action flex-column align-items-start'>");
-                $('.list-group').append("<h5 onMouseOver=\"this.style.cursor='pointer'\" onclick=\"addVideo('" +name+"')\" class='mb-1'>"+name+"</li>");
-                $('.list-group').append("<p class='mb-1'>"+description+"</p>");
-                $('.list-group').append("<small class='text-muted'>"+vv+"</small>");
-                $('.list-group').append("<br class='row'>");
-            });
-        }
-
-        function addVideo(myVid) {
-            var myVideo = document.getElementById("video1");
-            myVideo.src = "/"+myVid+"/stream";
-        }
-      </script>
-      </head>
-      <body>
-      <header th:replace="layout :: site-header"></header>
-      <div class="container">
-      <h3>Video Stream over HTTP App</h3>
-      <p>This example reads a MP4 video located in an Amazon S3 bucket and streams over HTTP</p>
-      <div class="row">
-        <div class="col">
-            <video id="video1" width="750" height="440" controls>
-                <source type="video/mp4">
-
-                Your browser does not support HTML video.
-            </video>
-        </div>
-        <div class="col">
-            <div class="list-group">
-            </div>
-        </div>
-      </div>
-    </div>
-
-    </body>
-    </html>
+						Your browser does not support HTML video.
+					</video>
+				</div>
+				<div class="col">
+					<div class="list-group"></div>
+				</div>
+			</div>
+		</div>
+	</body>
+</html>
 ```
+
 ## Create a JAR file for the application
 
 Package up the project into a .jar (JAR) file that you can deploy to Elastic Beanstalk by using the following Maven command.
 
-	mvn package
+    mvn package
 
 The JAR file is located in the target folder.
 
@@ -744,10 +811,10 @@ If this is your first time accessing this service, you will see a **Welcome to A
 #### To deploy the application to Elastic Beanstalk
 
 1. Open the Elastic Beanstalk console at https://console.aws.amazon.com/elasticbeanstalk/home.
-2. In the navigation pane, choose  **Applications**, and then choose **Create a new application**. This opens a wizard that creates your application and launches an appropriate environment.
+2. In the navigation pane, choose **Applications**, and then choose **Create a new application**. This opens a wizard that creates your application and launches an appropriate environment.
 3. On the **Create New Application** page, enter the following values:
-   + **Application Name** - Spring Video App
-   + **Description** - A description for the application
+    - **Application Name** - Spring Video App
+    - **Description** - A description for the application
 4. Choose **Create**.
 5. Choose **Create a new environment**.
 6. Choose **Web server environment**.
@@ -756,7 +823,7 @@ If this is your first time accessing this service, you will see a **Welcome to A
 9. In the **Platform** section, choose **Managed platform**.
 10. For **Platform**, choose **Java** (accept the default values for the other fields).
 11. In the **Application code** section, choose **Upload your code**.
-12. Choose **Local file**, and then select **Choose file**. Browse to the JAR file that you created.  
+12. Choose **Local file**, and then select **Choose file**. Browse to the JAR file that you created.
 13. Choose **Create environment**. You'll see the application being created.
 
 ![AWS Tracking Application](images/pic6.png)
@@ -764,8 +831,8 @@ If this is your first time accessing this service, you will see a **Welcome to A
 When you’re done, you will see the application state the **Health** is **Ok** .
 
 14. To change the port that Spring Boot listens on, add an environment variable named **SERVER_PORT**, with the value **5000**.
-11. Add a variable named **AWS_ACCESS_KEY_ID**, and then specify your access key value.
-12. Add a variable named **AWS_SECRET_ACCESS_KEY**, and then specify your secret key value. After the variables are configured, you'll see the URL for accessing the application.
+15. Add a variable named **AWS_ACCESS_KEY_ID**, and then specify your access key value.
+16. Add a variable named **AWS_SECRET_ACCESS_KEY**, and then specify your secret key value. After the variables are configured, you'll see the URL for accessing the application.
 
 ![AWS Tracking Application](images/pic7.png)
 
@@ -774,7 +841,8 @@ When you’re done, you will see the application state the **Health** is **Ok** 
 To access the application, open your browser and enter the URL for your application. You will see the Home page for your application.
 
 ### Next steps
+
 Congratulations! You have created a Spring Boot application that uses Amazon Lex to create an interactive user experience. As stated at the beginning of this tutorial, be sure to terminate all of the resources you create while going through this tutorial to ensure that you’re not charged.
 
 For more AWS multiservice examples, see
-[usecases](https://github.com/awsdocs/aws-doc-sdk-examples/tree/master/javav2/usecases).
+[usecases](https://github.com/picante-io/aws-doc-sdk-examples/tree/master/javav2/usecases).

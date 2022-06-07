@@ -1,10 +1,10 @@
-#  Creating the MongoDB web application item tracker
+# Creating the MongoDB web application item tracker
 
 You can develop a web application that tracks and reports on work items by using the following AWS services:
 
-+ An Amazon EC2 instance hosting a MongoDB database
-+ Amazon Simple Email Service (Amazon SES) to send email messages
-+ AWS Elastic Beanstalk to host the application
+-   An Amazon EC2 instance hosting a MongoDB database
+-   Amazon Simple Email Service (Amazon SES) to send email messages
+-   AWS Elastic Beanstalk to host the application
 
 **Note:** In this tutorial, we use the AWS SDK for Java version 2 to access Amazon SES.
 
@@ -14,7 +14,7 @@ This tutorial guides you through creating the **MongoDB Item Tracker** applicati
 
 ![AWS Tracking Application](images/pic4.png)
 
-**Note:** All of the Java code required to complete this tutorial is located in this GitHub repository (or you can copy the code from this tutorial).  
+**Note:** All of the Java code required to complete this tutorial is located in this GitHub repository (or you can copy the code from this tutorial).
 
 **Cost to complete:** The AWS services included in this document are included in the [AWS Free Tier](https://aws.amazon.com/free/?all-free-tier.sort-by=item.additionalFields.SortRank&all-free-tier.sort-order=asc).
 
@@ -22,44 +22,45 @@ This tutorial guides you through creating the **MongoDB Item Tracker** applicati
 
 #### Topics
 
-+ Prerequisites
-+ Understand the AWS tracker application
-+ Create an IntelliJ project 
-+ Add the Spring POM dependencies to your project
-+ Set up the Java packages in your project
-+ Create the Java classes
-+ Create the HTML files
-+ Create script files
-+ Create a JAR file for the application
-+ Deploy the application to Elastic Beanstalk
+-   Prerequisites
+-   Understand the AWS tracker application
+-   Create an IntelliJ project
+-   Add the Spring POM dependencies to your project
+-   Set up the Java packages in your project
+-   Create the Java classes
+-   Create the HTML files
+-   Create script files
+-   Create a JAR file for the application
+-   Deploy the application to Elastic Beanstalk
 
 ## Prerequisites
 
 To complete the tutorial, you need the following:
 
-+ An AWS account
-+ A Java IDE (this tutorial uses the IntelliJ IDE)
-+ Java 1.8 JDK
-+ Maven 3.6 or later
-+ A MongoDB instance running on an Amazon EC2 instance. For complete instructions, see  [Install and configure MongoDB community edition](https://docs.aws.amazon.com/dms/latest/sbs/CHAP_MongoDB2DocumentDB.02.html).
+-   An AWS account
+-   A Java IDE (this tutorial uses the IntelliJ IDE)
+-   Java 1.8 JDK
+-   Maven 3.6 or later
+-   A MongoDB instance running on an Amazon EC2 instance. For complete instructions, see [Install and configure MongoDB community edition](https://docs.aws.amazon.com/dms/latest/sbs/CHAP_MongoDB2DocumentDB.02.html).
 
 **Note**: After you deploy MongoDB to the Amazon EC2 instance, look at the **bind_ip** variable at the /etc/mongodb.conf file. By default, it is locked to localhost. Try setting the value to 0.0.0.0 or assign the IP that will be able to connect the DB to it.
 
 ## Understand the MongoDB Item Tracker application
+
 The **MongoDB Item Tracker** application uses a model that is based on a work item and contains these attributes:
 
-+ **date** - The start date of the item.
-+ **description** - The description of the item.
-+ **guide** - The deliverable that this item has an impact on.
-+ **username** - The person who performs the work item.
-+ **status** - The status of the item.
-+ **archive** - Whether this item is completed or is still being worked on.
+-   **date** - The start date of the item.
+-   **description** - The description of the item.
+-   **guide** - The deliverable that this item has an impact on.
+-   **username** - The person who performs the work item.
+-   **status** - The status of the item.
+-   **archive** - Whether this item is completed or is still being worked on.
 
-The data stored in MongoDB reflects this data model. Each item is stored as JSON, as shown in this illustration. 
+The data stored in MongoDB reflects this data model. Each item is stored as JSON, as shown in this illustration.
 
 ![AWS Tracking Application](images/pic2.png)
 
-Atter you create the Mongo instance, create a new collection named **items** under **local**. Enter the following data. The Java logic in this tutorial is dependent upon this collection.  
+Atter you create the Mongo instance, create a new collection named **items** under **local**. Enter the following data. The Java logic in this tutorial is dependent upon this collection.
 
       [
        { "_id" : "1db0971f-40de-4efd-aa1a-03f754ac9d0c", "archive" : "Open", "date" : "2020-09-19", "description" : "Working on Code Deploy Java Examples", "guide" : "Java V2    Developer Guide", ""status" " : "Completed writing S3 code", "username" : "user"  },
@@ -76,12 +77,13 @@ When a user logs into the application, they see the **Home** page.
 ![AWS Tracking Application](images/pic1a.png)
 
 #### Application functionality
+
 A user can perform these tasks in the **MongoDB Item Tracker** application:
 
-+ Enter an item
-+ View all items
-+ Modify items
-+ Send a report to an email recipient
+-   Enter an item
+-   View all items
+-   Modify items
+-   Send a report to an email recipient
 
 The user can select the email recipient from the **Select Manager** list and choose **Send Report** (see the List in the previous figure). Items are queried from the MongoDB and used to dynamically create an Excel document. Then the application uses Amazon SES to email the document to the selected email recipient. The following figure is an example of a report.
 
@@ -93,8 +95,8 @@ The user can select the email recipient from the **Select Manager** list and cho
 2. In the **New Project** dialog box, choose **Maven**, and then choose **Next**.
 3. For **GroupId**, enter **aws-spring**.
 4. For **ArtifactId**, enter **ItemTrackerMongoDB**.
-6. Choose **Next**.
-7. Choose **Finish**.
+5. Choose **Next**.
+6. Choose **Finish**.
 
 ## Add the Spring POM dependencies to your project
 
@@ -303,7 +305,6 @@ Ensure that the **pom.xml** file looks like the following.
        </build>
      </project>
 
-
 ## Set up the Java packages in your project
 
 Create a Java package in the **main/java** folder named **com.example**.
@@ -316,9 +317,9 @@ The Java files go into the following subpackages.
 
 These packages contain the following:
 
-+ **entities** - Contains Java files that represent the model. In this example, the model class is named **WorkItem**.
-+ **services** - Contains Java files that invoke AWS services. 
-+ **secureweb** - Contains the SpringJava classes.
+-   **entities** - Contains Java files that represent the model. In this example, the model class is named **WorkItem**.
+-   **services** - Contains Java files that invoke AWS services.
+-   **secureweb** - Contains the SpringJava classes.
 
 **Note:** The only class that is in **com.example** is **MongoWebApp**. All other classes are in the subpackages.
 
@@ -343,13 +344,12 @@ In the **com.example** package, create a class named **SecureWebApp**. This is t
      }
     }
 
-
 ### Create the Spring security classes
 
 Create a Java package named **com.example.secureweb**. Next, create these classes in this package.
 
-+ **WebSecurityConfig**
-+ **MainController**
+-   **WebSecurityConfig**
+-   **MainController**
 
 #### WebSecurityConfig class
 
@@ -411,7 +411,7 @@ The following Java code represents the **WebSecurityConfig** class. The role of 
     }
     }
 
-**Note:** In this example, the user credentials to log in to the application are **user** and **password**.  
+**Note:** In this example, the user credentials to log in to the application are **user** and **password**.
 
 ### Create the main controller class
 
@@ -425,7 +425,7 @@ The following Java code represents the **MainController** class.
 
      package com.example.secureweb;
 
-     import com.example.entities.WorkItem;  
+     import com.example.entities.WorkItem;
      import com.example.services.MongoDBService;
      import org.springframework.security.core.context.SecurityContextHolder;
      import org.springframework.stereotype.Controller;
@@ -584,9 +584,10 @@ The following Java code represents the **MainController** class.
 
 ### Create the WorkItem class
 
-Create a Java package named **com.example.entities**. Next, create a class named **WorkItem** that represents the application model.  
+Create a Java package named **com.example.entities**. Next, create a class named **WorkItem** that represents the application model.
 
 #### WorkItem class
+
 The following Java code represents the **WorkItem** class.
 
     package com.example.entities;
@@ -650,6 +651,7 @@ The following Java code represents the **WorkItem** class.
      }
 
 #### To create the WorkItem class
+
 1. In the **com.example.entities** package, create the **WorkItem** class.
 2. Copy the code from the **WorkItem** class and paste it into this class in your project.
 
@@ -657,12 +659,13 @@ The following Java code represents the **WorkItem** class.
 
 The service classes contain Java application logic that invokes AWS services. In this section, you create these classes:
 
-+ **MongoDBService** - Uses the Mongo Java API to interact with MongoDB deployed on Amazon EC2.
-+ **SendMessages** - Uses the Amazon SES API to send email messages.
-+ **WriteExcel** - Uses the Java Excel API to dynamically create a report (this does not use AWS SDK for Java APIs).
+-   **MongoDBService** - Uses the Mongo Java API to interact with MongoDB deployed on Amazon EC2.
+-   **SendMessages** - Uses the Amazon SES API to send email messages.
+-   **WriteExcel** - Uses the Java Excel API to dynamically create a report (this does not use AWS SDK for Java APIs).
 
 #### MongoDBService class
-The **MongoDBService** class uses the Mongo Java API to interact with the **items** collection. It adds new items, updates items, and perform queries. The following Java code represents the **MongoDBService** class. 
+
+The **MongoDBService** class uses the Mongo Java API to interact with the **items** collection. It adds new items, updates items, and perform queries. The following Java code represents the **MongoDBService** class.
 
     package com.example.services;
 
@@ -997,17 +1000,15 @@ The **MongoDBService** class uses the Mongo Java API to interact with the **item
         }
         return null;
     }
+
 }
 
+**Note**: Besure to specify the full IP address for the Amazon EC2 hosting MongoDB in the **mongoUri** variable. If you do not specify a valid IP address, then your application does not connect to the MongoDB instance.
 
-
-**Note**: Besure to specify the full IP address for the Amazon EC2 hosting MongoDB in the **mongoUri** variable. If you do not specify a valid IP address, then your application does not connect to the MongoDB instance. 
-
-**Note**: Note: You must set up inbound rules for the security group to connect to the database. You can set up one inbound rule for your development environment and another for Elastic Beanstalk (which will host the application). Setting up an inbound rule essentially means enabling an IP address to use the database. Once you set up the inbound rules, you can connect to the database from a client such as MySQL Workbench. For information about setting up security group inbound rules, see [Controlling Access with Security Groups](https://docs.aws.amazon.com/AmazonRDS/latest/UserGuide/Overview.RDSSecurityGroups.html).  
-
-
+**Note**: Note: You must set up inbound rules for the security group to connect to the database. You can set up one inbound rule for your development environment and another for Elastic Beanstalk (which will host the application). Setting up an inbound rule essentially means enabling an IP address to use the database. Once you set up the inbound rules, you can connect to the database from a client such as MySQL Workbench. For information about setting up security group inbound rules, see [Controlling Access with Security Groups](https://docs.aws.amazon.com/AmazonRDS/latest/UserGuide/Overview.RDSSecurityGroups.html).
 
 #### SendMessage class
+
 The **SendMessage** class uses the AWS SDK for Java V2 SES API to send an email message with an attachment (the Excel document) to an email recipient. An email address that you send an email message to must be verified. For information, see [Verifying an email address](https://docs.aws.amazon.com/ses/latest/DeveloperGuide//verify-email-addresses-procedure.html).
 
 The following Java code represents the **SendMessage** class. Notice that an **EnvironmentVariableCredentialsProvider** is used. This is because this code is deployed to Elastic Beanstalk. As a result, you need to use a credential provider that can be used on this platform. You can set up environment variables on Elastic Beanstalk to reflect your AWS credentials.
@@ -1158,7 +1159,7 @@ The following Java code represents the **SendMessage** class. Notice that an **E
       }
      }
 
-**Note:** Update the email **sender** address with a verified email address.      
+**Note:** Update the email **sender** address with a verified email address.
 
 #### WriteExcel class
 
@@ -1339,29 +1340,29 @@ The **WriteExcel** class dynamically creates an Excel report with the data marke
 
 1. Create the **com.example.services** package.
 2. Create the **MongoDBService** class and add the Java code to it.
-3. Create the **SendMessages** class and add the Java code to it.   
+3. Create the **SendMessages** class and add the Java code to it.
 4. Create the **WriteExcel** class and add the Java code to it.
 
 ## Create the HTML files
 
 At this point, you have created all of the Java files required for the **MongoDB Item Tracker** application. Now you create the HTML files that are required for the application's graphical user interface (GUI). Under the resource folder, create a **templates** folder, and then create the following HTML files:
 
-+ **login.html**
-+ **index.html**
-+ **add.html**
-+ **items.html**
-+ **layout.html**
+-   **login.html**
+-   **index.html**
+-   **add.html**
+-   **items.html**
+-   **layout.html**
 
-The **login.html** file is the login page where a user logs in to the application. This HTML file contains a form that sends a request to the **/login** handler that is defined in the **MainController** class. After a successful login, the **index.html** file is used as the application's home view. The **add.html** file represents the view for adding an item to the system. The **items.html** file is used to view and modify the items. Finally, the **layout.html** file represents the menu that is visible in all views.  
+The **login.html** file is the login page where a user logs in to the application. This HTML file contains a form that sends a request to the **/login** handler that is defined in the **MainController** class. After a successful login, the **index.html** file is used as the application's home view. The **add.html** file represents the view for adding an item to the system. The **items.html** file is used to view and modify the items. Finally, the **layout.html** file represents the menu that is visible in all views.
 
 #### login.html
 
 The following HTML code represents the login form.
 
     	<!DOCTYPE html>
-	<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="https://www.thymeleaf.org"
+    <html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="https://www.thymeleaf.org"
         xmlns:sec="https://www.thymeleaf.org/thymeleaf-extras-springsecurity3">
-	<head>
+    <head>
     	<title>Spring Security Example </title>
     	<style>
          body {font-family: Arial, Helvetica, sans-serif;}
@@ -1426,11 +1427,12 @@ The following HTML code represents the login form.
             }
           }
     	</style>
-	</head>
-	<body>
-	 <div th:if="${param.error}">
+    </head>
+    <body>
+     <div th:if="${param.error}">
     	   Invalid username and password.
-	</div>
+    </div>
+
    	<div th:if="${param.logout}">
      	  You have been logged out.
 	</div>
@@ -1502,9 +1504,9 @@ The following HTML code represents the **index.html** file. This file represents
 
 The following code represents the **add.html** file that enables users to add new items.
 
-	<html xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity3">
-	<html>
-	<head>
+    <html xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity3">
+    <html>
+    <head>
     	<title>Add Items</title>
     	<script th:src="|https://code.jquery.com/jquery-1.12.4.min.js|"></script>
     	<script th:src="|https://code.jquery.com/ui/1.11.4/jquery-ui.min.js|"></script>
@@ -1513,14 +1515,14 @@ The following code represents the **add.html** file that enables users to add ne
     	<!-- CSS files -->
     	<link rel="stylesheet" th:href="|https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css|"/>
     	<link rel="stylesheet" href="../public/css/styles.css" th:href="@{/css/styles.css}" />
-	</head>
-	<body>
-	<header th:replace="layout :: site-header"/>
-	<div class="container">
-	<h3>Welcome <span sec:authentication="principal.username">User</span> to MongoDB Item Tracker</h3>
+    </head>
+    <body>
+    <header th:replace="layout :: site-header"/>
+    <div class="container">
+    <h3>Welcome <span sec:authentication="principal.username">User</span> to MongoDB Item Tracker</h3>
     	<p>Add new items by filling in this table and clicking <b>Create Item</b></p>
 
-	<div class="row">
+    <div class="row">
     	<div class="col-lg-8 mx-auto">
 
         <form>
@@ -1549,16 +1551,16 @@ The following code represents the **add.html** file that enables users to add ne
             <button type="submit" class="btn btn-primary btn-xl" id="SendButton">Create Item</button>
         </form>
     	</div>
-	</div>
-	</div>
-	</body>
-	</html>
+    </div>
+    </div>
+    </body>
+    </html>
 
 #### items.html
 
 The following code represents the **items.html** file. This file enables users to modify items and send reports.
 
-	<!DOCTYPE html>
+    <!DOCTYPE html>
         <html xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity3">
         <html>
         <head>
@@ -1769,21 +1771,22 @@ The following code represents the **items.html** file. This file enables users t
     </html>
 
 **Note:** Replace the default email addresses with real email addresses in this file.
+
 #### layout.html
 
 The following code represents the **layout.html** file that represents the application's menu.
 
-	<!DOCTYPE html>
-	<html xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity3">
-	<head th:fragment="site-head">
+    <!DOCTYPE html>
+    <html xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity3">
+    <head th:fragment="site-head">
     	 <meta charset="UTF-8" />
     	 <link rel="icon" href="../public/img/favicon.ico" th:href="@{/img/favicon.ico}" />
     	 <script th:src="|https://code.jquery.com/jquery-1.12.4.min.js|"></script>
     	 <meta th:include="this :: head" th:remove="tag"/>
-	</head>
-	<body>
-	<!-- th:href calls a controller method - which returns the view -->
-	<header th:fragment="site-header">
+    </head>
+    <body>
+    <!-- th:href calls a controller method - which returns the view -->
+    <header th:fragment="site-header">
     	<a href="index.html" th:href="@{/}"><img src="../public/img/site-logo.png" th:src="@{/img/site-logo.png}" /></a>
     	<a href="#" style="color: white" th:href="@{/}">Home</a>
     	<a href="#" style="color: white" th:href="@{/add}">Add Items</a>
@@ -1794,16 +1797,16 @@ The following code represents the **layout.html** file that represents the appli
             <input type="submit"  value="Logout"/>
         </form>
          </div>
-	</header>
-	<h1>Welcome</h1>
-	<body>
-	<p>Welcome to  AWS Item Tracker.</p>
-	</body>
-	</html>
+    </header>
+    <h1>Welcome</h1>
+    <body>
+    <p>Welcome to  AWS Item Tracker.</p>
+    </body>
+    </html>
 
 #### To create the HTML files
 
-1. In the **resources** folder, create a folder named **templates**.  
+1. In the **resources** folder, create a folder named **templates**.
 2. In the **templates** folder, create the **login.html** file and paste the HTML code into this file.
 3. In the **templates** folder, create the **index.html** file and paste the HTML code into this file.
 4. In the **templates** folder, create the **add.html** file and paste the HTML code into this file.
@@ -1814,8 +1817,8 @@ The following code represents the **layout.html** file that represents the appli
 
 Both the **add** and **items** views use script files to communicate with the Spring controller. You have to ensure that these files are part of your project; otherwise, your application doesn’t work.
 
-+ **items.js**
-+ **contact_me.js**
+-   **items.js**
+-   **contact_me.js**
 
 Both files contain application logic that sends a request to the Spring MainController. In addition, these files handle the response and set the data in the view.
 
@@ -1823,7 +1826,7 @@ Both files contain application logic that sends a request to the Spring MainCont
 
 The following JavaScript code represents the **items.js** file that is used in the **items.html** view.
 
-	$(function() {
+    $(function() {
 
     	$( "#dialogtemplate2" ).dialog();
 
@@ -1841,7 +1844,7 @@ The following JavaScript code represents the **items.js** file that is used in t
     	var table = $('#myTable').DataTable();
     	$('#myTable tbody').on( 'click', 'tr', function () {
 
-	if ( $(this).hasClass('selected') ) {
+    if ( $(this).hasClass('selected') ) {
             $(this).removeClass('selected');
         }
         else {
@@ -1855,11 +1858,11 @@ The following JavaScript code represents the **items.js** file that is used in t
     	$('#reportbutton').prop("disabled",true);
     	$('#reportbutton').css("color", "#0d010d");
 
-	});
+    });
 
 
-	function modItem()
-	{
+    function modItem()
+    {
         var id = $('#id').val();
         var description = $('#description').val();
         var status = $('#status').val();
@@ -1889,7 +1892,7 @@ The following JavaScript code represents the **items.js** file that is used in t
         xhr.send("id=" + id + "&description=" + description+ "&status=" + status);
     	}
 
-	function loadMods(event) {
+    function loadMods(event) {
 
     	var msg = event.target.responseText;
     	alert("You have successfully modified item "+msg)
@@ -1900,20 +1903,20 @@ The following JavaScript code represents the **items.js** file that is used in t
 
     	//Refresh the grid
     	GetItems();
-	}
+    }
 
 
-	// Populate the table with work items
-	function GetItems() {
+    // Populate the table with work items
+    function GetItems() {
     	var xhr = new XMLHttpRequest();
     	var type="active";
     	xhr.addEventListener("load", loadItems, false);
     	xhr.open("POST", "../retrieve", true);   //buildFormit -- a Spring MVC controller
     	xhr.setRequestHeader("Content-type", "application/x-www-form-urlencoded");//necessary
     	xhr.send("type=" + type);
-	}
+    }
 
-	function loadItems(event) {
+    function loadItems(event) {
 
     	// Enable the buttons
     	$('#singlebutton').prop("disabled",false);
@@ -1953,9 +1956,9 @@ The following JavaScript code represents the **items.js** file that is used in t
     	});
 
     	document.getElementById("info3").innerHTML = "Active Items";
-	}
+    }
 
-	function ModifyItem() {
+    function ModifyItem() {
     	 var table = $('#myTable').DataTable();
     	 var myId="";
     	 var arr = [];
@@ -1974,7 +1977,7 @@ The following JavaScript code represents the **items.js** file that is used in t
       // Need to check that it's not an Archive item
     	var h3Val =  document.getElementById("info3").innerHTML;
 
-	if (h3Val=="Archive Items") {
+    if (h3Val=="Archive Items") {
           alert("You cannot modify an Archived item");
           return;
     	}
@@ -1985,11 +1988,11 @@ The following JavaScript code represents the **items.js** file that is used in t
        xhr.open("POST", "../modify", true);   //buildFormit -- a Spring MVC controller
        xhr.setRequestHeader("Content-type","application/x-www-form-urlencoded");//necessary
        xhr.send("id=" + myId);
-	}
+    }
 
 
-	// Handler for the uploadSave call
-	function onModifyLoad(event) {
+    // Handler for the uploadSave call
+    function onModifyLoad(event) {
 
      	var xml = event.target.responseText;
     	$(xml).find('Item').each(function () {
@@ -2005,7 +2008,7 @@ The following JavaScript code represents the **items.js** file that is used in t
         $('#status').val(status);
 
     	});
-	}
+    }
 
 
        function Report() {
@@ -2019,14 +2022,14 @@ The following JavaScript code represents the **items.js** file that is used in t
         xhr.send("email=" + email);
     	}
 
-	function onReport(event) {
+    function onReport(event) {
 
     	 var data = event.target.responseText;
     	 alert(data);
-	 }
+     }
 
 
-	 function GetArcItems(){
+     function GetArcItems(){
 
     	  var xhr = new XMLHttpRequest();
     	  var type="archive";
@@ -2034,9 +2037,9 @@ The following JavaScript code represents the **items.js** file that is used in t
     	  xhr.open("POST", "../retrieve", true);   //buildFormit -- a Spring MVC controller
     	  xhr.setRequestHeader("Content-type", "application/x-www-form-urlencoded");//necessary
     	  xhr.send("type=" + type);
-	  }
+      }
 
- 	function loadArcItems(event) {
+function loadArcItems(event) {
 
     	 // Disable buttons when Archive button
     	  $('#reportbutton').prop("disabled",true);
@@ -2077,14 +2080,14 @@ The following JavaScript code represents the **items.js** file that is used in t
 
           document.getElementById("info3").innerHTML = "Archive Items";
 
-	}
+    }
 
-	 function archiveItem() {
+     function archiveItem() {
     	  var table = $('#myTable').DataTable();
     	  var myId="";
     	  var arr = [];
 
-	 $.each(table.rows('.selected').data(), function() {
+     $.each(table.rows('.selected').data(), function() {
 
           var value = this[0];
           myId = value;
@@ -2100,9 +2103,9 @@ The following JavaScript code represents the **items.js** file that is used in t
     	xhr.open("POST", "../archive", true);   //buildFormit -- a Spring MVC controller
     	xhr.setRequestHeader("Content-type","application/x-www-form-urlencoded");//necessary
     	xhr.send("id=" + myId);
-	}
+    }
 
-	function onArch(event) {
+    function onArch(event) {
 
     	 var xml = event.target.responseText;
     	 alert("Item "+xml +" is archived now");
@@ -2111,13 +2114,13 @@ The following JavaScript code represents the **items.js** file that is used in t
     	GetItems();
        }
 
- #### contact_me.js file
+#### contact_me.js file
 
 The following JavaScript code represents the **contact_me.js** file that is used in the **add.html** view.
 
-	$(function() {
+    $(function() {
 
-	    $("#SendButton" ).click(function($e) {
+        $("#SendButton" ).click(function($e) {
 
             var guide = $('#guide').val();
             var description = $('#description').val();
@@ -2137,7 +2140,7 @@ The following JavaScript code represents the **contact_me.js** file that is used
 
         var xhr = new XMLHttpRequest();
         xhr.addEventListener("load", loadNewItems, false);
-        xhr.open("POST", "../add", true);   
+        xhr.open("POST", "../add", true);
         xhr.setRequestHeader("Content-type", "application/x-www-form-urlencoded");//necessary
         xhr.send("guide=" + guide + "&description=" + description+ "&status=" + status);
     } );// END of the Send button click
@@ -2158,7 +2161,7 @@ The following JavaScript code represents the **contact_me.js** file that is used
 
 Package up the project into a .jar (JAR) file that you can deploy to Elastic Beanstalk by using the following Maven command.
 
-	mvn package
+    mvn package
 
 The JAR file is located in the target folder. The POM file contains the **spring-boot-maven-plugin** that builds an executable JAR file that includes the dependencies. Without the dependencies, the application does not run on Elastic Beanstalk. For more information, see [Spring Boot Maven Plugin](https://www.baeldung.com/executable-jar-with-maven).
 
@@ -2171,10 +2174,10 @@ If this is your first time accessing this service, you will see a **Welcome to A
 #### To deploy the MongoDB Tracker application to Elastic Beanstalk
 
 1. Open the Elastic Beanstalk console at https://console.aws.amazon.com/elasticbeanstalk/home.
-2. In the navigation pane, choose  **Applications**, and then choose **Create a new application**. This opens a wizard that creates your application and launches an appropriate environment.
+2. In the navigation pane, choose **Applications**, and then choose **Create a new application**. This opens a wizard that creates your application and launches an appropriate environment.
 3. On the **Create New Application** page, enter the following values:
-   + **Application Name** - MongoDB Tracker
-   + **Description** - A description for the application
+    - **Application Name** - MongoDB Tracker
+    - **Description** - A description for the application
 4. Choose **Create**.
 5. Choose **Create a new environment**.
 6. Choose **Web server environment**.
@@ -2183,7 +2186,7 @@ If this is your first time accessing this service, you will see a **Welcome to A
 9. In the **Platform** section, choose **Managed platform**.
 10. For **Platform**, choose **Java** (accept the default values for the other fields).
 11. In the **Application code** section, choose **Upload your code**.
-12. Choose **Local file**, and then select **Choose file**. Browse to the JAR file that you created.  
+12. Choose **Local file**, and then select **Choose file**. Browse to the JAR file that you created.
 13. Choose **Create environment**. You'll see the application being created.
 
 ![AWS Tracking Application](images/pic8.png)
@@ -2191,17 +2194,16 @@ If this is your first time accessing this service, you will see a **Welcome to A
 When you’re done, you will see the application state the **Health** is **Ok** .
 
 14. To change the port that Spring Boot listens on, add an environment variable named **SERVER_PORT**, with the value **5000**.
-11. Add a variable named **AWS_ACCESS_KEY_ID**, and then specify your access key value.
-12. Add a variable named **AWS_SECRET_ACCESS_KEY**, and then specify your secret key value. After the variables are configured, you'll see the URL for accessing the application.
+15. Add a variable named **AWS_ACCESS_KEY_ID**, and then specify your access key value.
+16. Add a variable named **AWS_SECRET_ACCESS_KEY**, and then specify your secret key value. After the variables are configured, you'll see the URL for accessing the application.
 
 **Note:** If you don't know how to set variables, see [Environment properties and other software settings](https://docs.aws.amazon.com/elasticbeanstalk/latest/dg/environments-cfg-softwaresettings.html).
 
 To access the application, open your browser and enter the URL for your application. You will see the login page for your application.
 
-
 ### Next steps
+
 Congratulations, you have created and deployed the MongoDB Item Tracker application that interacts with AWS services. As stated at the beginning of this tutorial, be sure to terminate all of the resources you created while going through this tutorial to ensure that you’re no longer charged.
 
 For more AWS multiservice examples, see
-[usecases](https://github.com/awsdocs/aws-doc-sdk-examples/tree/master/javav2/usecases).
-
+[usecases](https://github.com/picante-io/aws-doc-sdk-examples/tree/master/javav2/usecases).

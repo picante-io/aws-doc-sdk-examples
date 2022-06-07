@@ -1,75 +1,75 @@
-#  Creating the Amazon Relational Database Service item tracker
+# Creating the Amazon Relational Database Service item tracker
 
 ## Overview
 
-| Heading      | Description |
-| ----------- | ----------- |
-| Description | Discusses how to develop a dynamic web application that tracks and reports on Amazon Relational Database Service (Amazon RDS) data.     |
-| Audience   |  Developer (beginner / intermediate)        |
-| Updated   | 3/15/2022        |
-| Required skills   | Java, Maven  |
+| Heading         | Description                                                                                                                         |
+| --------------- | ----------------------------------------------------------------------------------------------------------------------------------- |
+| Description     | Discusses how to develop a dynamic web application that tracks and reports on Amazon Relational Database Service (Amazon RDS) data. |
+| Audience        | Developer (beginner / intermediate)                                                                                                 |
+| Updated         | 3/15/2022                                                                                                                           |
+| Required skills | Java, Maven                                                                                                                         |
 
 ## Purpose
 
 You can develop a web application that tracks and reports on work items by using the following AWS services:
 
-+ Amazon Relational Database Service (Amazon RDS)
-+ Amazon Simple Email Service (the AWS SDK for Java SDK version 2 is used to access Amazon SES)
+-   Amazon Relational Database Service (Amazon RDS)
+-   Amazon Simple Email Service (the AWS SDK for Java SDK version 2 is used to access Amazon SES)
 
-The application you create is named *AWS Tracker*, and uses Spring Boot APIs to build a model, different views, and a controller. This application requires a user to log in. For more information, see [Spring Boot](https://www.tutorialspoint.com/spring_boot/index.htm).
+The application you create is named _AWS Tracker_, and uses Spring Boot APIs to build a model, different views, and a controller. This application requires a user to log in. For more information, see [Spring Boot](https://www.tutorialspoint.com/spring_boot/index.htm).
 
 #### Topics
 
-+ Prerequisites
-+ Understand the AWS Tracker application
-+ Create an IntelliJ project named AWSItemTracker
-+ Add the Spring POM dependencies to your project
-+ Setup the Java packages in your project
-+ Create the Java classes
-+ Create the HTML files
-+ Create script files
-+ Run the application
+-   Prerequisites
+-   Understand the AWS Tracker application
+-   Create an IntelliJ project named AWSItemTracker
+-   Add the Spring POM dependencies to your project
+-   Setup the Java packages in your project
+-   Create the Java classes
+-   Create the HTML files
+-   Create script files
+-   Run the application
 
 ## Prerequisites
 
 To complete the tutorial, you need the following:
 
-+ An AWS account
-+ A Java IDE (this tutorial uses the IntelliJ IDE)
-+ Java JDK 1.8
-+ Maven 3.6 or later
+-   An AWS account
+-   A Java IDE (this tutorial uses the IntelliJ IDE)
+-   Java JDK 1.8
+-   Maven 3.6 or later
 
 ### Important
 
-+ The AWS services included in this document are included in the [AWS Free Tier](https://aws.amazon.com/free/?all-free-tier.sort-by=item.additionalFields.SortRank&all-free-tier.sort-order=asc).
-+  This code has not been tested in all AWS Regions. Some AWS services are available only in specific regions. For more information, see [AWS Regional Services](https://aws.amazon.com/about-aws/global-infrastructure/regional-product-services). 
-+ Running this code might result in charges to your AWS account. 
-+ Be sure to terminate all of the resources you create while going through this tutorial to ensure that you’re not charged.
+-   The AWS services included in this document are included in the [AWS Free Tier](https://aws.amazon.com/free/?all-free-tier.sort-by=item.additionalFields.SortRank&all-free-tier.sort-order=asc).
+-   This code has not been tested in all AWS Regions. Some AWS services are available only in specific regions. For more information, see [AWS Regional Services](https://aws.amazon.com/about-aws/global-infrastructure/regional-product-services).
+-   Running this code might result in charges to your AWS account.
+-   Be sure to terminate all of the resources you create while going through this tutorial to ensure that you’re not charged.
 
 ### Creating the resources
 
-Create an Amazon RDS MySQL DB instance that has a table named **Work** and a primary key named **idwork** (this table is described in a following section). For information about creating an Amazon RDS database, see [Creating a MySQL DB instance and connecting to a database on a MySQL DB instance](https://docs.aws.amazon.com/AmazonRDS/latest/UserGuide/CHAP_GettingStarted.CreatingConnecting.MySQL.html). 
+Create an Amazon RDS MySQL DB instance that has a table named **Work** and a primary key named **idwork** (this table is described in a following section). For information about creating an Amazon RDS database, see [Creating a MySQL DB instance and connecting to a database on a MySQL DB instance](https://docs.aws.amazon.com/AmazonRDS/latest/UserGuide/CHAP_GettingStarted.CreatingConnecting.MySQL.html).
 
-After you create the database, in the **Connectivity & security** section, view the **Endpoint** and **Port** of the DB instance. You need these values when you create a connection to the database using the Java JDBC API (this is shown later in this tutorial). 
+After you create the database, in the **Connectivity & security** section, view the **Endpoint** and **Port** of the DB instance. You need these values when you create a connection to the database using the Java JDBC API (this is shown later in this tutorial).
 
 ![AWS Tracking Application](images/trackEndpoint2.png)
-      
-**Note:** You must set up an inbound rule for the security group to connect to the database from your development environment. Setting up an inbound rule essentially means enabling an IP address to use the database. After you set up an inbound rule, you can connect to the database from a client such as MySQL Workbench. For more information, see [Controlling Access with Security Groups](https://docs.aws.amazon.com/AmazonRDS/latest/UserGuide/Overview.RDSSecurityGroups.html).  
 
-In addition, make sure that you set up your Java developer environment before following along with this tutorial. For more information, see [Get started with the AWS SDK for Java 2.x](https://docs.aws.amazon.com/sdk-for-java/latest/developer-guide/get-started.html). 
+**Note:** You must set up an inbound rule for the security group to connect to the database from your development environment. Setting up an inbound rule essentially means enabling an IP address to use the database. After you set up an inbound rule, you can connect to the database from a client such as MySQL Workbench. For more information, see [Controlling Access with Security Groups](https://docs.aws.amazon.com/AmazonRDS/latest/UserGuide/Overview.RDSSecurityGroups.html).
+
+In addition, make sure that you set up your Java developer environment before following along with this tutorial. For more information, see [Get started with the AWS SDK for Java 2.x](https://docs.aws.amazon.com/sdk-for-java/latest/developer-guide/get-started.html).
 
 ## Understand the AWS Tracker application
 
 The AWS Tracker application uses a model that is based on a work item and contains these attributes:
 
-+ **date** - The start date of the item.
-+ **description** - The description of the item.
-+ **guide** - The deliverable that this item has an impact on.
-+ **username** - The person who performs the work item.
-+ **status** - The status of the item.
-+ **archive** - Whether this item is completed or is still being worked on.
+-   **date** - The start date of the item.
+-   **description** - The description of the item.
+-   **guide** - The deliverable that this item has an impact on.
+-   **username** - The person who performs the work item.
+-   **status** - The status of the item.
+-   **archive** - Whether this item is completed or is still being worked on.
 
-**Note**: The username is the user who logs into this application. In this example, the username is named **user**. 
+**Note**: The username is the user who logs into this application. In this example, the username is named **user**.
 
 The following figure shows the login page.
 
@@ -83,17 +83,17 @@ When a user logs into the system, they see the **Home** page.
 
 A user can perform these tasks in the AWS Tracker application:
 
-+ Enter an item into the system
-+ View all active items
-+ View archived items that are complete
-+ Modify active items
-+ Send a report to an email recipient
+-   Enter an item into the system
+-   View all active items
+-   View archived items that are complete
+-   Modify active items
+-   Send a report to an email recipient
 
 The following figure shows the new item section.
 
 ![AWS Tracking Application](images/AWT1.png)
 
-A user can retrieve *active* or *archive* items. For example, a user can choose **Get Active Items** to get a dataset that's retrieved from an Amazon RDS database and displayed in the web application.
+A user can retrieve _active_ or _archive_ items. For example, a user can choose **Get Active Items** to get a dataset that's retrieved from an Amazon RDS database and displayed in the web application.
 
 ![AWS Tracking Application](images/home2.png)
 
@@ -102,15 +102,16 @@ The user can select the email recipient from the **Select Manager** list and cho
 ![AWS Tracking Application](images/AWT12.png)
 
 #### Work table
+
 The database is MySQL and contains a table named **Work**. The table contains the following fields:
 
-+ **idwork** - A VARCHAR(45) value that represents the PK.
-+ **date** - A date value that specifies the date the item was created.
-+ **description** - A VARCHAR(400) value that describes the item.
-+ **guide** - A VARCHAR(45) value that represents the deliverable being worked on.
-+ **status** - A VARCHAR(400) value that describes the status.
-+ **username** - A VARCHAR(45) value that represents the user who entered the item.
-+ **archive** - A TINYINT(4) value that represents whether this is an active or archive item.
+-   **idwork** - A VARCHAR(45) value that represents the PK.
+-   **date** - A date value that specifies the date the item was created.
+-   **description** - A VARCHAR(400) value that describes the item.
+-   **guide** - A VARCHAR(45) value that represents the deliverable being worked on.
+-   **status** - A VARCHAR(400) value that describes the status.
+-   **username** - A VARCHAR(45) value that represents the user who entered the item.
+-   **archive** - A TINYINT(4) value that represents whether this is an active or archive item.
 
 The following figure shows the **work** table.
 
@@ -122,8 +123,8 @@ The following figure shows the **work** table.
 2. In the **New Project** dialog box, choose **Maven**, and then choose **Next**.
 3. For **GroupId**, enter **aws-spring**.
 4. For **ArtifactId**, enter **AWSItemTracker**.
-6. Choose **Next**.
-7. Choose **Finish**.
+5. Choose **Next**.
+6. Choose **Finish**.
 
 ## Add the POM dependencies to your project
 
@@ -319,10 +320,10 @@ The Java files go into the following subpackages.
 
 These packages contain the following:
 
-+ **entities** - Contains Java files that represent the model. In this example, the model class is named **WorkItem**.
-+ **jdbc** - Contains Java files that use the JDBC API to interact with the RDS database.
-+ **services** - Contains Java files that invoke AWS services. For example, the **software.amazon.awssdk.services.ses.SesClient** object is used to send email messages.
-+ **securingweb** - Contains Java files required for Spring security.
+-   **entities** - Contains Java files that represent the model. In this example, the model class is named **WorkItem**.
+-   **jdbc** - Contains Java files that use the JDBC API to interact with the RDS database.
+-   **services** - Contains Java files that invoke AWS services. For example, the **software.amazon.awssdk.services.ses.SesClient** object is used to send email messages.
+-   **securingweb** - Contains Java files required for Spring security.
 
 ## Create the Java classes
 
@@ -332,11 +333,12 @@ Create the Java classes, including the Spring classes. In this application, a Ja
 
 Create a Java package named **com.aws.securingweb**. Next, create these classes in this package:
 
-+ **MainController**
-+ **WebSecurityConfig**
+-   **MainController**
+-   **WebSecurityConfig**
 
 #### SecuringWebApplication class
-The following Java code represents the **SecuringWebApplication** class. This is the entry point into a Spring boot application. Create this class in the **com.aws** package. 
+
+The following Java code represents the **SecuringWebApplication** class. This is the entry point into a Spring boot application. Create this class in the **com.aws** package.
 
 ```java
     package com.aws;
@@ -354,7 +356,8 @@ The following Java code represents the **SecuringWebApplication** class. This is
 ```
 
 #### WebSecurityConfig class
-The following Java code represents the **WebSecurityConfig** class. The role of this class is to ensure only authenticated users can view the application. Create this class in the **com.aws.securingweb** package. 
+
+The following Java code represents the **WebSecurityConfig** class. The role of this class is to ensure only authenticated users can view the application. Create this class in the **com.aws.securingweb** package.
 
 ```java
     package com.aws.securingweb;
@@ -412,7 +415,8 @@ The following Java code represents the **WebSecurityConfig** class. The role of 
     }
     }
 ```
-**Note**: In this example, the user credentials to log into the application are **user** and **password**.  
+
+**Note**: In this example, the user credentials to log into the application are **user** and **password**.
 
 ### Create the main controller class
 
@@ -580,7 +584,7 @@ The following Java code represents the **MainController** class.
 
 ### Create the WorkItem class
 
-Create a Java package named **com.aws.entities**. Next, create a class, named **WorkItem**, that represents the application model.  
+Create a Java package named **com.aws.entities**. Next, create a class, named **WorkItem**, that represents the application model.
 
 ```java
     package com.aws.entities;
@@ -648,11 +652,11 @@ Create a Java package named **com.aws.entities**. Next, create a class, named **
 
 Create a Java package named **com.aws.jdbc**. Next, create these Java classes that are required to perform database operations:
 
-+ **ConnectionHelper** - Creates a connection to the RDS MySQL instance.
-+ **InjectWorkService** - Injects items into the MySQL instance.
-+ **RetrieveItems** - Retrieves items from the MySQL instance.
+-   **ConnectionHelper** - Creates a connection to the RDS MySQL instance.
+-   **InjectWorkService** - Injects items into the MySQL instance.
+-   **RetrieveItems** - Retrieves items from the MySQL instance.
 
-**Note**: This tutorial uses the JDBC API to interact with the MySQL instance.   
+**Note**: This tutorial uses the JDBC API to interact with the MySQL instance.
 
 #### ConnectionHelper class
 
@@ -1204,13 +1208,14 @@ The following Java code represents the **RetrieveItems** class.
 
 The service classes contain Java application logic that uses AWS services. In this section, you create these classes:
 
-+ **SendMessages** - Uses the Amazon SES API to send email messages.
-+ **WriteExcel** - Uses the Java Excel API to dynamically create a report (this does not use AWS SDK for Java APIs).
+-   **SendMessages** - Uses the Amazon SES API to send email messages.
+-   **WriteExcel** - Uses the Java Excel API to dynamically create a report (this does not use AWS SDK for Java APIs).
 
 #### SendMessage class
+
 The **SendMessage** class uses the AWS SDK for Java V2 SES API to send an email message with an attachment (the Excel document) to an email recipient. An email address that you send an email message to must be verified. For information, see [Verifying an email address](https://docs.aws.amazon.com/ses/latest/DeveloperGuide//verify-email-addresses-procedure.html).
 
-The following Java code represents the **SendMessage** class. 
+The following Java code represents the **SendMessage** class.
 
 ```java
     package com.aws.services;
@@ -1357,7 +1362,7 @@ The following Java code represents the **SendMessage** class.
      }
 ```
 
-**Note:** Update the email **sender** address with a verified email address; otherwise, the email is not sent. For information, see [Verifying email addresses in Amazon SES](https://docs.aws.amazon.com/ses/latest/DeveloperGuide/verify-email-addresses.html).       
+**Note:** Update the email **sender** address with a verified email address; otherwise, the email is not sent. For information, see [Verifying email addresses in Amazon SES](https://docs.aws.amazon.com/ses/latest/DeveloperGuide/verify-email-addresses.html).
 
 #### WriteExcel class
 
@@ -1431,7 +1436,7 @@ The **WriteExcel** class dynamically creates an Excel report with the MySQL data
     // Create Headings in the Excel spreadsheet.
     private void createLabel(WritableSheet sheet)
             throws WriteException {
-       
+
         WritableFont times10pt = new WritableFont(WritableFont.TIMES, 10);
         times = new WritableCellFormat(times10pt);
         times.setWrap(true);
@@ -1529,115 +1534,131 @@ The **WriteExcel** class dynamically creates an Excel report with the MySQL data
 
 At this point, you have created all of the Java files required for the AWS Tracking application. Now you create the HTML files that are required for the application's graphical user interface (GUI). Under the **resource** folder, create a **templates** folder and then create the following HTML files:
 
-+ **login.html**
-+ **index.html**
-+ **add.html**
-+ **items.html**
-+ **layout.html**
+-   **login.html**
+-   **index.html**
+-   **add.html**
+-   **items.html**
+-   **layout.html**
 
-The **login.html** file is the login page where a user logs into the application. This HTML file contains a form that sends a request to the **/login** handler that is defined in the **MainController** class. After a successful login, the **index.html** file is used as the application's home view. The **add.html** file represents the view for adding an item to the system. The **items.html** file is used to view and modify the items. Finally, the **layout.html** file represents the menu visible in all views.  
+The **login.html** file is the login page where a user logs into the application. This HTML file contains a form that sends a request to the **/login** handler that is defined in the **MainController** class. After a successful login, the **index.html** file is used as the application's home view. The **add.html** file represents the view for adding an item to the system. The **items.html** file is used to view and modify the items. Finally, the **layout.html** file represents the menu visible in all views.
 
 #### login.html
 
 The following HTML code represents the login form.
 
 ```html
-    	<!DOCTYPE html>
-	<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="https://www.thymeleaf.org"
-        xmlns:sec="https://www.thymeleaf.org/thymeleaf-extras-springsecurity3">
+<!DOCTYPE html>
+<html
+	xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:th="https://www.thymeleaf.org"
+	xmlns:sec="https://www.thymeleaf.org/thymeleaf-extras-springsecurity3"
+>
 	<head>
-    	<title>Spring Security Example </title>
-    	<style>
-         body {font-family: Arial, Helvetica, sans-serif;}
-         form {border: 3px solid #f1f1f1;}
+		<title>Spring Security Example</title>
+		<style>
+			body {
+				font-family: Arial, Helvetica, sans-serif;
+			}
+			form {
+				border: 3px solid #f1f1f1;
+			}
 
-         input[type=text], input[type=password] {
-            width: 100%;
-            padding: 12px 20px;
-            margin: 8px 0;
-            display: inline-block;
-            border: 1px solid #ccc;
-            box-sizing: border-box;
-          }
+			input[type="text"],
+			input[type="password"] {
+				width: 100%;
+				padding: 12px 20px;
+				margin: 8px 0;
+				display: inline-block;
+				border: 1px solid #ccc;
+				box-sizing: border-box;
+			}
 
-          button {
-            background-color: #4CAF50;
-            color: white;
-            padding: 14px 20px;
-            margin: 8px 0;
-            border: none;
-            cursor: pointer;
-            width: 100%;
-           }
+			button {
+				background-color: #4caf50;
+				color: white;
+				padding: 14px 20px;
+				margin: 8px 0;
+				border: none;
+				cursor: pointer;
+				width: 100%;
+			}
 
-        button:hover {
-            opacity: 0.8;
-        }
+			button:hover {
+				opacity: 0.8;
+			}
 
-        .cancelbtn {
-            width: auto;
-            padding: 10px 18px;
-            background-color: #f44336;
-        }
+			.cancelbtn {
+				width: auto;
+				padding: 10px 18px;
+				background-color: #f44336;
+			}
 
-        .imgcontainer {
-            text-align: center;
-            margin: 24px 0 12px 0;
-        }
+			.imgcontainer {
+				text-align: center;
+				margin: 24px 0 12px 0;
+			}
 
-        img.avatar {
-            width: 40%;
-            border-radius: 50%;
-        }
+			img.avatar {
+				width: 40%;
+				border-radius: 50%;
+			}
 
-        .container {
-            padding: 16px;
-        }
+			.container {
+				padding: 16px;
+			}
 
-        span.psw {
-            float: right;
-            padding-top: 16px;
-        }
+			span.psw {
+				float: right;
+				padding-top: 16px;
+			}
 
-        /* Change styles for span and cancel button on extra small screens */
-        @media screen and (max-width: 300px) {
-            span.psw {
-                display: block;
-                float: none;
-            }
-            .cancelbtn {
-                width: 100%;
-            }
-          }
-    	</style>
+			/* Change styles for span and cancel button on extra small screens */
+			@media screen and (max-width: 300px) {
+				span.psw {
+					display: block;
+					float: none;
+				}
+				.cancelbtn {
+					width: 100%;
+				}
+			}
+		</style>
 	</head>
 	<body>
-	 <div th:if="${param.error}">
-    	   Invalid username and password.
-	</div>
-   	<div th:if="${param.logout}">
-     	  You have been logged out.
-	</div>
-	<form th:action="@{/login}" method="post">
-    	<div class="container">
-        <label for="username"><b>Username</b></label>
-        <input type="text" placeholder="Enter Username" id="username" name="username" value ="user" required>
+		<div th:if="${param.error}">Invalid username and password.</div>
+		<div th:if="${param.logout}">You have been logged out.</div>
+		<form th:action="@{/login}" method="post">
+			<div class="container">
+				<label for="username"><b>Username</b></label>
+				<input
+					type="text"
+					placeholder="Enter Username"
+					id="username"
+					name="username"
+					value="user"
+					required
+				/>
 
-        <label for="password"><b>Password</b></label>
-        <input type="password" placeholder="Enter Password" id ="password" name="password" value ="password" required>
+				<label for="password"><b>Password</b></label>
+				<input
+					type="password"
+					placeholder="Enter Password"
+					id="password"
+					name="password"
+					value="password"
+					required
+				/>
 
-        <button type="submit">Login</button>
+				<button type="submit">Login</button>
+			</div>
 
-       </div>
-
-       <div class="container" style="background-color:#f1f1f1">
-        <button type="button" class="cancelbtn">Cancel</button>
-        <span class="psw">Forgot <a href="#">password?</a></span>
-       </div>
-       </form>
-
-       </body>
-      </html>
+			<div class="container" style="background-color:#f1f1f1">
+				<button type="button" class="cancelbtn">Cancel</button>
+				<span class="psw">Forgot <a href="#">password?</a></span>
+			</div>
+		</form>
+	</body>
+</html>
 ```
 
 #### index.html
@@ -1686,310 +1707,450 @@ The following HTML code represents the **index.html** file. This file represents
     </body>
     </html>
 ```
-	     
+
 #### add.html
 
 The following code represents the **add.html** file that enables users to add new items.
 
 ```html
-	<html xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity3">
+<html
+	xmlns:th="http://www.thymeleaf.org"
+	xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity3"
+>
 	<html>
-	<head>
-    	<title>Add Items</title>
-    	<script th:src="|https://code.jquery.com/jquery-1.12.4.min.js|"></script>
-    	<script th:src="|https://code.jquery.com/ui/1.11.4/jquery-ui.min.js|"></script>
-    	<script src="../public/js/contact_me.js" th:src="@{/js/contact_me.js}"></script>
+		<head>
+			<title>Add Items</title>
+			<script
+				th:src="|https://code.jquery.com/jquery-1.12.4.min.js|"
+			></script>
+			<script
+				th:src="|https://code.jquery.com/ui/1.11.4/jquery-ui.min.js|"
+			></script>
+			<script
+				src="../public/js/contact_me.js"
+				th:src="@{/js/contact_me.js}"
+			></script>
 
-    	<!-- CSS files -->
-    	<link rel="stylesheet" th:href="|https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css|"/>
-    	<link rel="stylesheet" href="../public/css/styles.css" th:href="@{/css/styles.css}" />
-	</head>
-	<body>
-	<header th:replace="layout :: site-header"/>
-	<div class="container">
-	<h3>Welcome <span sec:authentication="principal.username">User</span> to AWS Item Tracker</h3>
-    	<p>Add new items by filling in this table and clicking <b>Create Item</b></p>
+			<!-- CSS files -->
+			<link
+				rel="stylesheet"
+				th:href="|https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css|"
+			/>
+			<link
+				rel="stylesheet"
+				href="../public/css/styles.css"
+				th:href="@{/css/styles.css}"
+			/>
+		</head>
+		<body>
+			<header th:replace="layout :: site-header" />
+			<div class="container">
+				<h3>
+					Welcome
+					<span sec:authentication="principal.username">User</span> to
+					AWS Item Tracker
+				</h3>
+				<p>
+					Add new items by filling in this table and clicking
+					<b>Create Item</b>
+				</p>
 
-	<div class="row">
-    	<div class="col-lg-8 mx-auto">
-
-        <form>
-            <div class="control-group">
-                <div class="form-group floating-label-form-group controls mb-0 pb-2">
-                    <label>Guide</label>
-                    <input class="form-control" id="guide" type="guide" placeholder="AWS Guide/AWS API" required="required" data-validation-required-message="Please enter the AWS Guide.">
-                    <p class="help-block text-danger"></p>
-                </div>
-            </div>
-            <div class="control-group">
-                <div class="form-group floating-label-form-group controls mb-0 pb-2">
-                    <label>Description</label>
-                    <textarea class="form-control" id="description" rows="5" placeholder="Description" required="required" data-validation-required-message="Please enter a description."></textarea>
-                    <p class="help-block text-danger"></p>
-                </div>
-            </div>
-            <div class="control-group">
-                <div class="form-group floating-label-form-group controls mb-0 pb-2">
-                    <label>Status</label>
-                    <textarea class="form-control" id="status" rows="5" placeholder="Status" required="required" data-validation-required-message="Please enter the status."></textarea>
-                    <p class="help-block text-danger"></p>
-                </div>
-            </div>
-            <br>
-            <button type="submit" class="btn btn-primary btn-xl" id="SendButton">Create Item</button>
-        </form>
-    	</div>
-	</div>
-	</div>
-	</body>
+				<div class="row">
+					<div class="col-lg-8 mx-auto">
+						<form>
+							<div class="control-group">
+								<div
+									class="form-group floating-label-form-group controls mb-0 pb-2"
+								>
+									<label>Guide</label>
+									<input
+										class="form-control"
+										id="guide"
+										type="guide"
+										placeholder="AWS Guide/AWS API"
+										required="required"
+										data-validation-required-message="Please enter the AWS Guide."
+									/>
+									<p class="help-block text-danger"></p>
+								</div>
+							</div>
+							<div class="control-group">
+								<div
+									class="form-group floating-label-form-group controls mb-0 pb-2"
+								>
+									<label>Description</label>
+									<textarea
+										class="form-control"
+										id="description"
+										rows="5"
+										placeholder="Description"
+										required="required"
+										data-validation-required-message="Please enter a description."
+									></textarea>
+									<p class="help-block text-danger"></p>
+								</div>
+							</div>
+							<div class="control-group">
+								<div
+									class="form-group floating-label-form-group controls mb-0 pb-2"
+								>
+									<label>Status</label>
+									<textarea
+										class="form-control"
+										id="status"
+										rows="5"
+										placeholder="Status"
+										required="required"
+										data-validation-required-message="Please enter the status."
+									></textarea>
+									<p class="help-block text-danger"></p>
+								</div>
+							</div>
+							<br />
+							<button
+								type="submit"
+								class="btn btn-primary btn-xl"
+								id="SendButton"
+							>
+								Create Item
+							</button>
+						</form>
+					</div>
+				</div>
+			</div>
+		</body>
 	</html>
+</html>
 ```
-		
+
 #### items.html
 
 The following code represents the **items.html** file. This file enables users to modify items and send reports.
 
 ```html
-	<!DOCTYPE html>
-	<html xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity3">
+<!DOCTYPE html>
+<html
+	xmlns:th="http://www.thymeleaf.org"
+	xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity3"
+>
 	<html>
-	<head>
-    	  <title>Modify Items</title>
+		<head>
+			<title>Modify Items</title>
 
-    	  <script th:src="|https://code.jquery.com/jquery-1.12.4.min.js|"></script>
-    	  <script th:src="|https://code.jquery.com/ui/1.11.4/jquery-ui.min.js|"></script>
-    	  <script th:src="|https://cdn.datatables.net/v/dt/dt-1.10.20/datatables.min.js|"></script>
-    	  <script th:src="|https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js|"></script>
-    	  <script src="../public/js/items.js" th:src="@{/js/items.js}"></script>
+			<script
+				th:src="|https://code.jquery.com/jquery-1.12.4.min.js|"
+			></script>
+			<script
+				th:src="|https://code.jquery.com/ui/1.11.4/jquery-ui.min.js|"
+			></script>
+			<script
+				th:src="|https://cdn.datatables.net/v/dt/dt-1.10.20/datatables.min.js|"
+			></script>
+			<script
+				th:src="|https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js|"
+			></script>
+			<script
+				src="../public/js/items.js"
+				th:src="@{/js/items.js}"
+			></script>
 
-    	  <!-- CSS files  -->
-    	  <link rel="stylesheet" th:href="|https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css|"/>
-    	  <link rel="stylesheet" th:href="|https://cdn.datatables.net/v/dt/dt-1.10.20/datatables.min.css|"/>
-    	  <link rel="stylesheet" href="../public/css/styles.css" th:href="@{/css/styles.css}" />
-    	  <link rel="stylesheet" href="../public/css/col.css" th:href="@{/css/col.css}" />
-    	  <link rel="stylesheet" href="../public/css/button.css" th:href="@{/css/button.css}" />
-    	  <link rel="stylesheet" href="../public/css/all.min.css" th:href="@{/css/all.min.css}" />
+			<!-- CSS files  -->
+			<link
+				rel="stylesheet"
+				th:href="|https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css|"
+			/>
+			<link
+				rel="stylesheet"
+				th:href="|https://cdn.datatables.net/v/dt/dt-1.10.20/datatables.min.css|"
+			/>
+			<link
+				rel="stylesheet"
+				href="../public/css/styles.css"
+				th:href="@{/css/styles.css}"
+			/>
+			<link
+				rel="stylesheet"
+				href="../public/css/col.css"
+				th:href="@{/css/col.css}"
+			/>
+			<link
+				rel="stylesheet"
+				href="../public/css/button.css"
+				th:href="@{/css/button.css}"
+			/>
+			<link
+				rel="stylesheet"
+				href="../public/css/all.min.css"
+				th:href="@{/css/all.min.css}"
+			/>
+		</head>
+		<body>
+			<header th:replace="layout :: site-header" />
 
-	</head>
-	<body>
-	<header th:replace="layout :: site-header"/>
+			<div class="container">
+				<h3>
+					Welcome
+					<span sec:authentication="principal.username">User</span> to
+					AWS Item Tracker
+				</h3>
+				<h3 id="info3">Get Items</h3>
+				<p>You can manage items in this view.</p>
 
-	<div class="container">
+				<table id="myTable" class="display" style="width:100%">
+					<thead>
+						<tr>
+							<th>Item Id</th>
+							<th>Name</th>
+							<th>Guide</th>
+							<th>Date Created</th>
+							<th>Description</th>
+							<th>Status</th>
+						</tr>
+					</thead>
+					<tbody>
+						<tr>
+							<td>No Data</td>
+							<td>No Data</td>
+							<td>No Data</td>
+							<td>No Data</td>
+							<td>No Data</td>
+							<td>No Data</td>
+						</tr>
+					</tbody>
+					<tfoot>
+						<tr>
+							<th>Item Id</th>
+							<th>Name</th>
+							<th>Guide</th>
+							<th>Date Created</th>
+							<th>Description</th>
+							<th>Status</th>
+						</tr>
+					</tfoot>
+					<div id="success3"></div>
+				</table>
+			</div>
+			<br />
+			<div id="modform" class="container">
+				<h3>Modify an Item</h3>
+				<p>You can modify items.</p>
 
-    	<h3>Welcome <span sec:authentication="principal.username">User</span> to AWS Item Tracker</h3>
-    	<h3 id="info3">Get Items</h3>
-	<p>You can manage items in this view.</p>
+				<form>
+					<div class="control-group">
+						<div
+							class="form-group floating-label-form-group controls mb-0 pb-2"
+						>
+							<label>ID</label>
+							<input
+								class="form-control"
+								id="id"
+								type="id"
+								placeholder="Id"
+								readonly
+								data-validation-required-message="Item Id."
+							/>
+							<p class="help-block text-danger"></p>
+						</div>
+					</div>
+					<div class="control-group">
+						<div
+							class="form-group floating-label-form-group controls mb-0 pb-2"
+						>
+							<label>Description</label>
+							<textarea
+								class="form-control"
+								id="description"
+								rows="5"
+								placeholder="Description"
+								required="required"
+								data-validation-required-message="Description."
+							></textarea>
+							<p class="help-block text-danger"></p>
+						</div>
+					</div>
+					<div class="control-group">
+						<div
+							class="form-group floating-label-form-group controls mb-0 pb-2"
+						>
+							<label>Status</label>
+							<textarea
+								class="form-control"
+								id="status"
+								rows="5"
+								placeholder="Status"
+								required="required"
+								data-validation-required-message="Status"
+							></textarea>
+							<p class="help-block text-danger"></p>
+						</div>
+					</div>
+					<br />
+				</form>
+			</div>
 
-    	<table id="myTable" class="display" style="width:100%">
-        <thead>
-        <tr>
-            <th>Item Id</th>
-            <th>Name</th>
-            <th>Guide</th>
-            <th>Date Created</th>
-            <th>Description</th>
-            <th>Status</th>
-        </tr>
-        </thead>
-        <tbody>
-        <tr>
-            <td>No Data</td>
-            <td>No Data</td>
-            <td>No Data </td>
-            <td>No Data</td>
-            <td>No Data</td>
-            <td>No Data</td>
-        </tr>
-        </tbody>
-        <tfoot>
-        <tr>
-            <th>Item Id</th>
-            <th>Name</th>
-            <th>Guide</th>
-            <th>Date Created</th>
-            <th>Description</th>
-            <th>Status</th>
-        </tr>
-        </tfoot>
-        <div id="success3"></div>
-    </table>
+			<div id="dialogtemplate2" border="2" title="Basic dialog">
+				<table align="center">
+					<tr>
+						<td>
+							<p>Options:</p>
+						</td>
+						<td></td>
+					</tr>
+					<tr>
+						<td>
+							<p>Select Manager:</p>
+						</td>
+						<td></td>
+					</tr>
+					<tr>
+						<td>
+							<select id="manager">
+								<option value="scmacdon@amazon.com">
+									tblue@nomail.com
+								</option>
+								<option value="susfer@amazon.com">
+									swhite@nomail.com
+								</option>
+							</select>
+						</td>
+						<td></td>
+					</tr>
 
-    </div>
-    <br>
-    <div id="modform" class="container">
+					<tr></tr>
 
-    <h3>Modify an Item</h3>
-    <p>You can modify items.</p>
+					<tr>
+						<td>
+							<button
+								class="shiny-blue"
+								type="button"
+								onclick="GetItems()"
+							>
+								Get Active Items
+							</button>
+						</td>
 
-    <form>
-        <div class="control-group">
-            <div class="form-group floating-label-form-group controls mb-0 pb-2">
-                <label>ID</label>
-                <input class="form-control" id="id" type="id" placeholder="Id" readonly data-validation-required-message="Item Id.">
-                <p class="help-block text-danger"></p>
-            </div>
-        </div>
-        <div class="control-group">
-            <div class="form-group floating-label-form-group controls mb-0 pb-2">
-                <label>Description</label>
-                <textarea class="form-control" id="description" rows="5" placeholder="Description" required="required" data-validation-required-message="Description."></textarea>
-                <p class="help-block text-danger"></p>
-            </div>
-        </div>
-        <div class="control-group">
-            <div class="form-group floating-label-form-group controls mb-0 pb-2">
-                <label>Status</label>
-                <textarea class="form-control" id="status" rows="5" placeholder="Status" required="required" data-validation-required-message="Status"></textarea>
-                <p class="help-block text-danger"></p>
-            </div>
-        </div>
-        <br>
-      </form>
+						<td></td>
+					</tr>
+					<tr>
+						<td>
+							<button
+								class="shiny-blue"
+								type="button"
+								onclick="GetArcItems()"
+							>
+								Get Archived Items
+							</button>
+						</td>
 
-     </div>
+						<td></td>
+					</tr>
+					<tr>
+						<td>
+							<button
+								class="shiny-blue"
+								type="button"
+								onclick="ModifyItem()"
+							>
+								Get Single Item
+							</button>
+						</td>
 
-     <div id="dialogtemplate2" border="2" title="Basic dialog">
+						<td></td>
+					</tr>
+					<tr>
+						<td>
+							<button
+								class="shiny-blue"
+								type="button"
+								onclick="modItem()"
+							>
+								Update Item
+							</button>
+						</td>
 
-    <table  align="center">
-        <tr>
-        <td>
-                <p>Options:</p>
-            </td>
-            <td>
+						<td></td>
+					</tr>
+					<tr>
+						<td>
+							<button
+								class="shiny-blue"
+								type="button"
+								onclick="archiveItem()"
+							>
+								Archive Item
+							</button>
+						</td>
 
-            </td>
-        </tr>
-        <tr>
-            <td>
-                <p>Select Manager:</p>
-            </td>
-            <td>
+						<td></td>
+					</tr>
+					<tr>
+						<td>
+							<button
+								class="shiny-blue"
+								type="button"
+								id="reportbutton"
+								onclick="Report()"
+							>
+								Send Report
+							</button>
+						</td>
 
-            </td>
-        </tr>
-        <tr>
-            <td>
-                <select id="manager">
-                   <option value="scmacdon@amazon.com">tblue@nomail.com</option>
-                   <option value="susfer@amazon.com">swhite@nomail.com</option>
-                </select>
-            </td>
-            <td>
+						<td></td>
+					</tr>
+				</table>
+			</div>
 
-            </td>
-        </tr>
+			<style>
+				.ui-widget {
+					font-family: Verdana, Arial, sans-serif;
+					font-size: 0.8em;
+				}
 
-        <tr>
+				.ui-widget-content {
+					background: #f9f9f9;
+					border: 1px solid #90d93f;
+					color: #222222;
+				}
 
-        <tr>
-            <td>
-                <button class="shiny-blue" type="button" onclick="GetItems()">Get Active Items</button>
-            </td>
+				.ui-dialog {
+					left: 0;
+					outline: 0 none;
+					padding: 0 !important;
+					position: absolute;
+					top: 0;
+				}
 
-            <td>
+				#success {
+					padding: 0;
+					margin: 0;
+				}
 
-            </td>
-        </tr>
-        <tr>
-            <td>
-                <button class="shiny-blue" type="button" onclick="GetArcItems()">Get Archived Items</button>
-            </td>
+				.ui-dialog .ui-dialog-content {
+					background: none repeat scroll 0 0 transparent;
+					border: 0 none;
+					overflow: auto;
+					position: relative;
+					padding: 0 !important;
+				}
 
-            <td>
+				.ui-widget-header {
+					background: #000;
+					border: 0;
+					color: #fff;
+					font-weight: normal;
+				}
 
-            </td>
-        </tr>
-        <tr>
-            <td>
-                <button class="shiny-blue" type="button" onclick="ModifyItem()">Get Single Item</button>
-            </td>
-
-            <td>
-
-            </td>
-        </tr>
-        <tr>
-            <td>
-                <button class="shiny-blue" type="button" onclick="modItem()">Update Item</button>
-            </td>
-
-            <td>
-
-            </td>
-        </tr>
-        <tr>
-            <td>
-                <button class="shiny-blue" type="button" onclick="archiveItem()">Archive Item</button>
-            </td>
-
-            <td>
-
-            </td>
-        </tr>
-        <tr>
-            <td>
-                <button class="shiny-blue" type="button" id="reportbutton" onclick="Report()">Send Report</button>
-            </td>
-
-            <td>
-
-            </td>
-        </tr>
-    </table>
-    </div>
-
-    <style>
-
-    .ui-widget {
-        font-family: Verdana,Arial,sans-serif;
-        font-size: .8em;
-    }
-
-    .ui-widget-content {
-        background: #F9F9F9;
-        border: 1px solid #90d93f;
-        color: #222222;
-    }
-
-    .ui-dialog {
-        left: 0;
-        outline: 0 none;
-        padding: 0 !important;
-        position: absolute;
-        top: 0;
-    }
-
-    #success {
-        padding: 0;
-        margin: 0;
-    }
-
-    .ui-dialog .ui-dialog-content {
-        background: none repeat scroll 0 0 transparent;
-        border: 0 none;
-        overflow: auto;
-        position: relative;
-        padding: 0 !important;
-    }
-
-    .ui-widget-header {
-        background: #000;
-        border: 0;
-        color: #fff;
-        font-weight: normal;
-    }
-
-    .ui-dialog .ui-dialog-titlebar {
-        padding: 0.1em .5em;
-        position: relative;
-        font-size: 1em;
-    }
-
-	</style>
-
-	</body>
+				.ui-dialog .ui-dialog-titlebar {
+					padding: 0.1em 0.5em;
+					position: relative;
+					font-size: 1em;
+				}
+			</style>
+		</body>
 	</html>
+</html>
 ```
+
 **Note:** Replace the default email addresses with real email addresses in this file.
 
 #### layout.html
@@ -2024,13 +2185,13 @@ The following code represents the **layout.html** file that represents the appli
 	</body>
 	</html>
 ```
-		
+
 ## Create script files
 
 Both the **add** and **items** views use script files to communicate with the Spring controller. You have to ensure that these files are part of your project; otherwise, your application doesn’t work.
 
-+ **items.js**
-+ **contact_me.js**
+-   **items.js**
+-   **contact_me.js**
 
 Both files contain application logic that sends a request to the Spring MainController. In addition, these files handle the response and set the data in the view.
 
@@ -2039,330 +2200,323 @@ Both files contain application logic that sends a request to the Spring MainCont
 The following JavaScript code represents the **items.js** file that is used in the **items.html** view.
 
 ```javascript
-     $(function() {
+$(function () {
+	$("#dialogtemplate2").dialog();
+	$("#myTable").DataTable({
+		scrollY: "500px",
+		scrollX: true,
+		scrollCollapse: true,
+		paging: true,
+		columnDefs: [{ width: 200, targets: 0 }],
+		fixedColumns: true,
+	});
 
-      $( "#dialogtemplate2" ).dialog();
-      $('#myTable').DataTable( {
-        scrollY:        "500px",
-        scrollX:        true,
-        scrollCollapse: true,
-        paging:         true,
-        columnDefs: [
-            { width: 200, targets: 0 }
-        ],
-        fixedColumns: true
-     } );
+	var table = $("#myTable").DataTable();
+	$("#myTable tbody").on("click", "tr", function () {
+		if ($(this).hasClass("selected")) {
+			$(this).removeClass("selected");
+		} else {
+			table.$("tr.selected").removeClass("selected");
+			$(this).addClass("selected");
+		}
+	});
 
-     var table = $('#myTable').DataTable();
-     $('#myTable tbody').on( 'click', 'tr', function () {
-        if ( $(this).hasClass('selected') ) {
-            $(this).removeClass('selected');
-        }
-        else {
-            table.$('tr.selected').removeClass('selected');
-            $(this).addClass('selected');
-        }
-     } );
+	// Disable the reportbutton
+	$("#reportbutton").prop("disabled", true);
+	$("#reportbutton").css("color", "#0d010d");
+});
 
+function modItem() {
+	var id = $("#id").val();
+	var description = $("#description").val();
+	var status = $("#status").val();
 
-     // Disable the reportbutton
-     $('#reportbutton').prop("disabled",true);
-     $('#reportbutton').css("color", "#0d010d");
-    });
+	if (id == "") {
+		alert("Please select an item from the table");
+		return;
+	}
 
+	if (description.length > 350) {
+		alert("Description has too many characters");
+		return;
+	}
 
-    function modItem() {
-        var id = $('#id').val();
-        var description = $('#description').val();
-        var status = $('#status').val();
+	if (status.length > 350) {
+		alert("Status has too many characters");
+		return;
+	}
 
-        if (id == "") {
-            alert("Please select an item from the table");
-            return;
-        }
+	$.ajax("/changewi", {
+		type: "POST",
+		data: "id=" + id + "&description=" + description + "&status=" + status,
+		success: function (data, status, xhr) {
+			var msg = event.target.responseText;
+			alert("You have successfully modfied item " + msg);
 
-        if (description.length > 350) {
-            alert("Description has too many characters");
-            return;
-        }
+			$("#id").val("");
+			$("#description").val("");
+			$("#status").val("");
 
-        if (status.length > 350) {
-            alert("Status has too many characters");
-            return;
-        }
+			//Refresh the grid.
+			GetItems();
+		},
+		error: function (jqXhr, textStatus, errorMessage) {
+			$("p").append("Error" + errorMessage);
+		},
+	});
+}
 
-     $.ajax('/changewi', {
-        type: 'POST',
-        data: 'id=' + id + '&description=' + description+ '&status=' + status,
-        success: function (data, status, xhr) {
+// Populate the table with work items.
+function GetItems() {
+	var type = "active";
 
-            var msg = event.target.responseText;
-            alert("You have successfully modfied item "+msg)
+	$.ajax("/retrieve", {
+		type: "POST",
+		data: "type=" + type,
+		success: function (data, status, xhr) {
+			// Enable the buttons.
+			$("#singlebutton").prop("disabled", false);
+			$("#updatebutton").prop("disabled", false);
+			$("#reportbutton").prop("disabled", false);
+			$("#reportbutton").css("color", "#FFFFFF");
+			$("#singlebutton").css("color", "#FFFFFF");
+			$("#updatebutton").css("color", "#FFFFFF");
+			$("#archive").prop("disabled", false);
+			$("#archive").css("color", "#FFFFFF");
 
-            $('#id').val("");
-            $('#description').val("");
-            $('#status').val("");
+			$("#modform").show();
 
-            //Refresh the grid.
-            GetItems();
+			var xml = data;
+			var oTable = $("#myTable").dataTable();
+			oTable.fnClearTable(true);
 
-        },
-        error: function (jqXhr, textStatus, errorMessage) {
-            $('p').append('Error' + errorMessage);
-        }
-      });
-     }
- 
-    // Populate the table with work items.
-    function GetItems() {
-     var type="active";
+			$(xml)
+				.find("Item")
+				.each(function () {
+					var $field = $(this);
+					var id = $field.find("Id").text();
+					var name = $field.find("Name").text();
+					var guide = $field.find("Guide").text();
+					var date = $field.find("Date").text();
+					var description = $field.find("Description").text();
+					var status = $field.find("Status").text();
 
-     $.ajax('/retrieve', {
-        type: 'POST',
-        data: 'type=' + type,
-        success: function (data, status, xhr) {
+					//Set the new data.
+					oTable.fnAddData([
+						id,
+						name,
+						guide,
+						date,
+						description,
+						status,
+						,
+					]);
+				});
 
-            // Enable the buttons.
-            $('#singlebutton').prop("disabled",false);
-            $('#updatebutton').prop("disabled",false);
-            $('#reportbutton').prop("disabled",false);
-            $('#reportbutton').css("color", "#FFFFFF");
-            $('#singlebutton').css("color", "#FFFFFF");
-            $('#updatebutton').css("color", "#FFFFFF");
-            $('#archive').prop("disabled",false);
-            $('#archive').css("color", "#FFFFFF");
+			document.getElementById("info3").innerHTML = "Active Items";
+		},
+		error: function (jqXhr, textStatus, errorMessage) {
+			$("p").append("Error" + errorMessage);
+		},
+	});
+}
 
-            $("#modform").show();
+function ModifyItem() {
+	var table = $("#myTable").DataTable();
+	var myId = "";
+	var arr = [];
+	$.each(table.rows(".selected").data(), function () {
+		var value = this[0];
+		myId = value;
+	});
 
-            var xml = data;
-            var oTable = $('#myTable').dataTable();
-            oTable.fnClearTable(true);
+	if (myId == "") {
+		alert("You need to select a row");
+		return;
+	}
 
-            $(xml).find('Item').each(function () {
+	//Need to check its not an Archive item.
+	var h3Val = document.getElementById("info3").innerHTML;
+	if (h3Val == "Archive Items") {
+		alert("You cannot modify an Archived item");
+		return;
+	}
 
-                var $field = $(this);
-                var id = $field.find('Id').text();
-                var name = $field.find('Name').text();
-                var guide = $field.find('Guide').text();
-                var date = $field.find('Date').text();
-                var description = $field.find('Description').text();
-                var status = $field.find('Status').text();
+	$.ajax("/modify", {
+		type: "POST",
+		data: "id=" + myId,
+		success: function (data, status, xhr) {
+			var xml = data;
+			$(xml)
+				.find("Item")
+				.each(function () {
+					var $field = $(this);
+					var id = $field.find("Id").text();
+					var description = $field.find("Description").text();
+					var status = $field.find("Status").text();
 
-                //Set the new data.
-                oTable.fnAddData( [
-                    id,
-                    name,
-                    guide,
-                    date,
-                    description,
-                    status,,]
-                );
-             });
+					//Set the fields
+					$("#id").val(id);
+					$("#description").val(description);
+					$("#status").val(status);
+				});
+		},
+		error: function (jqXhr, textStatus, errorMessage) {
+			$("p").append("Error" + errorMessage);
+		},
+	});
+}
 
-            document.getElementById("info3").innerHTML = "Active Items";
+function Report() {
+	var email = $("#manager option:selected").text();
+	$.ajax("/report", {
+		type: "POST",
+		data: "email=" + email,
+		success: function (data, status, xhr) {
+			alert(data);
+		},
+		error: function (jqXhr, textStatus, errorMessage) {
+			$("p").append("Error" + errorMessage);
+		},
+	});
+}
 
-          },
-          error: function (jqXhr, textStatus, errorMessage) {
-            $('p').append('Error' + errorMessage);
-         }
-        });
-       }
+function GetArcItems() {
+	var type = "archive";
+	$.ajax("/retrieve", {
+		type: "POST",
+		data: "type=" + type,
+		success: function (data, status, xhr) {
+			// Disable buttons when Achive button
+			$("#reportbutton").prop("disabled", true);
+			$("#reportbutton").css("color", "#0d010d");
+			$("#singlebutton").prop("disabled", true);
+			$("#singlebutton").css("color", "#0d010d");
+			$("#updatebutton").prop("disabled", true);
+			$("#updatebutton").css("color", "#0d010d");
+			$("#archive").prop("disabled", true);
+			$("#archive").css("color", "#0d010d");
 
-     function ModifyItem() {
-      var table = $('#myTable').DataTable();
-      var myId="";
-      var arr = [];
-      $.each(table.rows('.selected').data(), function() {
+			$("#modform").hide();
 
-        var value = this[0];
-        myId = value;
-      });
+			var xml = event.target.responseText;
+			var oTable = $("#myTable").dataTable();
+			oTable.fnClearTable(true);
 
-      if (myId == "") {
-        alert("You need to select a row");
-        return;
-     }
+			$(xml)
+				.find("Item")
+				.each(function () {
+					var $field = $(this);
+					var id = $field.find("Id").text();
+					var name = $field.find("Name").text();
+					var guide = $field.find("Guide").text();
+					var date = $field.find("Date").text();
+					var description = $field.find("Description").text();
+					var status = $field.find("Status").text();
 
-     //Need to check its not an Archive item.
-     var h3Val =  document.getElementById("info3").innerHTML;
-     if (h3Val=="Archive Items") {
-        alert("You cannot modify an Archived item");
-        return;
-      }
+					//Set the new data.
+					oTable.fnAddData([
+						id,
+						name,
+						guide,
+						date,
+						description,
+						status,
+						,
+					]);
+				});
 
-      $.ajax('/modify', {
-        type: 'POST',
-        data: 'id=' + myId,
-        success: function (data, status, xhr) {
+			document.getElementById("info3").innerHTML = "Archive Items";
+		},
+		error: function (jqXhr, textStatus, errorMessage) {
+			$("p").append("Error" + errorMessage);
+		},
+	});
+}
 
-            var xml = data;
-            $(xml).find('Item').each(function () {
+function archiveItem() {
+	var table = $("#myTable").DataTable();
+	var myId = "";
+	var arr = [];
+	$.each(table.rows(".selected").data(), function () {
+		var value = this[0];
+		myId = value;
+	});
 
-                var $field = $(this);
-                var id = $field.find('Id').text();
-                var description = $field.find('Description').text();
-                var status = $field.find('Status').text();
+	if (myId == "") {
+		alert("You need to select a row");
+		return;
+	}
 
-                //Set the fields
-                $('#id').val(id);
-                $('#description').val(description);
-                $('#status').val(status);
-            });
-          },
-          error: function (jqXhr, textStatus, errorMessage) {
-            $('p').append('Error' + errorMessage);
-          }
-        });
-      }
-
-     function Report() {
-     var email = $('#manager option:selected').text();
-     $.ajax('/report', {
-        type: 'POST',
-        data: 'email=' + email,
-        success: function (data, status, xhr) {
-            alert(data);
-
-        },
-        error: function (jqXhr, textStatus, errorMessage) {
-            $('p').append('Error' + errorMessage);
-        }
-      });
-     }
-
-
-    function GetArcItems() {
-     var type="archive";
-     $.ajax('/retrieve', {
-        type: 'POST',
-        data: 'type=' + type,
-        success: function (data, status, xhr) {
-            // Disable buttons when Achive button
-            $('#reportbutton').prop("disabled", true);
-            $('#reportbutton').css("color", "#0d010d");
-            $('#singlebutton').prop("disabled", true);
-            $('#singlebutton').css("color", "#0d010d");
-            $('#updatebutton').prop("disabled", true);
-            $('#updatebutton').css("color", "#0d010d");
-            $('#archive').prop("disabled", true);
-            $('#archive').css("color", "#0d010d");
-
-            $("#modform").hide();
-
-            var xml = event.target.responseText;
-            var oTable = $('#myTable').dataTable();
-            oTable.fnClearTable(true);
-
-            $(xml).find('Item').each(function () {
-
-                var $field = $(this);
-                var id = $field.find('Id').text();
-                var name = $field.find('Name').text();
-                var guide = $field.find('Guide').text();
-                var date = $field.find('Date').text();
-                var description = $field.find('Description').text();
-                var status = $field.find('Status').text();
-
-                //Set the new data.
-                oTable.fnAddData([
-                    id,
-                    name,
-                    guide,
-                    date,
-                    description,
-                    status, ,]
-                 );
-              });
-
-             document.getElementById("info3").innerHTML = "Archive Items";
-           },
-           error: function (jqXhr, textStatus, errorMessage) {
-            $('p').append('Error' + errorMessage);
-         }
-        });
-       }
-
-      function archiveItem() {
-       var table = $('#myTable').DataTable();
-       var myId="";
-       var arr = [];
-       $.each(table.rows('.selected').data(), function() {
-         var value = this[0];
-         myId = value;
-      });
-
-      if (myId == "") {
-        alert("You need to select a row");
-        return;
-      }
-
-      $.ajax('/archive', {
-        type: 'POST',
-        data: 'id=' + myId,
-        success: function (data, status, xhr) {
-            alert("Item " + data + " is achived now");
-            //Refresh the grid
-            GetItems();
-
-        },
-        error: function (jqXhr, textStatus, errorMessage) {
-            $('p').append('Error' + errorMessage);
-        }
-       });
-      }
+	$.ajax("/archive", {
+		type: "POST",
+		data: "id=" + myId,
+		success: function (data, status, xhr) {
+			alert("Item " + data + " is achived now");
+			//Refresh the grid
+			GetItems();
+		},
+		error: function (jqXhr, textStatus, errorMessage) {
+			$("p").append("Error" + errorMessage);
+		},
+	});
+}
 ```
 
- #### contact_me.js file
+#### contact_me.js file
 
 The following JavaScript code represents the **contact_me.js** file that is used in the **add.html** view.
 
 ```javascript
-	$(function() {
+$(function () {
+	$("#SendButton").click(function ($e) {
+		var guide = $("#guide").val();
+		var description = $("#description").val();
+		var status = $("#status").val();
 
-        $("#SendButton" ).click(function($e) {
+		if (description.length > 350) {
+			alert("Description has too many characters");
+			return;
+		}
 
-          var guide = $('#guide').val();
-          var description = $('#description').val();
-          var status = $('#status').val();
+		if (status.length > 350) {
+			alert("Status has too many characters");
+			return;
+		}
 
-          if (description.length > 350) {
-            alert("Description has too many characters");
-            return;
-          }
-
-          if (status.length > 350) {
-            alert("Status has too many characters");
-            return;
-          }
-
-          $.ajax('/add', {
-            type: 'POST',
-            data: 'guide=' + guide + '&description=' + description+ '&status=' + status,
-            success: function (data, status, xhr) {
-
-                alert("You have successfully added item "+data)
-            },
-            error: function (jqXhr, textStatus, errorMessage) {
-                $('p').append('Error' + errorMessage);
-            }
-           });
-          } );
-         } );
+		$.ajax("/add", {
+			type: "POST",
+			data:
+				"guide=" +
+				guide +
+				"&description=" +
+				description +
+				"&status=" +
+				status,
+			success: function (data, status, xhr) {
+				alert("You have successfully added item " + data);
+			},
+			error: function (jqXhr, textStatus, errorMessage) {
+				$("p").append("Error" + errorMessage);
+			},
+		});
+	});
+});
 ```
 
 **Note:** There are other CSS files located in the GitHub repository that you must add to your project. Ensure all of the files under the resources folder are included in your project.
 
 ## Run the application
 
-Using the IntelliJ IDE, you can run your application. The first time you run the Spring Boot application, click the run icon in the Spring Boot main class, as shown in this illustration. 
+Using the IntelliJ IDE, you can run your application. The first time you run the Spring Boot application, click the run icon in the Spring Boot main class, as shown in this illustration.
 
 ![AWS Tracking Application](images/runapp.png)
 
-**Note**: You can deploy this Spring Boot application by using AWS Elastic Beanstalk. If you do deploy this application to AWS Elastic Beanstalk, you need to set up an additional inbound rule. For information about deploying a web application, see [Creating your first AWS Java web application](https://github.com/awsdocs/aws-doc-sdk-examples/tree/main/javav2/usecases/creating_first_project).
+**Note**: You can deploy this Spring Boot application by using AWS Elastic Beanstalk. If you do deploy this application to AWS Elastic Beanstalk, you need to set up an additional inbound rule. For information about deploying a web application, see [Creating your first AWS Java web application](https://github.com/picante-io/aws-doc-sdk-examples/tree/main/javav2/usecases/creating_first_project).
 
 ### Next steps
+
 Congratulations, you have created and deployed a Spring Boot application that interacts with Amazon RDS (and other AWS services). As stated at the beginning of this tutorial, be sure to terminate all of the resources you create while going through this tutorial to ensure that you’re no longer charged.
 
 For more AWS multiservice examples,
-[usecases](https://github.com/awsdocs/aws-doc-sdk-examples/tree/master/javav2/usecases).
-
+[usecases](https://github.com/picante-io/aws-doc-sdk-examples/tree/master/javav2/usecases).

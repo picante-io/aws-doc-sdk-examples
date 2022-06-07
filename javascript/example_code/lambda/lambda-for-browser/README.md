@@ -142,7 +142,7 @@ and [Load sample data](https://docs.aws.amazon.com/amazondynamodb/latest/develop
 
 ## Create a Node.js project environment
 
-1. Clone the [AWS Code Samples repo](https://github.com/awsdocs/aws-doc-sdk-examples) to your local environment.
+1. Clone the [AWS Code Samples repo](https://github.com/picante-io/aws-doc-sdk-examples) to your local environment.
    See [the Github documentation](https://docs.github.com/en/github/creating-cloning-and-archiving-repositories/cloning-a-repository) for
    instructions.
 
@@ -299,4 +299,4 @@ Open the index.html in your favorite browser, and follow the onscreen instructio
 ### Next steps
 Congratulations! You have created and deployed the AWS Lambda Browser application.
 For more AWS multiservice examples, see
-[cross-services](https://github.com/awsdocs/aws-doc-sdk-examples/tree/master/javascriptv3/example_code/cross-services).
+[cross-services](https://github.com/picante-io/aws-doc-sdk-examples/tree/master/javascriptv3/example_code/cross-services).

@@ -1,60 +1,62 @@
-#  Creating a dynamic web application that asynchronously analyzes photos using the AWS SDK for Java 
+# Creating a dynamic web application that asynchronously analyzes photos using the AWS SDK for Java
 
 ## Overview
 
-| Heading      | Description |
-| ----------- | ----------- |
-| Description | Discusses how to develop a dynamic web application that analyzes nature images located in an Amazon Simple Storage Service (Amazon S3) bucket by using the AWS SDK for Java V2. This tutorial uses AWS SDK asynchronous clients.  |
-| Audience   |  Developer (beginner / intermediate)        |
-| Updated   | 1/17/2022        |
-| Required Skills   | Java, Maven  |
+| Heading         | Description                                                                                                                                                                                                                      |
+| --------------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| Description     | Discusses how to develop a dynamic web application that analyzes nature images located in an Amazon Simple Storage Service (Amazon S3) bucket by using the AWS SDK for Java V2. This tutorial uses AWS SDK asynchronous clients. |
+| Audience        | Developer (beginner / intermediate)                                                                                                                                                                                              |
+| Updated         | 1/17/2022                                                                                                                                                                                                                        |
+| Required Skills | Java, Maven                                                                                                                                                                                                                      |
 
 ## Purpose
+
 You can create a dynamic web application that analyzes nature images located in an Amazon Simple Storage Service (Amazon S3) bucket by using the Amazon Rekognition service. The application analyzes multiple images and generates a report that breaks down each image into a series of labels. For example, the following image shows a lake.
 
 ![AWS Photo Analyzer](images/lakesun.png)
 
-After the application analyzes all images in the Amazon S3 bucket, it uses the Amazon Simple Email Service (Amazon SES) to send a dynamically created report to a given email recipient. The report is a Microsoft Excel document that contains label data for each image. 
+After the application analyzes all images in the Amazon S3 bucket, it uses the Amazon Simple Email Service (Amazon SES) to send a dynamically created report to a given email recipient. The report is a Microsoft Excel document that contains label data for each image.
 
 ![AWS Photo Analyzer](images/excel2.png)
 
 In this tutorial, you create a Spring Boot application named **AWS Photo Analyzer**. The Spring Boot APIs are used to build a model, different views, and a controller. For more information, see [Spring Boot](https://www.tutorialspoint.com/spring_boot/index.htm).
 
 This application uses the following AWS services:
-*	Amazon Rekognition
-*	Amazon S3
-*	Amazon SES
+
+-   Amazon Rekognition
+-   Amazon S3
+-   Amazon SES
 
 **Note**: This example application uses the Asynchronous client that belongs to the AWS SDK for Java V2 for the Amazon S3 and Amazon Rekognition services. For more information, see [Asynchronous programming in the AWS SDK for Java 2.x](https://docs.aws.amazon.com/sdk-for-java/latest/developer-guide/asynchronous.html).
 
-**Note** To read a similiar use case that uses the AWS SDK for Java V2 synchronous clients, see [Creating a dynamic web application that analyzes photos using the AWS SDK for Java](https://github.com/awsdocs/aws-doc-sdk-examples/tree/main/javav2/usecases/creating_photo_analyzer_app).
+**Note** To read a similiar use case that uses the AWS SDK for Java V2 synchronous clients, see [Creating a dynamic web application that analyzes photos using the AWS SDK for Java](https://github.com/picante-io/aws-doc-sdk-examples/tree/main/javav2/usecases/creating_photo_analyzer_app).
 
 #### Topics
 
-+ Prerequisites
-+ Understand the AWS Photo Analyzer application
-+ Create an IntelliJ project 
-+ Add the POM dependencies to your project
-+ Create the Java classes
-+ Create the HTML files
-+ Create the script files
-+ Run the application
+-   Prerequisites
+-   Understand the AWS Photo Analyzer application
+-   Create an IntelliJ project
+-   Add the POM dependencies to your project
+-   Create the Java classes
+-   Create the HTML files
+-   Create the script files
+-   Run the application
 
 ## Prerequisites
 
 To complete the tutorial, you need the following:
 
-+ An AWS account
-+ A Java IDE (this tutorial uses the IntelliJ IDE)
-+ Java JDK 1.8
-+ Maven 3.6 or later
+-   An AWS account
+-   A Java IDE (this tutorial uses the IntelliJ IDE)
+-   Java JDK 1.8
+-   Maven 3.6 or later
 
 ### Important
 
-+ The AWS services included in this document are included in the [AWS Free Tier](https://aws.amazon.com/free/?all-free-tier.sort-by=item.additionalFields.SortRank&all-free-tier.sort-order=asc).
-+  This code has not been tested in all AWS Regions. Some AWS services are available only in specific regions. For more information, see [AWS Regional Services](https://aws.amazon.com/about-aws/global-infrastructure/regional-product-services). 
-+ Running this code might result in charges to your AWS account. 
-+ Be sure to terminate all of the resources you create while going through this tutorial to ensure that you’re not charged.
+-   The AWS services included in this document are included in the [AWS Free Tier](https://aws.amazon.com/free/?all-free-tier.sort-by=item.additionalFields.SortRank&all-free-tier.sort-order=asc).
+-   This code has not been tested in all AWS Regions. Some AWS services are available only in specific regions. For more information, see [AWS Regional Services](https://aws.amazon.com/about-aws/global-infrastructure/regional-product-services).
+-   Running this code might result in charges to your AWS account.
+-   Be sure to terminate all of the resources you create while going through this tutorial to ensure that you’re not charged.
 
 ### Creating the resources
 
@@ -72,7 +74,7 @@ To generate a report, enter an email address and choose **Analyze Photos**.
 
 ![AWS Photo Analyzer](images/client2.png)
 
-You can also download a given image from the Amazon S3 bucket by using this application. Simply specify the image name and choose the **Download Photo** button. The image is downloaded to your browser, as shown in this illustration. 
+You can also download a given image from the Amazon S3 bucket by using this application. Simply specify the image name and choose the **Download Photo** button. The image is downloaded to your browser, as shown in this illustration.
 
 ![AWS Photo Analyzer](images/client3.png)
 
@@ -82,8 +84,8 @@ You can also download a given image from the Amazon S3 bucket by using this appl
 2. In the **New Project** dialog box, choose **Maven**, and then choose **Next**.
 3. For **GroupId**, enter **aws-spring**.
 4. For **ArtifactId**, enter **SpringPhotoAnalyzerAsync**.
-6. Choose **Next**.
-7. Choose **Finish**.
+5. Choose **Next**.
+6. Choose **Finish**.
 
 ## Add the POM dependencies to your project
 
@@ -196,22 +198,22 @@ Create a Java package in the **main/java** folder named **com.example.photo**. T
 
 Create these Java classes:
 
-+ **AnalyzePhotos** - Uses the Amazon Rekognition API to analyze the images.
-+ **BucketItem** - Used as a model that stores Amazon S3 bucket information.   
-+ **PhotoApplication** - Used as the base class for the Spring Boot application.
-+ **PhotoController** - Used as the Spring Boot controller that handles HTTP requests.
-+ **SendMessages** - Uses the Amazon SES API to send an email message with an attachment.
-+ **S3Service** - Uses the Amazon S3 API to perform S3 operations.
-+ **WorkItem** - Used as a model that stores Amazon Rekognition data.
-+ **WriteExcel** – Uses the JXL API (this is not an AWS API) to dynamically generate a report.     
+-   **AnalyzePhotos** - Uses the Amazon Rekognition API to analyze the images.
+-   **BucketItem** - Used as a model that stores Amazon S3 bucket information.
+-   **PhotoApplication** - Used as the base class for the Spring Boot application.
+-   **PhotoController** - Used as the Spring Boot controller that handles HTTP requests.
+-   **SendMessages** - Uses the Amazon SES API to send an email message with an attachment.
+-   **S3Service** - Uses the Amazon S3 API to perform S3 operations.
+-   **WorkItem** - Used as a model that stores Amazon Rekognition data.
+-   **WriteExcel** – Uses the JXL API (this is not an AWS API) to dynamically generate a report.
 
 ### AnalyzePhotos class
 
 The following Java code represents the **AnalyzePhotos** class. This class uses the Amazon Rekognition API to analyze the images. Notice the use of the **RekognitionAsyncClient** object. For more information, see [Interface RekognitionAsyncClient](https://sdk.amazonaws.com/java/api/latest/software/amazon/awssdk/services/rekognition/RekognitionAsyncClient.html).
 
-When working with the **RekognitionAsyncClient**, you use a **CompletableFuture** object that allows you to access the response when it’s ready. You can access the **resp** object by calling the **futureGet.whenComplete** method. Then you can get service data by invoking the applicable method that belongs to the **resp** object. For example, you can get label data generated by the Amazon Rekognition service by invoking the **resp.labels** method. This returns a list where each element is a **Label** object. 
+When working with the **RekognitionAsyncClient**, you use a **CompletableFuture** object that allows you to access the response when it’s ready. You can access the **resp** object by calling the **futureGet.whenComplete** method. Then you can get service data by invoking the applicable method that belongs to the **resp** object. For example, you can get label data generated by the Amazon Rekognition service by invoking the **resp.labels** method. This returns a list where each element is a **Label** object.
 
-To return data that you read from the **resp** object (for example, label data), you must use an **AtomicReference** object. You cannot return data from within the **futureGet.whenComplete** method. If you attempt to perform this task, you get a compile error. You can set the data by using the **AtomicReference** object's **set** method. You can then access the **AtomicReference** object from outside the **futureGet.whenComplete** method to get the data by using the **AtomicReference** object's **get** method. Then you can return the data from a Java method, as shown in the following Java code example.    
+To return data that you read from the **resp** object (for example, label data), you must use an **AtomicReference** object. You cannot return data from within the **futureGet.whenComplete** method. If you attempt to perform this task, you get a compile error. You can set the data by using the **AtomicReference** object's **set** method. You can then access the **AtomicReference** object from outside the **futureGet.whenComplete** method to get the data by using the **AtomicReference** object's **get** method. Then you can return the data from a Java method, as shown in the following Java code example.
 
 ```java
     package com.example.photo;
@@ -372,7 +374,7 @@ The following Java code represents the **PhotoApplication** class.
 
 The following Java code represents the **PhotoController** class that handles HTTP requests. For example, when a new image is posted (uploaded to an S3 bucket), the **singleFileUpload** method handles the request.
 
-**Note**: Be sure that you change the **bucketName** variable to your Amazon S3 bucket name. 
+**Note**: Be sure that you change the **bucketName** variable to your Amazon S3 bucket name.
 
 ```java
     package com.example.photo;
@@ -511,7 +513,7 @@ The following Java code represents the **PhotoController** class that handles HT
 
 ### S3Service class
 
-The following class uses the Amazon S3 Java API to perform Amazon S3 operations. For example, the **getObjectBytes** method returns a byte array that represents the image. Notice the use of the **S3AsyncClient** object. For more information, see [Interface S3AsyncClient](https://sdk.amazonaws.com/java/api/latest/software/amazon/awssdk/services/s3/S3AsyncClient.html). 
+The following class uses the Amazon S3 Java API to perform Amazon S3 operations. For example, the **getObjectBytes** method returns a byte array that represents the image. Notice the use of the **S3AsyncClient** object. For more information, see [Interface S3AsyncClient](https://sdk.amazonaws.com/java/api/latest/software/amazon/awssdk/services/s3/S3AsyncClient.html).
 
 ```java
      package com.example.photo;
@@ -973,9 +975,9 @@ The following Java code represents the **SendMessage** class. This class uses th
        }
 ```
 
- ### WorkItem class
+### WorkItem class
 
- The following Java code represents the **WorkItem** class.
+The following Java code represents the **WorkItem** class.
 
 ```java
      package com.example.photo;
@@ -1094,7 +1096,7 @@ The following Java code represents the **WriteExcel** class.
      // Create headings in the Excel sheet.
      private void createLabel(WritableSheet sheet)
             throws WriteException {
-       
+
         WritableFont times10pt = new WritableFont(WritableFont.TIMES, 10);
 
 	times = new WritableCellFormat(times10pt);
@@ -1133,7 +1135,7 @@ The following Java code represents the **WriteExcel** class.
 
                 // First column.
                 addLabel(sheet, 0, i + 2, key);
-                
+
 		// Second column.
                 addLabel(sheet, 1, i + 2, label);
 
@@ -1191,10 +1193,10 @@ The following Java code represents the **WriteExcel** class.
 
 At this point, you have created all of the Java files required for the AWS Photo Analyzer application. Now you create the HTML files that are required for the application's graphical user interface (GUI). Under the **resource** folder, create a **template** folder, and then create the following HTML files:
 
-+ index.html
-+ process.html
-+ upload.html
-+ layout.html
+-   index.html
+-   process.html
+-   upload.html
+-   layout.html
 
 The **index.html** file is the application's home view. The **process.html** file represents the view for creating a report. The **upload.html** file represents the view for uploading image files to an S3 bucket. The **layout.html** file represents the menu that's visible in all views.
 
@@ -1203,41 +1205,84 @@ The **index.html** file is the application's home view. The **process.html** fil
 The following HTML represents the **index.html** file.
 
 ```html
-    <!DOCTYPE html>
-    <html xmlns:th="http://www.thymeleaf.org">
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+	<head>
+		<meta charset="utf-8" />
+		<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+		<meta name="viewport" content="width=device-width, initial-scale=1" />
+		<link
+			rel="stylesheet"
+			th:href="|https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css|"
+		/>
+		<script
+			th:src="|https://code.jquery.com/jquery-1.12.4.min.js|"
+		></script>
+		<script
+			th:src="|https://code.jquery.com/ui/1.11.4/jquery-ui.min.js|"
+		></script>
+		<link
+			rel="stylesheet"
+			href="../public/css/styles.css"
+			th:href="@{/css/styles.css}"
+		/>
+		<link
+			rel="icon"
+			href="../public/images/favicon.ico"
+			th:href="@{/images/favicon.ico}"
+		/>
 
-    <head>
-     <meta charset="utf-8" />
-     <meta http-equiv="X-UA-Compatible" content="IE=edge" />
-     <meta name="viewport" content="width=device-width, initial-scale=1" />
-     <link rel="stylesheet" th:href="|https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css|"/>
-     <script th:src="|https://code.jquery.com/jquery-1.12.4.min.js|"></script>
-     <script th:src="|https://code.jquery.com/ui/1.11.4/jquery-ui.min.js|"></script>
-     <link rel="stylesheet" href="../public/css/styles.css" th:href="@{/css/styles.css}" />
-     <link rel="icon" href="../public/images/favicon.ico" th:href="@{/images/favicon.ico}" />
+		<title>AWS Photo Analyzer</title>
+	</head>
+	<body>
+		<header th:replace="layout :: site-header" />
+		<div class="container">
+			<h2>AWS Asynchronous Photo Analyzer Application</h2>
 
-    <title>AWS Photo Analyzer</title>
-    </head>
-    <body>
-    <header th:replace="layout :: site-header"/>
-    <div class="container">
-
-    <h2>AWS Asynchronous Photo Analyzer Application</h2>
-
-    <p>The AWS Photo Analyzer application is a sample application that uses the Amazon Rekognition Service as well as other AWS Services and the Java V2 SDK.
-        <b>This example application uses the Asynchronous client for the Amazon S3 and Amazon Rekognition Services</b>. Analyzing nature photographs has never been easier! Simply perform these steps:<p>
-     <ol>
-        <li>Upload a nature photograph to an Amazon S3 bucket by choosing the <b>Upload Photos</b> menu item.</li>
-        <li>Choose <b>Choose File</b> and browse to a nature image located on your desktop.</li>
-        <li>Choose <b>Upload</b> to upload your image to an S3 bucket.</li>
-        <li>Choose <b>Get Images</b> to view the images located in the S3 bucket. All images in the bucket are displayed in the table. </li>
-        <li>Analyze the photographs and produce a report by choosing the <b>Analyze Photos</b> menu item. </li>
-        <li>Enter an email address in the email field and choose <b>Analyze Photos</b>.  </li>
-        <li>Amazon SES is used to send an email with an Excel report to the specified email recipient.</li>
-    </ol>
-    </div>
-    </body>
-    </html>
+			<p>
+				The AWS Photo Analyzer application is a sample application that
+				uses the Amazon Rekognition Service as well as other AWS
+				Services and the Java V2 SDK.
+				<b
+					>This example application uses the Asynchronous client for
+					the Amazon S3 and Amazon Rekognition Services</b
+				>. Analyzing nature photographs has never been easier! Simply
+				perform these steps:
+			</p>
+			<p></p>
+			<ol>
+				<li>
+					Upload a nature photograph to an Amazon S3 bucket by
+					choosing the <b>Upload Photos</b> menu item.
+				</li>
+				<li>
+					Choose <b>Choose File</b> and browse to a nature image
+					located on your desktop.
+				</li>
+				<li>
+					Choose <b>Upload</b> to upload your image to an S3 bucket.
+				</li>
+				<li>
+					Choose <b>Get Images</b> to view the images located in the
+					S3 bucket. All images in the bucket are displayed in the
+					table.
+				</li>
+				<li>
+					Analyze the photographs and produce a report by choosing the
+					<b>Analyze Photos</b> menu item.
+				</li>
+				<li>
+					Enter an email address in the email field and choose
+					<b>Analyze Photos</b>.
+				</li>
+				<li>
+					Amazon SES is used to send an email with an Excel report to
+					the specified email recipient.
+				</li>
+			</ol>
+		</div>
+	</body>
+</html>
 ```
 
 ### process.html
@@ -1245,62 +1290,88 @@ The following HTML represents the **index.html** file.
 The following HTML represents the **process.html** file.
 
 ```html
-    <!DOCTYPE html>
-    <html xmlns:th="http://www.thymeleaf.org">
-     <head>
-     <meta charset="utf-8" />
-     <meta http-equiv="X-UA-Compatible" content="IE=edge" />
-     <meta name="viewport" content="width=device-width, initial-scale=1" />
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+	<head>
+		<meta charset="utf-8" />
+		<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+		<meta name="viewport" content="width=device-width, initial-scale=1" />
 
-     <script th:src="|https://code.jquery.com/jquery-1.12.4.min.js|"></script>
-     <script th:src="|https://code.jquery.com/ui/1.11.4/jquery-ui.min.js|"></script>
-     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js"></script>
-     <link href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css" rel="stylesheet"/>
-     <script src="../public/js/message.js" th:src="@{/js/message.js}"></script>
+		<script
+			th:src="|https://code.jquery.com/jquery-1.12.4.min.js|"
+		></script>
+		<script
+			th:src="|https://code.jquery.com/ui/1.11.4/jquery-ui.min.js|"
+		></script>
+		<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js"></script>
+		<link
+			href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css"
+			rel="stylesheet"
+		/>
+		<script
+			src="../public/js/message.js"
+			th:src="@{/js/message.js}"
+		></script>
 
-     <link rel="stylesheet" href="../public/css/styles.css" th:href="@{/css/styles.css}" />
-     <link rel="icon" href="../public/images/favicon.ico" th:href="@{/images/favicon.ico}" />
+		<link
+			rel="stylesheet"
+			href="../public/css/styles.css"
+			th:href="@{/css/styles.css}"
+		/>
+		<link
+			rel="icon"
+			href="../public/images/favicon.ico"
+			th:href="@{/images/favicon.ico}"
+		/>
 
-     <title>AWS Photo Analyzer</title>
+		<title>AWS Photo Analyzer</title>
 
-     <script>
-        function myFunction() {
-            alert("The form was submitted");
-        }
-      </script>
-      </head>
+		<script>
+			function myFunction() {
+				alert("The form was submitted");
+			}
+		</script>
+	</head>
 
-      <body>
-      <header th:replace="layout :: site-header"/>
+	<body>
+		<header th:replace="layout :: site-header" />
 
-      <div class="container">
-
-      <h2>AWS Photo Analyzer Application</h2>
-      <p>You can generate a report that analyzes the images in the S3 bucket. You can send the report to the following email address. </p>
-      <label for="email">Email address:</label><br>
-      <input type="text" id="email" name="email" value=""><br>
-      <div>
-        <br>
-        <p>Click the following button to obtain a report</p>
-        <button onclick="ProcessImages()">Analyze Photos</button>
-       </div>
-       <div  id ="bar"  class="progress">
-        <div class="progress-bar progress-bar-striped active" role="progressbar"
-             aria-valuenow="40" aria-valuemin="0" aria-valuemax="100" style="width:90%">
-            Generating Report
-         </div>
-        </div>
-       <div>
-         <h3>Download a photo to your browser</h3>
-         <p>Specify the photo to download from an Amazon S3 bucket</p>
-         <label for="photo">Photo Name:"</label><br>
-         <input type="text" id="photo" name="photo" value=""><br>
-         <p>Click the following button to download a photo</p>
-         <button onclick="DownloadImage()">Download Photo</button>
-      </div>
-     </div>
-     </body>
-    </html>
+		<div class="container">
+			<h2>AWS Photo Analyzer Application</h2>
+			<p>
+				You can generate a report that analyzes the images in the S3
+				bucket. You can send the report to the following email address.
+			</p>
+			<label for="email">Email address:</label><br />
+			<input type="text" id="email" name="email" value="" /><br />
+			<div>
+				<br />
+				<p>Click the following button to obtain a report</p>
+				<button onclick="ProcessImages()">Analyze Photos</button>
+			</div>
+			<div id="bar" class="progress">
+				<div
+					class="progress-bar progress-bar-striped active"
+					role="progressbar"
+					aria-valuenow="40"
+					aria-valuemin="0"
+					aria-valuemax="100"
+					style="width:90%"
+				>
+					Generating Report
+				</div>
+			</div>
+			<div>
+				<h3>Download a photo to your browser</h3>
+				<p>Specify the photo to download from an Amazon S3 bucket</p>
+				<label for="photo">Photo Name:"</label><br />
+				<input type="text" id="photo" name="photo" value="" /><br />
+				<p>Click the following button to download a photo</p>
+				<button onclick="DownloadImage()">Download Photo</button>
+			</div>
+		</div>
+	</body>
+</html>
 ```
 
 ### upload.html
@@ -1308,87 +1379,123 @@ The following HTML represents the **process.html** file.
 The following HTML represents the **upload.html** file.
 
 ```html
-    <!DOCTYPE html>
-    <html xmlns:th="http://www.thymeleaf.org">
-    <head>
-    <meta charset="utf-8" />
-    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
-    <meta name="viewport" content="width=device-width, initial-scale=1" />
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+	<head>
+		<meta charset="utf-8" />
+		<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+		<meta name="viewport" content="width=device-width, initial-scale=1" />
 
-    <script th:src="|https://code.jquery.com/jquery-1.12.4.min.js|"></script>
-    <script th:src="|https://code.jquery.com/ui/1.11.4/jquery-ui.min.js|"></script>
-    <script th:src="|https://cdn.datatables.net/v/dt/dt-1.10.20/datatables.min.js|"></script>
-    <script src="../public/js/items.js" th:src="@{/js/items.js}"></script>
+		<script
+			th:src="|https://code.jquery.com/jquery-1.12.4.min.js|"
+		></script>
+		<script
+			th:src="|https://code.jquery.com/ui/1.11.4/jquery-ui.min.js|"
+		></script>
+		<script
+			th:src="|https://cdn.datatables.net/v/dt/dt-1.10.20/datatables.min.js|"
+		></script>
+		<script src="../public/js/items.js" th:src="@{/js/items.js}"></script>
 
-    <link rel="stylesheet" th:href="|https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css|"/>
-    <link rel="stylesheet" th:href="|https://cdn.datatables.net/v/dt/dt-1.10.20/datatables.min.css|"/>
-    <link rel="stylesheet" href="../public/css/styles.css" th:href="@{/css/styles.css}" />
-    <link rel="icon" href="../public/images/favicon.ico" th:href="@{/images/favicon.ico}" />
+		<link
+			rel="stylesheet"
+			th:href="|https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css|"
+		/>
+		<link
+			rel="stylesheet"
+			th:href="|https://cdn.datatables.net/v/dt/dt-1.10.20/datatables.min.css|"
+		/>
+		<link
+			rel="stylesheet"
+			href="../public/css/styles.css"
+			th:href="@{/css/styles.css}"
+		/>
+		<link
+			rel="icon"
+			href="../public/images/favicon.ico"
+			th:href="@{/images/favicon.ico}"
+		/>
 
+		<title>AWS Photo Analyzer</title>
 
-    <title>AWS Photo Analyzer</title>
+		<script>
+			function myFunction() {
+				alert("The form was submitted");
+			}
+		</script>
+	</head>
 
-    <script>
-        function myFunction() {
-            alert("The form was submitted");
-        }
-    </script>
-    </head>
+	<body>
+		<header th:replace="layout :: site-header" />
 
-    <body>
-    <header th:replace="layout :: site-header"/>
+		<div class="container">
+			<h2>AWS Photo Analyzer application</h2>
+			<p>
+				Upload images to an Amazon S3 bucket. Each image will be
+				analyzed!
+			</p>
 
-    <div class="container">
-     <h2>AWS Photo Analyzer application</h2>
-     <p>Upload images to an Amazon S3 bucket. Each image will be analyzed!</p>
+			<form
+				method="POST"
+				onsubmit="myFunction()"
+				action="/upload"
+				enctype="multipart/form-data"
+			>
+				<input type="file" name="file" /><br /><br />
+				<input type="submit" value="Submit" />
+			</form>
+			<div>
+				<br />
 
-     <form method="POST" onsubmit="myFunction()" action="/upload" enctype="multipart/form-data">
-      <input type="file" name="file" /><br/><br/>
-      <input type="submit" value="Submit" />
-     </form>
-    <div>
-    <br>
+				<p>
+					Choose the following button to determine the number of
+					images in the bucket.
+				</p>
 
-    <p>Choose the following button to determine the number of images in the bucket.</p>
-
-    <button onclick="getImages()">Get Images</button>
-    <div  id ="bars3"  class="progress">
-        <div class="progress-bar progress-bar-striped active" role="progressbar"
-             aria-valuenow="40" aria-valuemin="0" aria-valuemax="100" style="width:90%">
-            Retrieving Amazon S3 images...
-        </div>
-    </div>
-    <table id="myTable" class="display" style="width:100%">
-        <thead>
-        <tr>
-            <th>Name</th>
-            <th>Owner</th>
-            <th>Date</th>
-            <th>Size</th>
-        </tr>
-        </thead>
-        <tbody>
-        <tr>
-            <td>No Data</td>
-            <td>No Data</td>
-            <td>No Data </td>
-            <td>No Data</td>
-        </tr>
-        </tbody>
-        <tfoot>
-        <tr>
-            <th>Name</th>
-            <th>Owner</th>
-            <th>Date</th>
-            <th>Size</th>
-        </tr>
-        </tfoot>
-        <div id="success3"></div>
-    </table>
-    </div>
-    </div>
-    </body>
-    </html>
+				<button onclick="getImages()">Get Images</button>
+				<div id="bars3" class="progress">
+					<div
+						class="progress-bar progress-bar-striped active"
+						role="progressbar"
+						aria-valuenow="40"
+						aria-valuemin="0"
+						aria-valuemax="100"
+						style="width:90%"
+					>
+						Retrieving Amazon S3 images...
+					</div>
+				</div>
+				<table id="myTable" class="display" style="width:100%">
+					<thead>
+						<tr>
+							<th>Name</th>
+							<th>Owner</th>
+							<th>Date</th>
+							<th>Size</th>
+						</tr>
+					</thead>
+					<tbody>
+						<tr>
+							<td>No Data</td>
+							<td>No Data</td>
+							<td>No Data</td>
+							<td>No Data</td>
+						</tr>
+					</tbody>
+					<tfoot>
+						<tr>
+							<th>Name</th>
+							<th>Owner</th>
+							<th>Date</th>
+							<th>Size</th>
+						</tr>
+					</tfoot>
+					<div id="success3"></div>
+				</table>
+			</div>
+		</div>
+	</body>
+</html>
 ```
 
 ### layout.html
@@ -1418,8 +1525,8 @@ The following HTML represents the **layout.html** file for the application's men
 
 Both the upload and process views use script files to communicate with the Spring controller. You have to ensure that these files are part of your project; otherwise, your application won't work.
 
-+ items.js
-+ message.js
+-   items.js
+-   message.js
 
 Both files contain application logic that sends a request to the Spring controller. In addition, these files handle the response and set the data in the view.
 
@@ -1428,53 +1535,43 @@ Both files contain application logic that sends a request to the Spring controll
 The following JavaScript represents the **items.js** file.
 
 ```javascript
-    $(function() {
+$(function () {
+	$("#bars3").hide();
+	$("#myTable").DataTable({
+		scrollY: "500px",
+		scrollX: true,
+		scrollCollapse: true,
+		paging: true,
+		columnDefs: [{ width: 200, targets: 0 }],
+		fixedColumns: true,
+	});
+});
 
-    $("#bars3").hide()
-    $('#myTable').DataTable( {
-        scrollY:        "500px",
-        scrollX:        true,
-        scrollCollapse: true,
-        paging:         true,
-        columnDefs: [
-            { width: 200, targets: 0 }
-        ],
-        fixedColumns: true
-     } );
-    } );
+function getImages() {
+	$("#bars3").show();
 
-   function getImages() {
+	$.ajax("/getimages", {
+		type: "GET", // http method
+		success: function (data, status, xhr) {
+			$("#bars3").hide();
+			var xml = data;
+			var oTable = $("#myTable").dataTable();
+			oTable.fnClearTable(true);
+			$(xml)
+				.find("Item")
+				.each(function () {
+					var $field = $(this);
+					var key = $field.find("Key").text();
+					var name = $field.find("Owner").text();
+					var date = $field.find("Date").text();
+					var size = $field.find("Size").text();
 
-    $("#bars3").show()
-
-      $.ajax('/getimages', {
-        type: 'GET',  // http method
-        success: function (data, status, xhr) {
-
-            $("#bars3").hide()
-            var xml = data
-            var oTable = $('#myTable').dataTable();
-            oTable.fnClearTable(true);
-            $(xml).find('Item').each(function () {
-
-                var $field = $(this);
-                var key = $field.find('Key').text();
-                var name = $field.find('Owner').text();
-                var date = $field.find('Date').text();
-                var size = $field.find('Size').text();
-
-                //Set the new data
-                oTable.fnAddData( [
-                    key,
-                    name,
-                    date,
-                    size]
-                );
-            });
-        },
-      });
-    }
-
+					//Set the new data
+					oTable.fnAddData([key, name, date, size]);
+				});
+		},
+	});
+}
 ```
 
 ### message.js
@@ -1482,54 +1579,48 @@ The following JavaScript represents the **items.js** file.
 The following JavaScript represents the **message.js** file. The **ProcessImages** function sends a request to the **/report** handler in the controller that generates a report. Notice that an email address is posted to the **Controller** method.
 
 ```javascript
-    $(function() {
+$(function () {
+	$("#bar").hide();
+});
 
-    $("#bar").hide()
+function ProcessImages() {
+	//Post the values to the controller
+	$("#bar").show();
+	var email = $("#email").val();
 
+	$.ajax("/report", {
+		type: "POST", // http method
+		data: "email=" + email, // data to submit
+		success: function (data, status, xhr) {
+			$("#bar").hide();
+			alert(data);
+		},
+		error: function (jqXhr, textStatus, errorMessage) {
+			$("p").append("Error" + errorMessage);
+		},
+	});
+}
 
-   } );
-
-  function ProcessImages() {
-
-    //Post the values to the controller
-    $("#bar").show()
-    var email =  $('#email').val();
-
-    $.ajax('/report', {
-        type: 'POST',  // http method
-        data: 'email=' + email ,  // data to submit
-        success: function (data, status, xhr) {
-
-            $("#bar").hide()
-             alert(data) ;
-        },
-        error: function (jqXhr, textStatus, errorMessage) {
-            $('p').append('Error' + errorMessage);
-        }
-    });
-    }
-
-    function DownloadImage(){
-
-     //Post the values to the controller
-     var photo =  $('#photo').val();
-     window.location="../downloadphoto?photoKey=" + photo ;
-    }
-
+function DownloadImage() {
+	//Post the values to the controller
+	var photo = $("#photo").val();
+	window.location = "../downloadphoto?photoKey=" + photo;
+}
 ```
 
-**Note:** There are other CSS files located in the GitHub repository that you must add to your project. Ensure all of the files under the **resources** folder are included in your project.   
+**Note:** There are other CSS files located in the GitHub repository that you must add to your project. Ensure all of the files under the **resources** folder are included in your project.
 
 ## Run the application
 
-Using the IntelliJ IDE, you can run your application. The first time you run the Spring Boot application, you can run the application by clicking the run icon in the Spring Boot main class, as shown in this illustration. 
+Using the IntelliJ IDE, you can run your application. The first time you run the Spring Boot application, you can run the application by clicking the run icon in the Spring Boot main class, as shown in this illustration.
 
 ![AWS Tracking Application](images/run.png)
 
-**Note**: You can deploy this Spring Boot application by using AWS Elastic Beanstalk. For information, see the following document [Creating your first AWS Java web application](https://github.com/awsdocs/aws-doc-sdk-examples/tree/main/javav2/usecases/creating_first_project).
+**Note**: You can deploy this Spring Boot application by using AWS Elastic Beanstalk. For information, see the following document [Creating your first AWS Java web application](https://github.com/picante-io/aws-doc-sdk-examples/tree/main/javav2/usecases/creating_first_project).
 
 ### Next steps
+
 Congratulations! You have created and deployed the AWS Photo Analyzer application. As stated at the beginning of this tutorial, be sure to terminate all of the resources you create while going through this tutorial to ensure that you’re no longer charged for them.
 
 For more AWS multiservice examples, see
-[usecases](https://github.com/awsdocs/aws-doc-sdk-examples/tree/master/javav2/usecases).
+[usecases](https://github.com/picante-io/aws-doc-sdk-examples/tree/master/javav2/usecases).

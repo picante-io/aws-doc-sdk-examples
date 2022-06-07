@@ -9,7 +9,7 @@ recognize people, objects, and text in images.
 
 The usage demo in this file uses images in the .media folder. If you run this code
 without cloning the GitHub repository, you must first download the image files from
-    https://github.com/awsdocs/aws-doc-sdk-examples/tree/master/python/example_code/rekognition/.media
+    https://github.com/picante-io/aws-doc-sdk-examples/tree/master/python/example_code/rekognition/.media
 """
 
 # snippet-start:[python.example_code.rekognition.image_detection_imports]
