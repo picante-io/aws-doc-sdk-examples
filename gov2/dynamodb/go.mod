@@ -8,6 +8,8 @@ require (
 	github.com/aws/aws-sdk-go-v2/feature/dynamodb/attributevalue v1.8.4
 	github.com/aws/aws-sdk-go-v2/feature/dynamodb/expression v1.4.5
 	github.com/aws/aws-sdk-go-v2/service/dynamodb v1.15.3
+	github.com/picante-io/aws-doc-sdk-examples/gov2/demotools v0.0.0-00010101000000-000000000000
+	github.com/picante-io/aws-doc-sdk-examples/gov2/testtools v0.0.0-00010101000000-000000000000
 )
 
 require (
@@ -26,8 +28,6 @@ require (
 	github.com/awsdocs/aws-doc-sdk-examples/gov2/demotools v0.0.0-20220606215307-d683a71ed695 // indirect
 	github.com/davecgh/go-spew v1.1.1 // indirect
 	github.com/jmespath/go-jmespath v0.4.0 // indirect
-	github.com/picante-io/aws-doc-sdk-examples/gov2/demotools v0.0.0-00010101000000-000000000000 // indirect
-	github.com/picante-io/aws-doc-sdk-examples/gov2/testtools v0.0.0-00010101000000-000000000000 // indirect
 )
 
 replace github.com/picante-io/aws-doc-sdk-examples/gov2/demotools => ../demotools
