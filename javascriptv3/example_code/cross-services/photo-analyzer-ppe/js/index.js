@@ -16,7 +16,7 @@ Inputs:
 
 Running the code:
 To run the full tutorial, see
-https://github.com/awsdocs/aws-doc-sdk-examples/blob/master/javascriptv3/example_code/cross-services/photo-analyzer-ppe/Readme.md
+https://github.com/picante-io/aws-doc-sdk-examples/blob/master/javascriptv3/example_code/cross-services/photo-analyzer-ppe/Readme.md
  */
 // snippet-start:[s3.JavaScript.detect-ppe.indexv3]
 import { rekognitionClient } from "../libs/rekognitionClient.js";

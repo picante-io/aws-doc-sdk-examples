@@ -1,4 +1,4 @@
-module github.com/awsdocs/aws-doc-sdk-examples/gov2/testtools
+module github.com/picante-io/aws-doc-sdk-examples/gov2/testtools
 
 go 1.18
 
@@ -6,7 +6,7 @@ require (
 	github.com/aws/aws-sdk-go-v2 v1.16.2
 	github.com/aws/aws-sdk-go-v2/config v1.15.3
 	github.com/aws/smithy-go v1.11.2
-	github.com/awsdocs/aws-doc-sdk-examples/gov2/demotools v0.0.0-20220606215307-d683a71ed695
+	github.com/picante-io/aws-doc-sdk-examples/gov2/demotools v0.0.0-20220606215307-d683a71ed695
 )
 
 require (
@@ -20,4 +20,4 @@ require (
 	github.com/aws/aws-sdk-go-v2/service/sts v1.16.3 // indirect
 )
 
-replace github.com/awsdocs/aws-doc-sdk-examples/gov2/demotools => ../demotools
+replace github.com/picante-io/aws-doc-sdk-examples/gov2/demotools => ../demotools

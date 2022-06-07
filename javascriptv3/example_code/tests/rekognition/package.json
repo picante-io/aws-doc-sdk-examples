@@ -5,7 +5,7 @@
   "scripts": {
     "test": "jest"
   },
-  "repository": "git@github.com/awsdocs/aws-doc-sdk-examples/tree/master/javascriptv3/example_code/rekognition.git",
+  "repository": "git@github.com/picante-io/aws-doc-sdk-examples/tree/master/javascriptv3/example_code/rekognition.git",
   "author": "Brian Murray <brmur@amazon.com>",
   "license": "Apache 2.0",
   "dependencies": {

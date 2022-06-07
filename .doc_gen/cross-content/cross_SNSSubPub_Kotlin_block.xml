@@ -12,10 +12,10 @@
     </para>
     <para>
         For complete source code and instructions on how to create a web app, see the full example on
-        <ulink url="https://github.com/awsdocs/aws-doc-sdk-examples/tree/main/kotlin/usecases/subpub_app">GitHub</ulink>.
+        <ulink url="https://github.com/picante-io/aws-doc-sdk-examples/tree/main/kotlin/usecases/subpub_app">GitHub</ulink>.
     </para>
         <para>
         For complete source code and instructions on how to create a native Android app, see the full example on
-        <ulink url="https://github.com/awsdocs/aws-doc-sdk-examples/tree/main/kotlin/usecases/subpub_app_android">GitHub</ulink>.
+        <ulink url="https://github.com/picante-io/aws-doc-sdk-examples/tree/main/kotlin/usecases/subpub_app_android">GitHub</ulink>.
     </para>
 </block>

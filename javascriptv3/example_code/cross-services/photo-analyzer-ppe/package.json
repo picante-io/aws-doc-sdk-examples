@@ -1,7 +1,7 @@
 {
   "name": "aws-sdk-v3-ppe-examples",
   "version": "1.0.0",
-  "repository": "git@github.com/awsdocs/aws-doc-sdk-examples/tree/master/javascriptv3/example_code/ppe.git",
+  "repository": "git@github.com/picante-io/aws-doc-sdk-examples/tree/master/javascriptv3/example_code/ppe.git",
   "author": "Brian Murray <brmur@amazon.com>",
   "license": "Apache 2.0",
   "scripts": {

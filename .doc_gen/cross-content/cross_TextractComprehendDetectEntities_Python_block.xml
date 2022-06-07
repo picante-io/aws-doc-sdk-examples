@@ -14,10 +14,10 @@
         This example is a Jupyter notebook and must be run in an environment that can host
         notebooks. For instructions on how to run the example using &SMlong;, see
         the directions in
-        <ulink url="https://github.com/awsdocs/aws-doc-sdk-examples/tree/main/python/cross_service/textract_comprehend_notebook/TextractAndComprehendNotebook.ipynb">TextractAndComprehendNotebook.ipynb</ulink>.
+        <ulink url="https://github.com/picante-io/aws-doc-sdk-examples/tree/main/python/cross_service/textract_comprehend_notebook/TextractAndComprehendNotebook.ipynb">TextractAndComprehendNotebook.ipynb</ulink>.
     </para>
     <para>
         For complete source code and instructions on how to set up and run, see the full example on
-        <ulink url="https://github.com/awsdocs/aws-doc-sdk-examples/tree/main/python/cross_service/textract_comprehend_notebook#readme">GitHub</ulink>.
+        <ulink url="https://github.com/picante-io/aws-doc-sdk-examples/tree/main/python/cross_service/textract_comprehend_notebook#readme">GitHub</ulink>.
     </para>
 </block>

@@ -147,8 +147,8 @@ If you plan to contribute examples for use in the documentation, see the `Guidel
 Note that the AWS documentation team prefers to produce code examples that cover broader scenarios and use 
 cases, versus simple code snippets that cover only individual API calls.
 
-* To propose a new code example for our consideration, `create a request <https://github.com/awsdocs/aws-doc-sdk-examples/issues/new?assignees=&labels=code+sample+request&template=request-new-code-example.md&title=%5BNEW+EXAMPLE+REQUEST%5D+%3C%3CProvide+a+title+for+this+proposal%3E%3E>`_.
-* To submit a code example you have written, `create a Pull Request <https://github.com/awsdocs/aws-doc-sdk-examples/compare>`_ and follow the steps in the PR template.
+* To propose a new code example for our consideration, `create a request <https://github.com/picante-io/aws-doc-sdk-examples/issues/new?assignees=&labels=code+sample+request&template=request-new-code-example.md&title=%5BNEW+EXAMPLE+REQUEST%5D+%3C%3CProvide+a+title+for+this+proposal%3E%3E>`_.
+* To submit a code example you have written, `create a Pull Request <https://github.com/picante-io/aws-doc-sdk-examples/compare>`_ and follow the steps in the PR template.
 
 
 

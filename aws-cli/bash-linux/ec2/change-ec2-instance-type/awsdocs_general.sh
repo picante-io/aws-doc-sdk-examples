@@ -13,7 +13,7 @@
 #
 # This script contains general-purpose functions that are used throughout
 # the AWS Command Line Interface (AWS CLI) code examples that are maintained
-# in the repo at https://github.com/awsdocs/aws-doc-sdk-examples.
+# in the repo at https://github.com/picante-io/aws-doc-sdk-examples.
 #
 # They are intended to abstract functionality that is required for the tests
 # to work without cluttering up the code. The intent is to ensure that the

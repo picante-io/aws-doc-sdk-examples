@@ -4,7 +4,7 @@
   "scripts": {
     "test": "jest"
   },
-  "repository": "git@github.com/awsdocs/aws-doc-sdk-examples/tree/master/javascriptv3/example_code/kinesis.git",
+  "repository": "git@github.com/picante-io/aws-doc-sdk-examples/tree/master/javascriptv3/example_code/kinesis.git",
   "author": "https://github.com/brmur",
   "license": "Apache 2.0",
   "dependencies": {

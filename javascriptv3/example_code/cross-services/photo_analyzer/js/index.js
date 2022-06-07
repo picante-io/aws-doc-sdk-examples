@@ -7,7 +7,7 @@ which is available at https://github.com/aws/aws-sdk-js-v3.
 Purpose:
 index.js contains the JavaScript for a tutorial demonstrating how to build a web app that analyzes photos using AWS Rekognition through the
 JavaScript SDK for JavaScript v3.
-To run the full tutorial, see https://github.com/awsdocs/aws-doc-sdk-examples/tree/master/javascriptv3/example_code/cross-services/photo-analyzer.
+To run the full tutorial, see https://github.com/picante-io/aws-doc-sdk-examples/tree/master/javascriptv3/example_code/cross-services/photo-analyzer.
 
 Inputs:
 - BUCKET_IMAGES

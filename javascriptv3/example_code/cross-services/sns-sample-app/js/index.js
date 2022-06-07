@@ -7,7 +7,7 @@ which is available at https://github.com/aws/aws-sdk-js-v3.
 Purpose:
 index.js contains the JavaScript for a tutorial demonstrating subscription and publish functionality by using the
 Amazon Simple Notification Service (Amazon SNS) using the JavaScript SDK for JavaScript v3.
-To run the full tutorial, see https://github.com/awsdocs/aws-doc-sdk-examples/tree/master/javascriptv3/example_code/cross-services/sns-sample-app.
+To run the full tutorial, see https://github.com/picante-io/aws-doc-sdk-examples/tree/master/javascriptv3/example_code/cross-services/sns-sample-app.
 -->
 <!-- snippet-start:[sns-functions.JavaScript.frontend.complete] -->
 <!-- snippet-start:[sns-functions.JavaScript.frontend.config] -->

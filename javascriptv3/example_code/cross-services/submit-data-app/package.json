@@ -3,7 +3,7 @@
   "version": "1.0.0",
   "description": "This tutorial demonstrates how to build that enables users to upload items to a DynamoDB table. It also demonstrates how to deployed on an S3 static web host.",
   "main": "index.js",
-  "repository": "git@github.com/awsdocs/aws-doc-sdk-examples/tree/master/javascriptv3/example_code/cloudwatch.git",
+  "repository": "git@github.com/picante-io/aws-doc-sdk-examples/tree/master/javascriptv3/example_code/cloudwatch.git",
   "author": "Brian Murray <brmur@amazon.com>, Alex Forsyth <alex-git@amazon.com>",
   "license": "Apache 2.0",
   "scripts": {

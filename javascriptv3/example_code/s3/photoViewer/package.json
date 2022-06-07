@@ -9,14 +9,14 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/awsdocs/aws-doc-sdk-examples.git"
+    "url": "git+https://github.com/picante-io/aws-doc-sdk-examples.git"
   },
   "author": "brmur-AWS, AllanFly120",
   "license": "Apache-2.0",
   "bugs": {
-    "url": "https://github.com/awsdocs/aws-doc-sdk-examples/issues"
+    "url": "https://github.com/picante-io/aws-doc-sdk-examples/issues"
   },
-  "homepage": "https://github.com/awsdocs/aws-doc-sdk-examples#readme",
+  "homepage": "https://github.com/picante-io/aws-doc-sdk-examples#readme",
   "dependencies": {
     "@aws-sdk/client-cognito-identity": "^3.32.0",
     "@aws-sdk/credential-provider-cognito-identity": "^3.32.0",

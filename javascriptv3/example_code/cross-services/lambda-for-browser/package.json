@@ -3,7 +3,7 @@
   "version": "1.0.0",
   "description": "An example demonstrating how to use browser generated values in Lambda functions using the AWS SDK for JavaScript V3.",
   "main": "frontend-js/index.js",
-  "repository": "git@github.com/awsdocs/aws-doc-sdk-examples/tree/master/javascriptv3/example_code/lambda-for-browser.git",
+  "repository": "git@github.com/picante-io/aws-doc-sdk-examples/tree/master/javascriptv3/example_code/lambda-for-browser.git",
   "author": "brmur",
   "license": "Apache 2.0",
   "scripts": {

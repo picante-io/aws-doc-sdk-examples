@@ -3,7 +3,7 @@
   "version": "1.0.0",
   "description": "Using the AWS SDK for JavaScript V3 to build and deploy Lambda functions on API Gateway.",
   "main": "index.js",
-  "repository": "git@github.com/awsdocs/aws-doc-sdk-examples/tree/master/javascriptv3/example_code/iam.git",
+  "repository": "git@github.com/picante-io/aws-doc-sdk-examples/tree/master/javascriptv3/example_code/iam.git",
   "author": "brmur",
   "license": "Apache 2.0",
   "scripts": {
